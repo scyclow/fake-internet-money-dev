@@ -41,23 +41,23 @@ function standardRosette() {
   strokeWeight(1)
 
   const seed1 = rnd(0,10000)
-  rosetteBorder(-125, 0,100, 0, seed1)
+  const seed2 = rnd(0,10000)
+  rosetteBorder(-125, 0,100, seed1)
   dollarRosette(-125, 0, 100, seed1)
 
-  rosetteBorder(-125, 0,45, 0, seed1)
+  rosetteBorder(-125, 0,45, seed1)
   dollarRosette(-125, 0, 45, seed1)
 
-  rosetteBorder(125, 0,100, 0, seed1)
+  rosetteBorder(125, 0,100, seed1)
   dollarRosette(125, 0, 100, seed1)
-  rosetteBorder(125, 0,45, 0, seed1)
+  rosetteBorder(125, 0,45, seed1)
   dollarRosette(125, 0, 45, seed1)
 
-  const seed2 = rnd(0,10000)
-  rosetteBorder(0,0, 120, 0, seed2)
+  rosetteBorder(0,0, 120, seed2)
   dollarRosette(0, 0, 120, seed2)
 
   // const seed3 = rnd(0,10000)
-  // rosetteBorder(0,0, 80, 0, seed3)
+  // rosetteBorder(0,0, 80, seed3)
   // dollarRosette(0, 0, 80, seed3)
 
   text(denomination, 0,0)
@@ -176,83 +176,11 @@ function interestingPattern3_1() {
 }
 
 
-function interestingPattern3() {
-
-  const speed0 = 360*3
-  const speed1 = speed0/22
-  // const speed1 = speed0/33
-  // const speed1 = speed0/44
-  // const speed1 = speed0/66
-  // const speed1 = speed0/99
-  // const speed1 = speed0/132
-  // const speed1 = speed0/32
-  // const speed1 = speed0/64
-  // const speed1 = speed0/128
-  // const speed1 = speed0/34
-  // const speed1 = speed0/68
-  // const speed1 = speed0/136
-  // const speed1 = speed0/70
-  drawCircle(speed0, p => {
-    const angle = (p/speed0) * TWO_PI
-
-    const [x0, y0] = getXYRotation(
-      angle,
-      abs(sin(angle*33) * 50)
-    )
-    return getXYRotation(
-      (p/speed1) * TWO_PI,
-      70,
-      x0, y0
-    )
-    return [x0, y0]
-  })
-}
-
-function interestingPattern4() {
-
-  const speed0 = 2160
-  const speed1 = 36
-  console.log(speed0, speed1)
-  drawCircle(speed0, p => {
-
-    const angle = (p/speed0) * TWO_PI
-
-    const [x0, y0] = getXYRotation(
-      angle,
-      75 + abs(sin(angle*90) * 25)
-    )
-    return getXYRotation(
-      (p/speed1) * TWO_PI,
-      70 ,//+ abs(sin(angle*360) * 10),
-      x0, y0
-    )
-    return [x0, y0]
-  })
-}
 
 
-function interestingPattern5() {
 
-  const rotations = 11
-  const speed0 = 180
-  const speed1 = 45.5//(speed0)/85
-  console.log(speed1)
-  drawCircle(180 * rotations, p => {
 
-    const angle = (p/speed0) * TWO_PI
 
-    const [x0, y0] = getXYRotation(
-      angle,
-      60 //+ abs(sin(angle*90) * 50)
-    )
-    return getXYRotation(
-      (p/speed1) * TWO_PI,
-      45,// + abs(sin(angle*360) * 10),
-      x0, y0
-    )
-    return [x0, y0]
-  })
-}
 
 const squareRad = (dist, x) => {
   x < dist/4 ? x :

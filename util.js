@@ -33,8 +33,10 @@ const getXYRotation = (deg, radius, cx=0, cy=0) => [
 const drawShape = (points, getXY) => {
   beginShape()
   curveVertex(...getXY(-1))
-  for (let p = 0; p <= points + 1; p++) {
-    curveVertex(...getXY(p))
-  }
+  times(points+1, p => curveVertex(...getXY(p)))
   endShape()
+}
+
+function times(t, fn) {
+  for (let i = 0; i < t; i++) fn(i)
 }

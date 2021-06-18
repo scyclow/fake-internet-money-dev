@@ -1,5 +1,67 @@
 
+function squigTexture() {
+  push()
+  noFill()
+  strokeWeight(0.5)
+  const squigs = 60
 
+  for (let i=0; i<squigs; i++) {
+    const x = rnd(-width_/2, width_/2)
+    const y = rnd(-height_/2, height_/2)
+
+    const x1 = x + rnd(-25, 25)
+    const x2 = x1 + rnd(-25, 25)
+    const x3 = x2 + rnd(-25, 25)
+    const y1 = y + rnd(-25, 25)
+    const y2 = y1 + rnd(-25, 25)
+    const y3 = y2 + rnd(-25, 25)
+
+    beginShape()
+    curveVertex(
+      x + rnd(-20, 20),
+      y + rnd(-20, 20),
+    )
+    curveVertex(x, y)
+    curveVertex(
+      x1,
+      y1,
+    )
+    curveVertex(
+      x2,
+      y2,
+    )
+    curveVertex(
+      x3,
+      y3,
+    )
+    endShape()
+  }
+  pop()
+}
+
+function pointTexture() {
+  push()
+  for (let x = -width_/2; x < width_/2; x += 5)
+  for (let y = -height_/2; y < height_/2; y += 5) {
+    strokeWeight(rnd())
+    point(x + rnd(-5, 5), y + rnd(-5, 5))
+  }
+  pop()
+}
+
+
+function denominationTexture(denomination) {
+
+  push()
+  strokeWeight(1)
+  for (let x = -width_/2; x < width_/2; x += 20)
+  for (let y = -height_/2; y < height_/2; y += 20) {
+    textSize(rnd(3,6))
+
+    text(denomination, x + rnd(-20, 20), y + rnd(-20, 20))
+  }
+  pop()
+}
 function bg1() {
   push()
   stroke(STROKE_C)
@@ -80,7 +142,7 @@ function bg3() {
 //   }
 //   pop()
 // }
-function bg13() {
+function bg4() {
   push()
   const size = 100
   noFill()
@@ -115,7 +177,7 @@ function bg13() {
 }
 
 
-function bg14() {
+function bg5() {
   push()
   const size = 100
   noFill()
@@ -150,58 +212,7 @@ function bg14() {
 //   pop()
 // }
 
-function bg16() {
-  push()
-  noFill()
-  strokeWeight(0.25)
-  const squigs = 60
-  const squigCoords = []
-  for (let i=0; i<squigs; i++) {
-    squigCoords.push([
-      rnd(-width_/2, width_/2),
-      rnd(-height_/2, height_/2)
-    ])
-    console.log()
-  }
-
-  squigCoords.forEach(([x, y]) => {
-
-    const x1 = x + rnd(-25, 25)
-    const x2 = x1 + rnd(-25, 25)
-    const x3 = x2 + rnd(-25, 25)
-    const y1 = y + rnd(-25, 25)
-    const y2 = y1 + rnd(-25, 25)
-    const y3 = y2 + rnd(-25, 25)
-
-    beginShape()
-    curveVertex(
-      x + rnd(-20, 20),
-      y + rnd(-20, 20),
-    )
-    curveVertex(x, y)
-    curveVertex(
-      x1,
-      y1,
-    )
-    curveVertex(
-      x2,
-      y2,
-    )
-    curveVertex(
-      x3,
-      y3,
-    )
-    endShape()
-  })
-
-  for (let x = -width_/2; x < width_/2; x += 5)
-  for (let y = -height_/2; y < height_/2; y += 5) {
-    strokeWeight(noise(x,y))
-    point(x + rnd(-5, 5), y + rnd(-5, 5))
-  }
-  pop()
-}
-function bg17() {
+function bg6() {
   strokeWeight(0.25)
   const size = 10
 
@@ -223,7 +234,7 @@ function bg17() {
   }
 }
 
-function bg18() {
+function bg7() {
   push()
   strokeWeight(5)
   stroke(color(HUE, 26, 95, 0.5))
@@ -236,4 +247,19 @@ function bg18() {
     line(height_/2+x, 0, x, height_/2)
   }
   pop()
+}
+
+function bg8() {
+  border1(0, 1, 0.333333)
+  border1(15, 1, 0.333333)
+  border1(30, 1, 0.333333)
+  border1(45, 1, 0.333333)
+  border1(60, 1, 0.333333)
+  border1(75, 1, 0.333333)
+  border1(90, 1, 0.333333)
+  border1(105, 1, 0.333333)
+  border1(120, 1, 0.333333)
+  border1(135, 1, 0.333333)
+  border1(150, 1, 0.333333)
+  border1(165, 1, 0.333333)
 }
