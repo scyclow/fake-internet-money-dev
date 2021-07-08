@@ -6,15 +6,12 @@ function signature(x, y, size) {
   const w = size * points
   const startX = x - w/2
   const startY = y - size/2
-  console.log('......',startX, startY)
   beginShape()
   curveVertex(startX - rnd(size), startY - rnd(size))
-  console.log(startX - rnd(size), startY - rnd(size))
 
   for (let p = 0; p < points; p++) {
     const xadj = (p*size + rnd(-size, size))/2
     const yadj = 2*rnd(size)
-    console.log(startX + (p*rnd(size)), startY + (rnd(size)))
     // circle(startX + xadj, startY+ yadj, 5)
     curveVertex(
       startX + xadj,

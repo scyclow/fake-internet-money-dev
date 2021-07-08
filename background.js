@@ -43,7 +43,7 @@ function pointTexture() {
   push()
   for (let x = -width_/2; x < width_/2; x += 5)
   for (let y = -height_/2; y < height_/2; y += 5) {
-    strokeWeight(rnd())
+    strokeWeight(rnd(0,2))
     point(x + rnd(-5, 5), y + rnd(-5, 5))
   }
   pop()
@@ -213,6 +213,7 @@ function bg5() {
 // }
 
 function bg6() {
+  push()
   strokeWeight(0.25)
   const size = 10
 
@@ -232,6 +233,7 @@ function bg6() {
       else if (c < 0.3) circle(x_, y_ + size*2, 2)
     }
   }
+  pop()
 }
 
 function bg7() {
@@ -262,4 +264,23 @@ function bg8() {
   border1(135, 1, 0.333333)
   border1(150, 1, 0.333333)
   border1(165, 1, 0.333333)
+}
+
+function bg9() {
+  push()
+  strokeWeight(2)
+  stroke(STROKE_LIGHT_C)
+  const p = genRosetteParams()
+  dollarLineRosette(-width/2, height/2 * posOrNeg(), width/2, width/4, p)
+  dollarLineRosette(width/2, height/2 * posOrNeg(), width/2, width/4, p)
+  pop()
+}
+
+function bg10() {
+  push()
+  strokeWeight(2)
+  stroke(STROKE_LIGHT_C)
+  drawCGK(110, 50, 300)
+
+  pop()
 }

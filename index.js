@@ -63,11 +63,12 @@
 
 let SCALE,
     STROKE_C,
+    STROKE_LIGHT_C,
     FILL_C,
     FILL_C2,
     HUE
 
-const W_H_RATIO = 600/350
+const W_H_RATIO = 600/400
 
 
 let __canvas, width_, height_
@@ -99,6 +100,7 @@ function setup() {
 
   HUE = int(rnd(0,360))
   STROKE_C = color(HUE, 26, 25)
+  STROKE_LIGHT_C = color(HUE, 6, 50)
   FILL_C = color(HUE-32, 6, 91)
   FILL_C2 = color(HUE-92, 6, 91)
 
@@ -136,19 +138,21 @@ function draw() {
   // solidBorder2(80) // + border2
   // solidBorder5(80)
   // borderTest(10, 10)
+
+
   squigTexture()
-  // pointTexture()
   // translate(50, 50)
 
-  const r = rnd()
-  if (r < 0.125) bg1()
-  else if (r < 0.25) bg2()
-  else if (r < 0.375) bg3()
-  else if (r < 0.5) bg4()
-  else if (r < 0.625) bg5()
-  else if (r < 0.75) bg6()
-  else if (r < 0.875) bg7()
-  else bg8()
+  // const r = rnd()
+  // if (r < 0.125) bg1()
+  // else if (r < 0.25) bg2()
+  // else if (r < 0.375) bg3()
+  // else if (r < 0.5) bg4()
+  // else if (r < 0.625) bg5()
+  // else if (r < 0.75) bg6()
+  // else if (r < 0.875) bg7()
+  // else bg8()
+  bg10()
 
   const b = rnd()
   if (b < 0.125) {
@@ -161,15 +165,7 @@ function draw() {
   else if (b < 0.5) denominationBorder(5)
   else if (b < 0.625) solidBorder3()
   else if (b < 0.95) solidBorder5()
-  // else if (b < 0.5) solidBorder1()
-  // border1()
-  // border2()
-  // // border3()
-  // // border4()
-  // border5()
-  // solidBorder1()
-  // solidBorder3()
-  // solidBorder5()
+
 
 
 
@@ -181,7 +177,7 @@ function draw() {
   let borderFn = rosetteBorder
   let paramFn = random() < 0.5
     ? genRosetteParams
-    : (console.log('dist'), genDistortedRosetteParams)
+    : genDistortedRosetteParams
 
   const ros = rnd()
   if (ros < 0.25) {
@@ -202,27 +198,20 @@ function draw() {
   } else {
     rosetteFn = rosetteBorder
   }
-  middleRosette(80, rosetteFn, borderFn, paramFn, 0.4)
+  // middleRosette(80, rosetteFn, borderFn, paramFn, 0.4)
+  standardDollar()
+  centerSymbol()
+  // pointTexture()
+
+
+
+
   // dollarRosette(0, 0, 100, 40, genRosetteParams())
     // floralRosette(0,0,90)
 
 
 
-    stroke(STROKE_C)
-    strokeWeight(14)
-    multiCurve(0, 0, 30, radians(125), radians(235), 0.7, 3)
-    stroke(FILL_C)
-    strokeWeight(10)
-    multiCurve(0, 0, 30, radians(125), radians(235), 0.7, 3)
-    stroke(STROKE_C)
-    strokeWeight(8)
-    multiCurve(0, 0, 30, radians(125), radians(235), 0.7, 3)
-    stroke(FILL_C)
-    strokeWeight(4)
-    multiCurve(0, 0, 30, radians(125), radians(235), 0.7, 3)
-    stroke(STROKE_C)
-    strokeWeight(2)
-    multiCurve(0, 0, 30, radians(125), radians(235), 0.7, 3)
+
 
   // middleRosette(80, floralRosette, () => {}, genFloralRosetteParams, 0.4)
 
@@ -307,6 +296,26 @@ function keyPressed() {
 
 
 
+function centerSymbol() {
+  push()
+  noFill()
+  stroke(STROKE_C)
+  strokeWeight(14)
+  multiCurve(0, 0, 30, radians(125), radians(235), 0.7, 3)
+  stroke(FILL_C)
+  strokeWeight(10)
+  multiCurve(0, 0, 30, radians(125), radians(235), 0.7, 3)
+  stroke(STROKE_C)
+  strokeWeight(8)
+  multiCurve(0, 0, 30, radians(125), radians(235), 0.7, 3)
+  stroke(FILL_C)
+  strokeWeight(4)
+  multiCurve(0, 0, 30, radians(125), radians(235), 0.7, 3)
+  stroke(STROKE_C)
+  strokeWeight(2)
+  multiCurve(0, 0, 30, radians(125), radians(235), 0.7, 3)
+  pop()
+}
 
 
 

@@ -52,7 +52,7 @@ function rosetteBorder(x_, y_, maxRad=200, minRad=100, params={}) {
   const r1 = 1/(params.r1 || rnd(12, 20))
   const r2 = 1/(params.r2 || rnd(12, 20))
 
-  const c0Points = 70
+  const c0Points = params.points || 70
   const c1Points = c0Points/c1
   const c2Points = c0Points/c2
 
@@ -71,7 +71,7 @@ function dollarRosette(x_, y_, maxRad=200, minRad=100, params={}) {
   const r1 = 1/(params.r1 || rnd(12, 20))
   const r2 = 1/(params.r2 || rnd(12, 20))
 
-  const c0Points = 70
+  const c0Points = params.points || 70
   const c1Points = c0Points/c1
   const c2Points = c0Points/c2
 
@@ -134,7 +134,7 @@ function dollarEchoRosette(x_=0, y_=0, maxRad=200, minRad=100, params={}) {
   const r1 = 1/(params.r1 || rnd(12, 20))
   const r2 = 1/(params.r2 || rnd(12, 20))
 
-  const c0Points = 70
+  const c0Points = params.points || 70
   const c1Points = c0Points/c1
   const c2Points = c0Points/c2
 
@@ -153,7 +153,7 @@ function dollarLineRosette(x_=0, y_=0, maxRad=200, minRad=100, params={}) {
   const r1 = 1/(params.r1 || rnd(12, 20))
   const r2 = 1/(params.r2 || rnd(12, 20))
 
-  const c0Points = 70
+  const c0Points = params.points || 70
   const c1Points = c0Points/c1
   const c2Points = c0Points/c2
 
@@ -179,7 +179,7 @@ const denominationRosette = denomination => (x_=0, y_=0, maxRad=200, minRad=0, p
   const r1 = 1/(params.r1 || rnd(12, 20))
   const r2 = 1/(params.r2 || rnd(12, 20))
 
-  const c0Points = 70
+  const c0Points = params.points || 70
   const c1Points = c0Points/c1
   const c2Points = c0Points/c2
 
@@ -214,7 +214,7 @@ function floralRosette(x_=0, y_=0, radius0=90, _=0, params={}) {
   // const r2 = radius / _x
   // const r3 = radius / _y
 
-  const c0Points = 360
+  const c0Points = params.points || 360
   const c1Points = c0Points/(params.c1 || int(rnd(1, 13)) * posOrNeg())
   const c2Points = c0Points/(params.c2 || int(rnd(170, 192)) * posOrNeg())
 
@@ -256,6 +256,7 @@ const genFloralRosetteParams = () => ({
   c2: int(rnd(170, 192)) * posOrNeg(),
   r1: 9,
   r2: 5,
+  points: 360
 })
 
 const genRosetteParams = () => ({
@@ -265,6 +266,7 @@ const genRosetteParams = () => ({
   // TODO can probably bring the min down to ~5
   r1: rnd(10, 20),
   r2: rnd(10, 20),
+  points: 70
 })
 
 const genDistortedRosetteParams = () => ({

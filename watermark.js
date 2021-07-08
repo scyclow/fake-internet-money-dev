@@ -88,7 +88,7 @@ function interestingPattern5() {
 
 
 /// CGK
-function drawCGK(tBase) {
+function drawCGK(x=0, y=0, tBase) {
   push()
   // PY_EYE = hshprb(1, 0.4275)
   // const tCProb = hshprb(1, 0.5)
@@ -148,17 +148,17 @@ function drawCGK(tBase) {
     invertedTriangle: PY_TRIANGLE_INVERSE,
     pupil: PY_PUPIL
   }
-  if (PYRAMID_1) drawPyramid(tBase, STROKE_C, strokeW*9, pyParams)
-  if (PYRAMID_2) drawPyramid(tBase, !flipColor ? FILL_C : STROKE_C, strokeW*7, pyParams)
-  if (PYRAMID_3) drawPyramid(tBase, STROKE_C, strokeW*5, pyParams)
-  if (PYRAMID_4) drawPyramid(tBase, !flipColor ? FILL_C : STROKE_C, strokeW*3, pyParams)
-  if (PYRAMID_5) drawPyramid(tBase, STROKE_C, strokeW, pyParams)
+  if (PYRAMID_1) drawPyramid(x, y, tBase, STROKE_LIGHT_C, strokeW*9, pyParams)
+  if (PYRAMID_2) drawPyramid(x, y, tBase, !flipColor ? FILL_C : STROKE_LIGHT_C, strokeW*7, pyParams)
+  if (PYRAMID_3) drawPyramid(x, y, tBase, STROKE_LIGHT_C, strokeW*5, pyParams)
+  if (PYRAMID_4) drawPyramid(x, y, tBase, !flipColor ? FILL_C : STROKE_LIGHT_C, strokeW*3, pyParams)
+  if (PYRAMID_5) drawPyramid(x, y, tBase, STROKE_LIGHT_C, strokeW, pyParams)
   pop()
 }
 
 
 
-function drawPyramid(tBase, strokeC, strokeW = 45, {
+function drawPyramid(x, y, tBase, strokeC, strokeW = 45, {
   topCircle = false,
   bottomCircle = false,
   eye = false,
@@ -171,20 +171,20 @@ function drawPyramid(tBase, strokeC, strokeW = 45, {
   strokeWeight(strokeW)
   stroke(strokeC)
 
-  if (triangle) drawTriangle(tBase, 1)
-  if (invertedTriangle) drawTriangle(tBase, -1)
-  if (eye) drawEye(tBase, 130)
-  if (inverseEye) drawEye(tBase, 230)
-  if (pupil) point(0, 0)
-  if (topCircle) drawEyeCircle(tBase, 1)
-  if (bottomCircle) drawEyeCircle(tBase, 0)
+  if (triangle) drawTriangle(x, y, tBase, 1)
+  if (invertedTriangle) drawTriangle(x, y, tBase, -1)
+  if (eye) drawEye(x, y, tBase, 130)
+  if (inverseEye) drawEye(x, y, tBase, 230)
+  if (pupil) point(x, y, 0)
+  if (topCircle) drawEyeCircle(x, y, tBase, 1)
+  if (bottomCircle) drawEyeCircle(x, y, tBase, 0)
 }
 
-function drawEyeCircle(tBase, position = 1) {
+function drawEyeCircle(x, y, tBase, position = 1) {
   const { centerW } = triStats(tBase)
   const size = centerW / sin(radians(65))
   const yOffset = cos(radians((position === 1 ? 235 : 124)/ 2)) * (centerW / 2)
-  circle(0, yOffset, size)
+  circle(x, y + yOffset, size)
 }
 
 
@@ -201,15 +201,15 @@ function triStats(tBase) {
 }
 
 
-function drawEye(tBase, deg, scale = 1) {
+function drawEye(x, y, tBase, deg, scale = 1) {
   const { centerW } = triStats(tBase)
 
   const size = (centerW * scale) / sin(radians(deg / 2))
   const yOffset = cos(radians(deg / 2)) * (size / 2)
 
   arc(
-    0,
-    yOffset,
+    x,
+    y + yOffset,
     size,
     size,
     radians(270 - deg / 2),
@@ -218,8 +218,8 @@ function drawEye(tBase, deg, scale = 1) {
   )
 
   arc(
-    0,
-    -yOffset,
+    x,
+    y-yOffset,
     size,
     size,
     radians(90 - deg / 2),
@@ -229,15 +229,15 @@ function drawEye(tBase, deg, scale = 1) {
 }
 
 
-function drawTriangle(tBase, dir=1) {
+function drawTriangle(x, y, tBase, dir=1) {
   const { tHeight, heightOfCenter } = triStats(tBase)
 
   triangle(
-    -tBase / 2,
-    heightOfCenter * dir,
-    tBase / 2,
-    heightOfCenter * dir,
-    0,
-    (tHeight - heightOfCenter) * -dir
+    x - tBase / 2,
+    y + heightOfCenter * dir,
+    x + tBase / 2,
+    y + heightOfCenter * dir,
+    x,
+    y + (tHeight - heightOfCenter) * -dir
   )
 }

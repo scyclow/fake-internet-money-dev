@@ -40,15 +40,15 @@ function sideEmblemDollar() {
 }
 
 function standardDollar() {
-
+  push()
   const h = 86
 
   textSize(60)
   textAlign(CENTER, CENTER)
-  border2(10)
+  // border2(10)
 
-  border1(15)
-  border1(30)
+  // border1(15)
+  // border1(30)
 
   rosetteCorners()
 
@@ -64,6 +64,7 @@ function standardDollar() {
   text('909090909090', 100,110)
   text('909090909090', -100,-110)
   signature(-75,100, 10)
+  pop()
 }
 
 function rosetteCorners() {
