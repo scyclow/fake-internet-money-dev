@@ -65,31 +65,30 @@ let SCALE,
     STROKE_C,
     STROKE_LIGHT_C,
     FILL_C,
-    FILL_C2,
     HUE
 
-const W_H_RATIO = 600/400
+let W = 600
+let H = 400
+const W_H_RATIO = W/H
 
 
-let __canvas, width_, height_
+
+let __canvas
 function setup() {
   const windowRatio = window.innerWidth/window.innerHeight
 
   if (W_H_RATIO < windowRatio) {
     __canvas = createCanvas(window.innerHeight * W_H_RATIO, window.innerHeight)
-    SCALE = window.innerHeight/350
+    SCALE = window.innerHeight/H
 
   } else if (W_H_RATIO > windowRatio) {
     __canvas = createCanvas(window.innerWidth, window.innerWidth /W_H_RATIO)
-    SCALE = window.innerWidth/600
+    SCALE = window.innerWidth/W
 
   } else {
     __canvas = createCanvas(window.innerWidth, window.innerHeight)
-    SCALE = 1
+    SCALE = window.innerWidth/W
   }
-
-  width_ = width / SCALE
-  height_ = height / SCALE
 
   // console.log(adjH, adjW)
   // __canvas = createCanvas(window.innerWidth * s, window.innerHeight * s);
@@ -102,7 +101,10 @@ function setup() {
   STROKE_C = color(HUE, 26, 25)
   STROKE_LIGHT_C = color(HUE, 6, 50)
   FILL_C = color(HUE-32, 6, 91)
-  FILL_C2 = color(HUE-92, 6, 91)
+  STROKE_C2 = color(HUE-92, 6, 91)
+  // STROKE_C = '#65aaba'
+  // FILL_C = '#cc5b95'
+  // STROKE_C2 = '#4145a7'
 
   // const sample = a => a[int(rnd(0, a.length))]
 
@@ -117,7 +119,7 @@ function setup() {
   // ]
   // STROKE_C = sample(softColors)
   // FILL_C = sample(softColors)
-  // FILL_C2 = sample(softColors)
+  // STROKE_C2 = sample(softColors)
 }
 
 
@@ -140,68 +142,48 @@ function draw() {
   // borderTest(10, 10)
 
 
-  squigTexture()
-  // translate(50, 50)
-
-  // const r = rnd()
-  // if (r < 0.125) bg1()
-  // else if (r < 0.25) bg2()
-  // else if (r < 0.375) bg3()
-  // else if (r < 0.5) bg4()
-  // else if (r < 0.625) bg5()
-  // else if (r < 0.75) bg6()
-  // else if (r < 0.875) bg7()
-  // else bg8()
-  bg10()
-
-  const b = rnd()
-  if (b < 0.125) {
-    border2(10)
-    border1(15)
-    border1(30)
-  }
-  else if (b < 0.25) border2()
-  else if (b < 0.375) border5()
-  else if (b < 0.5) denominationBorder(5)
-  else if (b < 0.625) solidBorder3()
-  else if (b < 0.95) solidBorder5()
 
 
 
-
-  // border5Layer(40)
-  // border5(30, genBorder5Params())
-
-  const noop = () => {}
-  let rosetteFn
-  let borderFn = rosetteBorder
-  let paramFn = random() < 0.5
-    ? genRosetteParams
-    : genDistortedRosetteParams
-
-  const ros = rnd()
-  if (ros < 0.25) {
-    rosetteFn = dollarRosette
-  } else if (ros < 0.45) {
-    rosetteFn = dollarEchoRosette
-  } else if (ros < 0.55) {
-    rosetteFn = dollarLineRosette
-  } else if (ros < 0.65) {
-    rosetteFn = dollarCheckeredRosette
-  } else if (ros < 0.75) {
-    borderFn = rosetteBorder
-    rosetteFn = floralRosette
-    paramFn = genFloralRosetteParams
-  } else if (ros < 0.85) {
-    rosetteFn = denominationRosette(5)
-    borderFn = noop
-  } else {
-    rosetteFn = rosetteBorder
-  }
-  // middleRosette(80, rosetteFn, borderFn, paramFn, 0.4)
-  standardDollar()
-  centerSymbol()
+// bg5()
+  // squigTexture()
   // pointTexture()
+  // bg4()
+
+
+  // sketch()
+
+border7Multiple()
+  layout1()
+  // gradientRosette()
+
+
+
+
+
+
+// border5(30, genBorder5Params())
+  // const b = rnd()
+//   if (b < 0.125) {
+//     border2(10)
+//l     border1(15)
+//     border1(30)
+//   }
+//   else if (b < 0.25) border2()
+//   else if (b < 0.375) border5()
+//   else if (b < 0.5) denominationBorder(5)
+//   else if (b < 0.625) solidBorder3()
+//   else if (b < 0.95) solidBorder5()
+// rosetteCorners()
+
+
+  // randLayout()
+
+
+
+
+
+
 
 
 
@@ -276,13 +258,138 @@ function draw() {
   // dollarRosette(0, 0, 150, 150*75)
 
   // running out of ink:
-  // for(let x=0; x<width_; x++)
-  // for(let y=0; y<height_; y++) {
+  // for(let x=0; x<W; x++)
+  // for(let y=0; y<H; y++) {
   //   stroke(color(0,0,100, rnd(0, 1)))
-  //   point(x-width_/2, y-height_/2)
+  //   point(x-W/2, y-H/2)
   // }
 
 }
+
+function gradientRosette() {
+  const p3 = genRosetteParams()
+  rosetteGradientBorder(0,0,151,0,{...p3, innerC: color('#c00'), outterC: color('#cc0')})
+  dollarRosette(0,0,150, 50, p3)
+  strokeWeight(0.25)
+  dollarRosette(0,0,150, 50, {...p3, strokeC: color('#c00')})
+}
+
+function layout1() {
+
+  // bg9()
+
+
+  const p00 = genRosetteParams({strokeC: FILL_C})
+  rosetteBorder(110,0,105,75,{...p00, fillC: STROKE_C})
+  dollarRosette(110,0,100, 75, p00)
+
+  rosetteBorder(-110,0,105,75,{...p00, fillC: STROKE_C})
+  dollarRosette(-110,0,100, 75, p00)
+
+  const p0 = genRosetteParams({strokeC: FILL_C})
+  rosetteBorder(60,0,135,75,{...p0, fillC: STROKE_C})
+  dollarRosette(60,0,130, 75, p0)
+
+  rosetteBorder(-60,0,135,75,{...p0, fillC: STROKE_C})
+  dollarRosette(-60,0,130, 75, p0)
+
+  const p1 = genRosetteParams({strokeC: FILL_C})
+  rosetteBorder(0,0,155,75,{...p1, fillC: STROKE_C})
+  dollarRosette(0,0,150, 75, p1)
+
+  const p2 = genRosetteParams({strokeC: FILL_C})
+  rosetteBorder(0,0,125,30,{...p2, fillC: STROKE_C})
+  dollarRosette(0,0,120, 30, p2)
+
+  const p3 = genRosetteParams({strokeC: FILL_C})
+  rosetteBorder(0,0,95,30,{...p3, fillC: STROKE_C})
+  dollarRosette(0,0,90, 30, p3)
+
+
+
+textAlign(CENTER)
+push()
+  textSize(16)
+  stroke(color(86, 100, 0))
+  fill(color(86, 100, 70))
+  strokeWeight(1)
+  // text('909090909090', 100,-130)
+  text('909090909090', -180, 130)
+pop()
+
+
+//   strokeWeight(1)
+//   fill(STROKE_C)
+//   textSize(80)
+//   text('10', W/2 - 50,-H/2 + 65)
+//   text('X', -W/2 + 50,H/2 - 65)
+// centerSymbol()
+}
+
+
+
+function randLayout() {
+
+  // const r = rnd()
+  // if (r < 0.125) bg1()
+  // else if (r < 0.25) bg2()
+  // else if (r < 0.375) bg3()
+  // else if (r < 0.5) bg4()
+  // else if (r < 0.625) bg5()
+  // else if (r < 0.75) bg6()
+  // else if (r < 0.875) bg7()
+  // else bg8()
+  // bg10()
+
+  const b = rnd()
+  if (b < 0.125) {
+    border2(10)
+    border1(15)
+    border1(30)
+  }
+  else if (b < 0.25) border2()
+  else if (b < 0.375) border5()
+  else if (b < 0.5) denominationBorder(5)
+  else if (b < 0.625) solidBorder3()
+  else if (b < 0.95) solidBorder5()
+
+  const noop = () => {}
+  let rosetteFn
+  let borderFn = rosetteBorder
+  let paramFn = random() < 0.5
+    ? genRosetteParams
+    : genDistortedRosetteParams
+
+  const ros = rnd()
+  if (ros < 0.25) {
+    rosetteFn = dollarRosette
+  } else if (ros < 0.45) {
+    rosetteFn = dollarEchoRosette
+  } else if (ros < 0.55) {
+    rosetteFn = dollarLineRosette
+  } else if (ros < 0.65) {
+    rosetteFn = dollarCheckeredRosette
+  } else if (ros < 0.75) {
+    borderFn = rosetteBorder
+    rosetteFn = floralRosette
+    paramFn = genFloralRosetteParams
+  } else if (ros < 0.85) {
+    rosetteFn = denominationRosette(5)
+    borderFn = noop
+  } else {
+    rosetteFn = rosetteBorder
+  }
+  middleRosette(80, rosetteFn, borderFn, paramFn, 0.4)
+  standardDollar()
+  centerSymbol()
+  // pointTexture()
+
+}
+
+
+
+
+
 
 function keyPressed() {
   if (keyCode === 83) {
@@ -318,10 +425,44 @@ function centerSymbol() {
 }
 
 
+function sketch() {
+  // circle(0,0, 100)
+
+  getXYCurveLine(-201, -20, 200, 20)
+
+  // shrinkingCorners()
+}
 
 
 
 
+function shrinkingCorners() {
+  // const p0 = genRosetteParams()
+  // const p1 = genRosetteParams({ strokeW: 0.75})
+  // const p2 = genRosetteParams({ strokeW: 0.5})
+
+  // console.log('p0', p0)
+  // console.log('p1', p1)
+
+
+  // rosetteBorder(105-width/2,105-height/2,85, 50,{...p0, strokeC: FILL_C})
+  // rosetteBorder(120,0,75,30,{...p1, strokeC: FILL_C})
+  // rosetteBorder(200,0,45,15,{...p2, strokeC: FILL_C})
+
+  // dollarRosette(105-width/2,105-height/2,80, 30,p0)
+  // dollarRosette(240-width/2,85-height/2,50,10,p1)
+
+  // dollarRosette(200,0,40,15,p2)
+
+  times(50, () => {
+    const radius = random(20, 150)
+    const x = random(-W/2, W/2)
+    const y = random(-H/2, H/2)
+    const p = genRosetteParams({ strokeW: radius/160 })
+    // rosetteBorder(x, y, radius+5, 0, {...p, strokeC: FILL_C})
+    dollarRosette(x, y, radius, radius/2, {...p, strokeC: random() < 0.5 ? FILL_C : STROKE_C})
+  })
+}
 
 
 

@@ -1,7 +1,7 @@
 // const getXYBorder = (p, points, padding) => {
 //   const progress = ((p + points) % points) / points
-//   const adjW = width_ - 2*padding
-//   const adjH = height_ - 2*padding
+//   const adjW = W - 2*padding
+//   const adjH = H - 2*padding
 //   const adjPrm = (adjW + adjH) * 2
 //   const c1 = adjW/adjPrm
 //   const c2 = c1 + adjH/adjPrm
@@ -39,13 +39,13 @@
 const getXYBorder = (p, points, padding) => {
   const wPoints = int( points * W_H_RATIO / (2 * (W_H_RATIO+1)) )
   const hPoints = int(points/2 - wPoints)
-  const xSize = (width_ - 2*padding) / wPoints
-  const ySize = (height_ - 2*padding) / hPoints
+  const xSize = (W - 2*padding) / wPoints
+  const ySize = (H - 2*padding) / hPoints
 
-  const top = -height_/2 + padding
-  const bottom = height_/2 - padding
-  const left = -width_/2 + padding
-  const right = width_/2 - padding
+  const top = -H/2 + padding
+  const bottom = H/2 - padding
+  const left = -W/2 + padding
+  const right = W/2 - padding
 
   const c1 = wPoints
   const c2 = wPoints + hPoints
@@ -73,7 +73,6 @@ const getXYBorder = (p, points, padding) => {
       bottom - (p - c3)*ySize
     ]
   } else {
-    console.log
     return [
       left + (p-c4)*xSize,
       top
@@ -84,7 +83,7 @@ const getXYBorder = (p, points, padding) => {
 function border1(padding=20, spacing=2, offset=2) {
   push()
   // strokeWeight(0.5)
-  const points = width_/(3*spacing)
+  const points = W/(3*spacing)
 
   for (let off=0; off<offset; off+=0.3333) {
     drawShape(points+1, p => {
@@ -101,8 +100,8 @@ function border1(padding=20, spacing=2, offset=2) {
 function border2(padding=10, cRad=3) {
   push()
   strokeWeight(1)
-  const adjW = width_ - 2*padding
-  const adjH = height_ - 2*padding
+  const adjW = W - 2*padding
+  const adjH = H - 2*padding
   const adjPrm = (adjW + adjH) * 2
   const points = adjPrm/cRad
 
@@ -118,7 +117,7 @@ function border2(padding=10, cRad=3) {
 function border3(padding=20) {
   push()
   strokeWeight(0.5)
-  const points = width_/6+3
+  const points = W/6+3
 
   for (let off=0; off<2; off+=0.3333) {
     drawShape(points+1, p => {
@@ -134,7 +133,7 @@ function border3(padding=20) {
 function border4(padding=20) {
   push()
   strokeWeight(0.5)
-  const points = width_/6
+  const points = W/6
 
   for (let off=0; off<2; off+=0.3333) {
     drawShape(points+1, p => {
@@ -164,7 +163,7 @@ function genBorder5Params() {
 
 function border5(padding=20, params={}) {
   push()
-  const points = width_/7
+  const points = W/7
 
   const radius = params.radius || 20 // 15-30
   const degAdj = params.degAdj || -3 //1,2,3,4,-1,-2,-3,-4
@@ -187,6 +186,82 @@ function border5(padding=20, params={}) {
   pop()
 }
 
+function border6(padding=20, params={}) {
+  push()
+  const points = W/7
+
+  const radius = params.radius || 20 // 15-30
+  const degAdj = params.degAdj || -3 //1,2,3,4,-1,-2,-3,-4
+  const offsetAmt = 1/(params.offsetAmt || 5) //3 - 25
+  // degAdj 1; offsetAmt 15 - 50
+  // degAdj 2; offsetAmt 3 - 25
+  // degAdj 3; offsetAmt 1 - 12
+
+  for (let off=0; off<2; off+=offsetAmt) {
+    drawShape(points+1, p => {
+      const [ox, oy] = getXYBorder(p +off, points, padding)
+      return getXYRotation(
+        (p/degAdj) * TWO_PI,
+        radius,
+        ox, oy
+      )
+
+    })
+  }
+  pop()
+}
+
+
+function getCurvedXYBorder(p, points, padding) {
+  // const points = W/5
+  // 2 - 10 * posOrNeg() == normal looking
+  // 20 strange
+  // 50 whacky
+  const radius = 5
+  // 10,15 == realistic
+  //
+
+
+  const [ox, oy] = getXYBorder(p, points, padding)
+  return getXYRotation(
+    (p/radius) * TWO_PI,
+    radius,
+    ox, oy
+  )
+}
+
+function border7(padding=20, offset=2) {
+  push()
+  // strokeWeight(0.5)
+  const points = W/3.5
+
+  for (let off=0; off<offset; off+=0.3333) {
+    drawShape(points, p => {
+      const [ox, oy] = getCurvedXYBorder(p + off, points, padding)
+      const [ix, iy] = getCurvedXYBorder(p + off, points, padding+20)
+
+      return p % 2 === 0 ? [ix, iy] : [ox, oy]
+    })
+  }
+  pop()
+}
+
+function border7Multiple() {
+  times(5, (i) => {
+    strokeWeight(1 - i/13)
+    border7(i*17 - 5)
+  })
+}
+
+
+function trancendentalMoneyBg() {
+  times(12, (i) => {
+    strokeWeight(1 - i/13)
+    border7(i*17 - 3)
+  })
+}
+
+
 function border5Layer() {
   push()
   strokeWeight(4)
@@ -194,7 +269,7 @@ function border5Layer() {
   border5(40)
 
   strokeWeight(2)
-  stroke(FILL_C2)
+  stroke(STROKE_C2)
   border5(40)
 
   // strokeWeight(1)
@@ -206,8 +281,8 @@ function border5Layer() {
 function borderTest(padding=10, cRad=3) {
   push()
   strokeWeight(1)
-  const adjW = width_ - 2*padding
-  const adjH = height_ - 2*padding
+  const adjW = W - 2*padding
+  const adjH = H - 2*padding
   const adjPrm = (adjW + adjH) * 2
   const points = adjPrm/cRad-2
   times(points+1, p => {
@@ -223,8 +298,8 @@ function borderTest(padding=10, cRad=3) {
 function denominationBorder(denomination, padding=10) {
   push()
   strokeWeight(1)
-  const adjW = width_ - 2*padding
-  const adjH = height_ - 2*padding
+  const adjW = W - 2*padding
+  const adjH = H - 2*padding
   const adjPrm = (adjW + adjH) * 2
   const points = 80
   times(points, p => {
@@ -241,10 +316,10 @@ function fuckedBorder1() {
 }
 
 function solidBorder1(weight=80) {
-  const top = -height_/2
-  const bottom = height_/2
-  const left = -width_/2
-  const right = width_/2
+  const top = -H/2
+  const bottom = H/2
+  const left = -W/2
+  const right = W/2
   const rad = weight/2
 
   push()
@@ -264,10 +339,10 @@ function solidBorder1(weight=80) {
 
 
 function solidBorder2(weight=60) {
-  const top = -height_/2
-  const bottom = height_/2
-  const left = -width_/2
-  const right = width_/2
+  const top = -H/2
+  const bottom = H/2
+  const left = -W/2
+  const right = W/2
   const rad = weight/2
 
   push()
@@ -288,10 +363,10 @@ function solidBorder2(weight=60) {
 
 
 function solidBorder3(weight=60) {
-  const top = -height_/2
-  const bottom = height_/2
-  const left = -width_/2
-  const right = width_/2
+  const top = -H/2
+  const bottom = H/2
+  const left = -W/2
+  const right = W/2
   const rad = weight/2
 
   push()
@@ -342,10 +417,10 @@ function solidBorder3(weight=60) {
 
 
 function solidBorder4(weight=60) {
-  const top = -height_/2
-  const bottom = height_/2
-  const left = -width_/2
-  const right = width_/2
+  const top = -H/2
+  const bottom = H/2
+  const left = -W/2
+  const right = W/2
   const rad = weight/2
 
   push()
@@ -397,10 +472,10 @@ function solidBorder4(weight=60) {
 
 
 function solidBorder5(weight=60) {
-  const top = -height_/2
-  const bottom = height_/2
-  const left = -width_/2
-  const right = width_/2
+  const top = -H/2
+  const bottom = H/2
+  const left = -W/2
+  const right = W/2
   const rad = weight/2
 
   const weightAdj = rnd(1,6)

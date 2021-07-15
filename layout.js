@@ -3,7 +3,7 @@ function sideEmblemDollar() {
   textSize(60)
   textAlign(CENTER, CENTER)
   strokeWeight(0.5)
-  bg17()
+  bg7()
   // oversaturaedRosette()
   // middleRosette(80)
   border2(10)
@@ -23,8 +23,8 @@ function sideEmblemDollar() {
   // strokeWeight(2)
 
 
-  strokeWeight(1)
-  frameGenerator(90, -80, 0)
+
+
   strokeWeight(1)
   fill(0)
   text(10, -80,0)
@@ -32,8 +32,8 @@ function sideEmblemDollar() {
 
 
   textSize(16)
-  stroke(color(H, 100, 0))
-  fill(color(H, 100, 70))
+  // stroke(color(H, 100, 0))
+  // fill(color(H, 100, 70))
   strokeWeight(1)
   text('909090909090', 100,110)
   text('909090909090', -100,-110)
@@ -71,19 +71,28 @@ function rosetteCorners() {
   strokeWeight(0.25)
   const params = genRosetteParams()
   const cornerPadding = 70
-  rosetteBorder(-width_/2+cornerPadding, -height_/2+cornerPadding, 60, 30, params)
-  dollarRosette(-width_/2+cornerPadding, -height_/2+cornerPadding, 60, 30, params)
+  rosetteBorder(-W/2+cornerPadding, -H/2+cornerPadding, cornerPadding, cornerPadding/2, params)
+  dollarRosette(-W/2+cornerPadding, -H/2+cornerPadding, cornerPadding, cornerPadding/2, params)
 
-  rosetteBorder(width_/2-cornerPadding, -height_/2+cornerPadding, 60, 30, params)
-  dollarRosette(width_/2-cornerPadding, -height_/2+cornerPadding, 60, 30, params)
+  rosetteBorder(W/2-cornerPadding, -H/2+cornerPadding, cornerPadding, cornerPadding/2, params)
+  dollarRosette(W/2-cornerPadding, -H/2+cornerPadding, cornerPadding, cornerPadding/2, params)
 
-  rosetteBorder(-width_/2+cornerPadding, height_/2-cornerPadding, 60, 30, params)
-  dollarRosette(-width_/2+cornerPadding, height_/2-cornerPadding, 60, 30, params)
+  rosetteBorder(-W/2+cornerPadding, H/2-cornerPadding, cornerPadding, cornerPadding/2, params)
+  dollarRosette(-W/2+cornerPadding, H/2-cornerPadding, cornerPadding, cornerPadding/2, params)
 
-  rosetteBorder(width_/2-cornerPadding, height_/2-cornerPadding, 60, 30, params)
-  dollarRosette(width_/2-cornerPadding, height_/2-cornerPadding, 60, 30, params)
+  rosetteBorder(W/2-cornerPadding, H/2-cornerPadding, cornerPadding, cornerPadding/2, params)
+  dollarRosette(W/2-cornerPadding, H/2-cornerPadding, cornerPadding, cornerPadding/2, params)
 }
 
+
+const withStyle = (cb) => {
+  stroke(STROKE_C)
+  strokeWeight(2)
+  cb()
+  stroke(STROKE_C2)
+  strokeWeight(1)
+  cb()
+}
 
 
 function middleRosette(radius=100, rosetteFn, rosetteBorderFn, paramsFn, radAdj) {
@@ -93,19 +102,20 @@ function middleRosette(radius=100, rosetteFn, rosetteBorderFn, paramsFn, radAdj)
 
 
   // strokeWeight(0.5)
-  rosetteBorderFn(-125, 0,radius, radius*radAdj, params1)
-  rosetteFn(-125, 0, radius, radius*radAdj, params1)
+  withStyle(() => rosetteBorderFn(-125, 0,radius, radius*radAdj, params1))
+  withStyle(() => rosetteFn(-125, 0, radius, radius*radAdj, params1))
   // rosetteBorderFn(-125, 0,smallRadius, smallRadius*0.7, params1)
   // rosetteFn(-125, 0, smallRadius, smallRadius*0.7, params1)
 
-  rosetteBorderFn(125, 0,radius, radius*radAdj, params1)
-  rosetteFn(125, 0, radius, radius*radAdj, params1)
+  withStyle(() => rosetteBorderFn(125, 0,radius, radius*radAdj, params1))
+  withStyle(() => rosetteFn(125, 0, radius, radius*radAdj, params1))
 
   // rosetteBorderFn(125, 0,smallRadius, smallRadius*0.7, params1)
   // rosetteFn(125, 0, smallRadius, smallRadius*0.7, params1)
 
-  rosetteBorderFn(0, 0, radius*1.2, radius*1.2*radAdj, params2)
-  rosetteFn(0, 0, radius*1.2, radius*1.2*radAdj, params2)
+  withStyle(() => rosetteBorderFn(0, 0, radius*1.2, radius*1.2*radAdj, params2))
+  withStyle(() => rosetteFn(0, 0, radius*1.2, radius*1.2*radAdj, params2))
+
 
   // strokeWeight(3)
   // const denomination = shuffle([1, 2, 5, 10, 20, 50, 100]).pop()
