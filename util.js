@@ -24,17 +24,22 @@ function drawCircle (points, getXY) {
   endShape()
 }
 
+
 const getXYRotation = (deg, radius, cx=0, cy=0) => [
   sin(deg) * radius + cx,
   cos(deg) * radius + cy,
 ]
 
 
-const drawShape = (points, getXY) => {
-  beginShape()
-  curveVertex(...getXY(-1))
-  times(points+2, p => curveVertex(...getXY(p)))
-  endShape()
+const drawShape = (points, getXY, graphic=window) => {
+  // let begin, end, vert
+  // if (graphic) {
+  //   begin =
+  // }
+  graphic.beginShape()
+  graphic.curveVertex(...getXY(-1))
+  times(points+2, p => graphic.curveVertex(...getXY(p)))
+  graphic.endShape()
 }
 
 function times(t, fn) {

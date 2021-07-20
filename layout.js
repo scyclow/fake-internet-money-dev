@@ -6,10 +6,14 @@ function sideEmblemDollar() {
   bg7()
   // oversaturaedRosette()
   // middleRosette(80)
-  border2(10)
+  drawBorderGraphic(() => {
+  //   trancendentalMoneyBg()
+    border8()
+  // //   border2(10)
+  // //   border1(15)
+  // //   border1(30)
 
-  border1(15)
-  border1(30)
+  })
 
   rosetteCorners()
 
@@ -86,12 +90,12 @@ function rosetteCorners() {
 
 
 const withStyle = (cb) => {
-  stroke(STROKE_C)
-  strokeWeight(2)
-  cb()
-  stroke(STROKE_C2)
-  strokeWeight(1)
-  cb()
+  // stroke(STROKE_C)
+  // strokeWeight(2)
+  // cb()
+  // stroke(STROKE_C2)
+  // strokeWeight(1)
+  // cb()
 }
 
 

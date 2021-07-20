@@ -37,20 +37,27 @@ function interestingPattern3() {
 
 function interestingPattern4() {
 
-  const speed0 = 2160
-  const speed1 = 36
-  console.log(speed0, speed1)
+  const x =32
+  const modifier = 35//int(random(12, 120))
+  const speed0 = x * modifier
+  const speed1 = x
+
+//7
+// 29, 35, 36, 44, 58, 59, 60, 62, 97, 88, 92, 120
+// 85, 13, 34, 96, 31, 32, 37, 46
+  console.log(modifier)
+
   drawCircle(speed0, p => {
 
     const angle = (p/speed0) * TWO_PI
 
     const [x0, y0] = getXYRotation(
       angle,
-      75 + abs(sin(angle*90) * 25)
+      75 + abs(sin(angle*90) * 30)
     )
     return getXYRotation(
       (p/speed1) * TWO_PI,
-      70 ,//+ abs(sin(angle*360) * 10),
+      60 ,//+ abs(sin(angle*360) * 10),
       x0, y0
     )
     return [x0, y0]
@@ -81,7 +88,128 @@ function interestingPattern5() {
 }
 
 
+// TODO: i think this is the same as drawCircle/drawShape
+const drawCircleSpirograph = (points, getXY) => {
+  beginShape()
+  curveVertex(...getXY(-1))
+  for (let p = 0; p <= points + 1; p++) {
+    curveVertex(...getXY(p))
+  }
+  endShape()
+}
 
+function spiragraph2(x0, y0, radius) {
+  const c1Radius = radius
+  const c1DegPerTick = TWO_PI/360
+
+  const c2Radius = radius * 0.4
+  const c2DegPerTick = -TWO_PI/5
+
+  const c3Radius = radius * 0.2
+  const c3DegPerTick = TWO_PI/5
+
+  drawCircleSpirograph(360, (p) => {
+    const [x1, y1] = getXYRotation(p*c1DegPerTick, c1Radius, x0, y0)
+    const [x2, y2] = getXYRotation(p*c2DegPerTick, c2Radius, x1, y1)
+    return getXYRotation(p*c3DegPerTick, c3Radius, x2, y2)
+  })
+
+  // fill(0)
+  // circle(0,0,20)
+  drawCircleSpirograph(360, (p) => {
+    const [x1, y1] = getXYRotation(p*c1DegPerTick, c1Radius/10, x0, y0)
+    const [x2, y2] = getXYRotation(p*c2DegPerTick, -c2Radius/20, x1, y1)
+    return getXYRotation(p*c3DegPerTick, c3Radius/20, x2, y2)
+  })
+}
+
+
+
+function spiragraph5(x0, y0, radius) {
+  const c1Radius = radius
+  const c1DegPerTick = TWO_PI/720
+
+  const c2Radius = radius * 0.4
+  const c2DegPerTick = TWO_PI/6
+
+  const c3Radius = radius * 0.15
+  const c3DegPerTick = -TWO_PI/3
+
+  drawCircleSpirograph(720, (p) => {
+    const [x1, y1] = getXYRotation(p*c1DegPerTick, c1Radius, x0, y0)
+    const [x2, y2] = getXYRotation(p*c2DegPerTick, c2Radius, x1, y1)
+    return getXYRotation(p*c3DegPerTick, c3Radius, x2, y2)
+  })
+}
+
+function spiragraph7(x0, y0, radius) {
+  const c1Radius = radius
+  const c1DegPerTick = TWO_PI/1440
+
+  const c2Radius = radius * 0.4
+  const c2DegPerTick = TWO_PI/20
+
+  const c3Radius = radius * 0.2
+  const c3DegPerTick = -TWO_PI/20
+
+  const c4Radius = radius * 0.1
+  const c4DegPerTick = -TWO_PI/4
+
+  const c5Radius = radius * 0.05
+  const c5DegPerTick = TWO_PI/10
+
+  drawCircleSpirograph(1440, (p) => {
+    const [x1, y1] = getXYRotation(p*c1DegPerTick, c1Radius, x0, y0)
+    const [x2, y2] = getXYRotation(p*c2DegPerTick, c2Radius, x1, y1)
+    const [x3, y3] = getXYRotation(p*c3DegPerTick, c3Radius, x2, y2)
+    const [x4, y4] = getXYRotation(p*c4DegPerTick, c4Radius, x3, y3)
+    return getXYRotation(p*c5DegPerTick, c5Radius, x4, y4)
+  })
+}
+
+
+function spiragraph8(x0, y0, radius) {
+  const c1Radius = radius *0.5
+  const c1DegPerTick = TWO_PI/2880
+
+  const c2Radius = radius
+  const c2DegPerTick = TWO_PI/80
+
+  const c3Radius = radius
+  const c3DegPerTick = -TWO_PI/40
+
+  const c4Radius = radius * 0.125
+  const c4DegPerTick = -TWO_PI/40
+
+  const c5Radius = radius * 0.0675
+  const c5DegPerTick = TWO_PI/8
+
+  drawCircleSpirograph(2880, (p) => {
+    const [x1, y1] = getXYRotation(p*c1DegPerTick, c1Radius, x0, y0)
+    const [x2, y2] = getXYRotation(p*c2DegPerTick, c2Radius, x1, y1)
+    const [x3, y3] = getXYRotation(p*c3DegPerTick, c3Radius, x2, y2)
+    const [x4, y4] = getXYRotation(p*c4DegPerTick, c4Radius, x3, y3)
+    return getXYRotation(p*c5DegPerTick, c5Radius, x4, y4)
+  })
+}
+
+
+function spiragraph9(x0, y0, radius, params={}) {
+  const c1Radius = radius * (params.r1 || 1)
+  const c1DegPerTick = TWO_PI/(params.c1 || 10)
+
+  const c2Radius = radius * (params.r2 || 0.4)
+  const c2DegPerTick = TWO_PI/(params.c2 || 96)
+
+  const c3Radius = radius * (params.r3 || 0.2)
+  const c3DegPerTick = TWO_PI/(params.c3 || 2)
+
+  drawCircleSpirograph(720, (p) => {
+    const [x1, y1] = getXYRotation(p*c1DegPerTick, c1Radius, x0, y0)
+    const [x2, y2] = getXYRotation(p*c2DegPerTick, c2Radius, x1, y1)
+    return getXYRotation(p*c3DegPerTick, c3Radius, x2, y2)
+  })
+}
 
 
 

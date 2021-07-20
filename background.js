@@ -2,7 +2,7 @@
 function squigTexture() {
   push()
   noFill()
-  strokeWeight(0.5)
+  strokeWeight(random(0.1, 0.5))
   const squigs = 60
 
   for (let i=0; i<squigs; i++) {

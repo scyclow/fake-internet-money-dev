@@ -134,6 +134,7 @@ function dollarRosette(x_, y_, maxRad=200, minRad=100, params={}) {
 
 
   for (let off=0; off<6; off++) {
+    strokeWeight((params.strokeW||1)*0.65)
     drawShape(c0Points, p => {
       const [ox, oy] = border(midRad, p, off/3)
       const [ix, iy] = border(minRad, p, off/3)
@@ -335,12 +336,14 @@ const genDistortedRosetteParams = (o) => ({
 
 
 const createRosetteBorder = (x_, y_, c0Points, c1Points, c2Points, rad1Adj, rad2Adj) => {
-  const c3 = (rnd(13, 30)) * posOrNeg()
+  const c3 = c0Points / ((rnd(13, 30)) * posOrNeg())
+  const r3 = rnd(2, 4)
+  console.log(c0Points, c1Points, c2Points)
   return (rad, p, offset=0, r1a=null, r2a=null) => {
     const angle0 = ((p + offset)/c0Points) * TWO_PI
     const angle1 = ((p + offset)/c1Points) * TWO_PI
     const angle2 = ((p + offset)/c2Points) * TWO_PI
-    const angle3 = ((p + offset)/c3) * TWO_PI
+    const angle3 = ((p + offset)/c2Points) * TWO_PI
 
     const r1 = r1a || rad1Adj
     const r2 = r2a || rad2Adj
@@ -367,7 +370,7 @@ const createRosetteBorder = (x_, y_, c0Points, c1Points, c2Points, rad1Adj, rad2
 
     return getXYRotation(
       angle3,
-      rad * r2,
+      rad / 10,
       x2, y2
     )
   }

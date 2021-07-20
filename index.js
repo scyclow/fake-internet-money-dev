@@ -1,3 +1,43 @@
+// Fake Internet Money has value as money because it's backed by Proof of Art. It has value as art because it literally is money.
+// It has value because of its high-tech anti conterfeiting devices, letting you know that it's authentic.
+//
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Fake Internet Money invites the viewer/holder to critically examine the relationship between money and art. Viewing money _as_ art, and art _as_ money.
+// In the context of NFTs, money and art become interchangable. What gives this piece value? How is this related to how art and fiat currencies are given value?
+// Also examines the nature of authenticity
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // color palletes: fiat, crypto, bullion, conterfeit, funny money
 
 // other feature words: greenback, credit, guilloche
@@ -70,10 +110,12 @@ let SCALE,
 let W = 600
 let H = 400
 const W_H_RATIO = W/H
+const GRAPHIC_RESOLUTION = 8
 
 
 
 let __canvas
+let borderGraphic
 function setup() {
   const windowRatio = window.innerWidth/window.innerHeight
 
@@ -90,8 +132,8 @@ function setup() {
     SCALE = window.innerWidth/W
   }
 
-  // console.log(adjH, adjW)
-  // __canvas = createCanvas(window.innerWidth * s, window.innerHeight * s);
+  borderGraphic = createGraphics(W*GRAPHIC_RESOLUTION,H*GRAPHIC_RESOLUTION)
+
 
   noLoop()
   colorMode(HSB, 360, 100, 100)
@@ -146,38 +188,55 @@ function draw() {
 
 
 // bg5()
-  // squigTexture()
-  // pointTexture()
+  // solidBorder5()
+  squigTexture()
+  pointTexture()
+
+  const r = rnd()
+  if (r < 0.125) bg1()
+  else if (r < 0.25) bg2()
+  else if (r < 0.375) bg3()
+  else if (r < 0.5) bg4()
+  else if (r < 0.625) bg5()
+  else if (r < 0.75) bg6()
+  else if (r < 0.875) bg7()
+  else bg8()
+
+  // // bg10()
+
+  randomBorder()
+
+  layout1()
+  drawStr('0', 0,0, 0.23, FILL_C)
+
+
+  //   const p = genBorder5Params()
+  //   solidBorder5()
+  // })
+// sideEmblemDollar()
   // bg4()
+  // layout1()
+  // drawBorderGraphic(() => {
+  //   trancendentalMoneyBg()
+  //   // border8()
+  // //   border2(10)
+  // //   border1(15)
+  // //   border1(30)
+  // })
+  // gradientRosette()
+
+  // strokeWeight(3)
+  // interestingPattern4()
+  // strokeWeight(2)
+  // stroke(FILL_C)
+  // interestingPattern4()
+  // strokeWeight(1)
+  // stroke(STROKE_C)
+  // interestingPattern4()
 
 
   // sketch()
 
-border7Multiple()
-  layout1()
-  // gradientRosette()
-
-
-
-
-
-
-// border5(30, genBorder5Params())
-  // const b = rnd()
-//   if (b < 0.125) {
-//     border2(10)
-//l     border1(15)
-//     border1(30)
-//   }
-//   else if (b < 0.25) border2()
-//   else if (b < 0.375) border5()
-//   else if (b < 0.5) denominationBorder(5)
-//   else if (b < 0.625) solidBorder3()
-//   else if (b < 0.95) solidBorder5()
-// rosetteCorners()
-
-
-  // randLayout()
 
 
 
@@ -188,7 +247,11 @@ border7Multiple()
 
 
 
-  // dollarRosette(0, 0, 100, 40, genRosetteParams())
+// rosetteBorderFn(-125, 0,radius, radius*radAdj, params1)
+  // dollarRosette(0, 0, 150, 40, genRosetteParams())
+
+
+
     // floralRosette(0,0,90)
 
 
@@ -197,33 +260,7 @@ border7Multiple()
 
   // middleRosette(80, floralRosette, () => {}, genFloralRosetteParams, 0.4)
 
-  // drawCGK(100)
-  // strokeWeight(1)
-  // stroke(STROKE_C)
-  // border5(40)
-  // interestingPattern5()
-  // strokeWeight(1)
-  // stroke(STROKE_C)
 
-
-  // strokeWeight(1)
-  // stroke(STROKE_C)
-  // border5(40)
-  // border2(10)
-  // border1(15)
-  // border1(0, 1, 0.333333)
-  // border1(15, 1, 0.333333)
-  // border1(30, 1, 0.333333)
-  // border1(45, 1, 0.333333)
-  // border1(60, 1, 0.333333)
-  // border1(75, 1, 0.333333)
-  // border1(90, 1, 0.333333)
-  // border1(105, 1, 0.333333)
-  // border1(120, 1, 0.333333)
-  // border1(135, 1, 0.333333)
-  // border1(150, 1, 0.333333)
-  // border1(165, 1, 0.333333)
-  // border2(50)
 
 
   // standardDollar()
@@ -257,6 +294,10 @@ border7Multiple()
   // rosetteSketch(0,0, 180, 0)
   // dollarRosette(0, 0, 150, 150*75)
 
+
+
+
+
   // running out of ink:
   // for(let x=0; x<W; x++)
   // for(let y=0; y<H; y++) {
@@ -268,10 +309,10 @@ border7Multiple()
 
 function gradientRosette() {
   const p3 = genRosetteParams()
-  rosetteGradientBorder(0,0,151,0,{...p3, innerC: color('#c00'), outterC: color('#cc0')})
+  rosetteGradientBorder(0,0,151,0,{...p3, innerC: color(HUE-32, 6, 91), outterC: color(HUE+20, 30, 91)})
   dollarRosette(0,0,150, 50, p3)
   strokeWeight(0.25)
-  dollarRosette(0,0,150, 50, {...p3, strokeC: color('#c00')})
+  dollarRosette(0,0,150, 50, {...p3, strokeC: STROKE_C})
 }
 
 function layout1() {
@@ -307,15 +348,15 @@ function layout1() {
 
 
 
-textAlign(CENTER)
-push()
-  textSize(16)
-  stroke(color(86, 100, 0))
-  fill(color(86, 100, 70))
-  strokeWeight(1)
-  // text('909090909090', 100,-130)
-  text('909090909090', -180, 130)
-pop()
+// textAlign(CENTER)
+// push()
+//   textSize(16)
+//   stroke(color(86, 100, 0))
+//   fill(color(86, 100, 70))
+//   strokeWeight(1)
+//   // text('909090909090', 100,-130)
+//   text('909090909090', -180, 130)
+// pop()
 
 
 //   strokeWeight(1)
