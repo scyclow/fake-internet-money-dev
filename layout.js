@@ -57,7 +57,7 @@ function standardDollar() {
   rosetteCorners()
 
   const params = genRosetteParams()
-  rosetteBorder(0, 0, 100, 75, params)
+  rosetteBg(0, 0, 100, 75, params)
   dollarRosette(0, 0, 100, 75, params)
 
 
@@ -75,16 +75,16 @@ function rosetteCorners() {
   strokeWeight(0.25)
   const params = genRosetteParams()
   const cornerPadding = 70
-  rosetteBorder(-W/2+cornerPadding, -H/2+cornerPadding, cornerPadding, cornerPadding/2, params)
+  rosetteBg(-W/2+cornerPadding, -H/2+cornerPadding, cornerPadding, cornerPadding/2, params)
   dollarRosette(-W/2+cornerPadding, -H/2+cornerPadding, cornerPadding, cornerPadding/2, params)
 
-  rosetteBorder(W/2-cornerPadding, -H/2+cornerPadding, cornerPadding, cornerPadding/2, params)
+  rosetteBg(W/2-cornerPadding, -H/2+cornerPadding, cornerPadding, cornerPadding/2, params)
   dollarRosette(W/2-cornerPadding, -H/2+cornerPadding, cornerPadding, cornerPadding/2, params)
 
-  rosetteBorder(-W/2+cornerPadding, H/2-cornerPadding, cornerPadding, cornerPadding/2, params)
+  rosetteBg(-W/2+cornerPadding, H/2-cornerPadding, cornerPadding, cornerPadding/2, params)
   dollarRosette(-W/2+cornerPadding, H/2-cornerPadding, cornerPadding, cornerPadding/2, params)
 
-  rosetteBorder(W/2-cornerPadding, H/2-cornerPadding, cornerPadding, cornerPadding/2, params)
+  rosetteBg(W/2-cornerPadding, H/2-cornerPadding, cornerPadding, cornerPadding/2, params)
   dollarRosette(W/2-cornerPadding, H/2-cornerPadding, cornerPadding, cornerPadding/2, params)
 }
 
@@ -99,25 +99,25 @@ const withStyle = (cb) => {
 }
 
 
-function middleRosette(radius=100, rosetteFn, rosetteBorderFn, paramsFn, radAdj) {
+function middleRosette(radius=100, rosetteFn, rosetteBgFn, paramsFn, radAdj) {
   // strokeWeight(0.25)
   const params1 = paramsFn()
   const params2 = paramsFn()
 
 
   // strokeWeight(0.5)
-  withStyle(() => rosetteBorderFn(-125, 0,radius, radius*radAdj, params1))
+  withStyle(() => rosetteBgFn(-125, 0,radius, radius*radAdj, params1))
   withStyle(() => rosetteFn(-125, 0, radius, radius*radAdj, params1))
-  // rosetteBorderFn(-125, 0,smallRadius, smallRadius*0.7, params1)
+  // rosetteBgFn(-125, 0,smallRadius, smallRadius*0.7, params1)
   // rosetteFn(-125, 0, smallRadius, smallRadius*0.7, params1)
 
-  withStyle(() => rosetteBorderFn(125, 0,radius, radius*radAdj, params1))
+  withStyle(() => rosetteBgFn(125, 0,radius, radius*radAdj, params1))
   withStyle(() => rosetteFn(125, 0, radius, radius*radAdj, params1))
 
-  // rosetteBorderFn(125, 0,smallRadius, smallRadius*0.7, params1)
+  // rosetteBgFn(125, 0,smallRadius, smallRadius*0.7, params1)
   // rosetteFn(125, 0, smallRadius, smallRadius*0.7, params1)
 
-  withStyle(() => rosetteBorderFn(0, 0, radius*1.2, radius*1.2*radAdj, params2))
+  withStyle(() => rosetteBgFn(0, 0, radius*1.2, radius*1.2*radAdj, params2))
   withStyle(() => rosetteFn(0, 0, radius*1.2, radius*1.2*radAdj, params2))
 
 

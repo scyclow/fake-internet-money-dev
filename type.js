@@ -17,14 +17,29 @@ function drawChar(char, x, y, s, color) {
   pop()
 }
 
+// TODO fix XX and II
+const offsets = {
+  'V': -14,
+  'C': -14,
+  'X': -12,
+  'XX': -11.5,
+  'L': -5.5,
+  'I': 5.5,
+  'II': 3.5,
+  '$': -3,
+  '4': -3,
+  '6': -3,
+}
 function drawStr(str, x, y, s, color) {
+  // line(0, -height/2, 0, height/2)
   const center = floor(str.length/2)
   for (let c=0; c<str.length; c++) {
     const offCenter = c - center
     const xOffset = 50*s
+    const letterOffset = (offsets[str]||0)*s
 
 
     const midOffset = xOffset*offCenter + (str.length%2==0?xOffset/2:0)
-    drawChar(str[c], midOffset, y, s, color)
+    drawChar(str[c], x+midOffset+letterOffset, y-3*s, s, color)
   }
 }

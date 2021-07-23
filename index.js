@@ -5,6 +5,12 @@
 
 
 
+// Fake Internet Money is the world's first on-chain fungible NFT currency.
+// The monetary value of each bill is backed by a stunning generative work of art.
+// Meanwhile, the artistic value of the piece is enhanced by its status as a financial asset.
+// This symbiotic relationship guarantees
+
+
 
 
 
@@ -105,17 +111,23 @@ let SCALE,
     STROKE_C,
     STROKE_LIGHT_C,
     FILL_C,
-    HUE
+    BRIGHT_C,
+    BRIGHT_LIGHT_C,
+    ACCENT_C,
+    HUE,
+    DENOMINATION
 
 let W = 600
 let H = 400
 const W_H_RATIO = W/H
-const GRAPHIC_RESOLUTION = 8
+const GRAPHIC_RESOLUTION = 4
 
 
 
 let __canvas
 let borderGraphic
+
+let ellapsed=0
 function setup() {
   const windowRatio = window.innerWidth/window.innerHeight
 
@@ -139,11 +151,21 @@ function setup() {
   colorMode(HSB, 360, 100, 100)
 
 
+
+  DENOMINATION = sample(['1', '2', '5', '10', '20', '50', '100', 'I', 'II', 'V', 'X', 'XX', 'L', 'C', '$'])
   HUE = int(rnd(0,360))
-  STROKE_C = color(HUE, 26, 25)
-  STROKE_LIGHT_C = color(HUE, 6, 50)
-  FILL_C = color(HUE-32, 6, 91)
-  STROKE_C2 = color(HUE-92, 6, 91)
+  // STROKE_C = color(HUE, 26, 25)
+  STROKE_C = color(hfix(HUE), 26, 25)
+  STROKE_LIGHT_C = color(hfix(HUE), 36, 30)
+  FILL_C = color(hfix(HUE-72), 6, 91)
+  STROKE_C2 = color(hfix(HUE-132), 6, 91)
+
+  BRIGHT_C = color(HUE-40, 75, 85)
+  BRIGHT_LIGHT_C = color(HUE-40, 25, 75)
+  ACCENT_C = color(HUE-40, 77, 64)
+
+
+
   // STROKE_C = '#65aaba'
   // FILL_C = '#cc5b95'
   // STROKE_C2 = '#4145a7'
@@ -166,6 +188,7 @@ function setup() {
 
 
 function draw() {
+  ellapsed++
   translate(width/2, height/2)
   scale(SCALE)
   noFill()
@@ -179,35 +202,32 @@ function draw() {
   stroke(STROKE_C)
   background(FILL_C)
 
-  // solidBorder2(80) // + border2
-  // solidBorder5(80)
-  // borderTest(10, 10)
+  randomBgPattern()
 
-
-
-
-
-// bg5()
-  // solidBorder5()
   squigTexture()
   pointTexture()
 
-  const r = rnd()
-  if (r < 0.125) bg1()
-  else if (r < 0.25) bg2()
-  else if (r < 0.375) bg3()
-  else if (r < 0.5) bg4()
-  else if (r < 0.625) bg5()
-  else if (r < 0.75) bg6()
-  else if (r < 0.875) bg7()
-  else bg8()
-
-  // // bg10()
-
   randomBorder()
 
-  layout1()
-  drawStr('0', 0,0, 0.23, FILL_C)
+  const centerP = genRosetteParams({strokeC: FILL_C})
+  dollarRosetteBg(0,0, 150, 0, {
+    ...centerP,
+    outterC: STROKE_C,
+    innerC: BRIGHT_C,
+  })
+  dollarRosette(0,0,150, 0, centerP)
+
+  dollarRosetteBg(0,0, 67, 0, {
+    ...centerP,
+    outterC: STROKE_C,
+    innerC: BRIGHT_C,
+  })
+  dollarRosette(0,0,70, 60, centerP)
+
+  drawStr(DENOMINATION, 2,2, 0.4, STROKE_C)
+  drawStr(DENOMINATION, 0,0, 0.4, FILL_C)
+
+  corners1()
 
 
   //   const p = genBorder5Params()
@@ -215,7 +235,6 @@ function draw() {
   // })
 // sideEmblemDollar()
   // bg4()
-  // layout1()
   // drawBorderGraphic(() => {
   //   trancendentalMoneyBg()
   //   // border8()
@@ -247,7 +266,7 @@ function draw() {
 
 
 
-// rosetteBorderFn(-125, 0,radius, radius*radAdj, params1)
+// rosetteBgFn(-125, 0,radius, radius*radAdj, params1)
   // dollarRosette(0, 0, 150, 40, genRosetteParams())
 
 
@@ -289,7 +308,7 @@ function draw() {
   // middleRosette(70)
   // distortedRosette(0,0,120)
   // distortedMiddleRosette()
-  // distortedRosetteBorder()
+  // distortedrosetteBg()
   // frameGenerator()
   // rosetteSketch(0,0, 180, 0)
   // dollarRosette(0, 0, 150, 150*75)
@@ -307,12 +326,69 @@ function draw() {
 
 }
 
-function gradientRosette() {
-  const p3 = genRosetteParams()
-  rosetteGradientBorder(0,0,151,0,{...p3, innerC: color(HUE-32, 6, 91), outterC: color(HUE+20, 30, 91)})
-  dollarRosette(0,0,150, 50, p3)
-  strokeWeight(0.25)
-  dollarRosette(0,0,150, 50, {...p3, strokeC: STROKE_C})
+
+
+function corners1() {
+  const T = 58-H/2
+  const L = 58-W/2
+  const B = H/2-58
+  const R = W/2-58
+
+  const p = genFloralRosetteParams()
+  const p2 = genFloralRosetteParams()
+  floralRosette(L, T, 40, 30, {...p, fillC: FILL_C})
+  drawStr(DENOMINATION, L, T, 0.3, STROKE_C)
+
+  floralRosette(R, T, 40, 30, {...p, fillC: FILL_C})
+  drawStr(DENOMINATION, R, T, 0.3, STROKE_C)
+
+  floralRosette(L, B, 40, 30, {...p, fillC: FILL_C})
+  drawStr(DENOMINATION, L, B, 0.3, STROKE_C)
+
+  floralRosette(R, B, 40, 30, {...p, fillC: FILL_C})
+  drawStr(DENOMINATION, R, B, 0.3, STROKE_C)
+
+  // const pc = genRosetteParams({strokeC: FILL_C})
+  // console.log(pc)
+
+  // dollarRosetteBg(62-W/2,62-H/2,60, 0, {
+  //   ...pc,
+  //   outterC: STROKE_C,
+  //   innerC: BRIGHT_C,
+  // })
+  // dollarRosette(62-W/2,62-H/2,60, 30, pc)
+  // drawStr(DENOMINATION,62-W/2,62-H/2,0.3, FILL_C)
+
+  // dollarRosetteBg(W/2-62,62-H/2,60, 0, {
+  //   ...pc,
+  //   outterC: STROKE_C,
+  //   innerC: BRIGHT_C,
+  // })
+  // dollarRosette(W/2-62,62-H/2,60, 30, pc)
+  // drawStr(DENOMINATION,W/2-62,62-H/2,0.3, FILL_C)
+
+
+
+  // dollarRosetteBg(62-W/2,H/2-62,60, 0, {
+  //   ...pc,
+  //   outterC: STROKE_C,
+  //   innerC: BRIGHT_C,
+  // })
+  // dollarRosette(62-W/2,H/2-62,60, 30, pc)
+  // drawStr(DENOMINATION,62-W/2,H/2-62,0.3, FILL_C)
+
+  // dollarRosetteBg(W/2-62,H/2-62,60, 0, {
+  //   ...pc,
+  //   outterC: STROKE_C,
+  //   innerC: BRIGHT_C,
+  // })
+  // dollarRosette(W/2-62,H/2-62,60, 30, pc)
+  // drawStr(DENOMINATION,W/2-62,H/2-62,0.3, FILL_C)
+
+
+
+  drawStr(DENOMINATION, 2,2, 0.4, STROKE_C)
+  drawStr(DENOMINATION, 0,0, 0.4, FILL_C)
 }
 
 function layout1() {
@@ -321,29 +397,29 @@ function layout1() {
 
 
   const p00 = genRosetteParams({strokeC: FILL_C})
-  rosetteBorder(110,0,105,75,{...p00, fillC: STROKE_C})
+  dollarRosette(110,0,105,75,{...p00, fillC: STROKE_C, strokeW:6})
   dollarRosette(110,0,100, 75, p00)
 
-  rosetteBorder(-110,0,105,75,{...p00, fillC: STROKE_C})
+  dollarRosette(-110,0,105,75,{...p00, fillC: STROKE_C, strokeW:6})
   dollarRosette(-110,0,100, 75, p00)
 
   const p0 = genRosetteParams({strokeC: FILL_C})
-  rosetteBorder(60,0,135,75,{...p0, fillC: STROKE_C})
+  dollarRosette(60,0,135,75,{...p0, fillC: STROKE_C, strokeW:6})
   dollarRosette(60,0,130, 75, p0)
 
-  rosetteBorder(-60,0,135,75,{...p0, fillC: STROKE_C})
+  dollarRosette(-60,0,135,75,{...p0, fillC: STROKE_C, strokeW:6})
   dollarRosette(-60,0,130, 75, p0)
 
   const p1 = genRosetteParams({strokeC: FILL_C})
-  rosetteBorder(0,0,155,75,{...p1, fillC: STROKE_C})
+  dollarRosette(0,0,155,75,{...p1, fillC: STROKE_C, strokeW:6})
   dollarRosette(0,0,150, 75, p1)
 
   const p2 = genRosetteParams({strokeC: FILL_C})
-  rosetteBorder(0,0,125,30,{...p2, fillC: STROKE_C})
+  dollarRosette(0,0,125,30,{...p2, fillC: STROKE_C, strokeW:6})
   dollarRosette(0,0,120, 30, p2)
 
   const p3 = genRosetteParams({strokeC: FILL_C})
-  rosetteBorder(0,0,95,30,{...p3, fillC: STROKE_C})
+  dollarRosette(0,0,95,30,{...p3, fillC: STROKE_C, strokeW:6})
   dollarRosette(0,0,90, 30, p3)
 
 
@@ -396,7 +472,7 @@ function randLayout() {
 
   const noop = () => {}
   let rosetteFn
-  let borderFn = rosetteBorder
+  let borderFn = rosetteBg
   let paramFn = random() < 0.5
     ? genRosetteParams
     : genDistortedRosetteParams
@@ -411,14 +487,14 @@ function randLayout() {
   } else if (ros < 0.65) {
     rosetteFn = dollarCheckeredRosette
   } else if (ros < 0.75) {
-    borderFn = rosetteBorder
+    borderFn = rosetteBg
     rosetteFn = floralRosette
     paramFn = genFloralRosetteParams
   } else if (ros < 0.85) {
     rosetteFn = denominationRosette(5)
     borderFn = noop
   } else {
-    rosetteFn = rosetteBorder
+    rosetteFn = rosetteBg
   }
   middleRosette(80, rosetteFn, borderFn, paramFn, 0.4)
   standardDollar()
@@ -486,9 +562,9 @@ function shrinkingCorners() {
   // console.log('p1', p1)
 
 
-  // rosetteBorder(105-width/2,105-height/2,85, 50,{...p0, strokeC: FILL_C})
-  // rosetteBorder(120,0,75,30,{...p1, strokeC: FILL_C})
-  // rosetteBorder(200,0,45,15,{...p2, strokeC: FILL_C})
+  // dollarRosette(105-width/2,105-height/2,85, 50,{...p0, strokeC: FILL_C})
+  // dollarRosette(120,0,75,30,{...p1, strokeC: FILL_C})
+  // dollarRosette(200,0,45,15,{...p2, strokeC: FILL_C})
 
   // dollarRosette(105-width/2,105-height/2,80, 30,p0)
   // dollarRosette(240-width/2,85-height/2,50,10,p1)
@@ -500,7 +576,7 @@ function shrinkingCorners() {
     const x = random(-W/2, W/2)
     const y = random(-H/2, H/2)
     const p = genRosetteParams({ strokeW: radius/160 })
-    // rosetteBorder(x, y, radius+5, 0, {...p, strokeC: FILL_C})
+    // dollarRosette(x, y, radius+5, 0, {...p, strokeC: FILL_C})
     dollarRosette(x, y, radius, radius/2, {...p, strokeC: random() < 0.5 ? FILL_C : STROKE_C})
   })
 }

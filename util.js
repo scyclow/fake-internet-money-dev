@@ -15,6 +15,9 @@ const prb = x => rnd() < x
 
 const posOrNeg = () => prb(0.5) ? 1 : -1
 
+const sample = (a) => a[int(rnd(a.length))]
+const hfix = h => (h + 360) % 360
+
 function drawCircle (points, getXY) {
   beginShape()
   curveVertex(...getXY(-1))
@@ -32,10 +35,6 @@ const getXYRotation = (deg, radius, cx=0, cy=0) => [
 
 
 const drawShape = (points, getXY, graphic=window) => {
-  // let begin, end, vert
-  // if (graphic) {
-  //   begin =
-  // }
   graphic.beginShape()
   graphic.curveVertex(...getXY(-1))
   times(points+2, p => graphic.curveVertex(...getXY(p)))
@@ -101,5 +100,6 @@ function getXYCurveLine(startX, startY, endX, endY, idealCurveWidth=50) {
   }
   endShape()
 }
+
 
 // function getXYSin()

@@ -39,22 +39,22 @@ function standardRosette() {
 
   const seed1 = rnd(0,10000)
   const seed2 = rnd(0,10000)
-  rosetteBorder(-125, 0,100, seed1)
+  rosetteBg(-125, 0,100, seed1)
   dollarRosette(-125, 0, 100, seed1)
 
-  rosetteBorder(-125, 0,45, seed1)
+  rosetteBg(-125, 0,45, seed1)
   dollarRosette(-125, 0, 45, seed1)
 
-  rosetteBorder(125, 0,100, seed1)
+  rosetteBg(125, 0,100, seed1)
   dollarRosette(125, 0, 100, seed1)
-  rosetteBorder(125, 0,45, seed1)
+  rosetteBg(125, 0,45, seed1)
   dollarRosette(125, 0, 45, seed1)
 
-  rosetteBorder(0,0, 120, seed2)
+  rosetteBg(0,0, 120, seed2)
   dollarRosette(0, 0, 120, seed2)
 
   // const seed3 = rnd(0,10000)
-  // rosetteBorder(0,0, 80, seed3)
+  // rosetteBg(0,0, 80, seed3)
   // dollarRosette(0, 0, 80, seed3)
 
   text(denomination, 0,0)

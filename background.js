@@ -1,3 +1,23 @@
+function randomBgPattern() {
+  const r = rnd()
+  if (r < 0.125) bg1()
+  else if (r < 0.25) bg2()
+
+  else if (r < 0.5) bg4()
+  else if (r < 0.625) bg5()
+  else if (r < 0.75) bg6()
+  else if (r < 0.875) bg7()
+  else denominationTexture(DENOMINATION)
+}
+
+function randomBorderlessBg() {
+  const r = rnd()
+
+  if (r < 0.25) bg8()
+  else if (r < 0.5) bg9()
+  else if (r < 0.75) bg10()
+}
+
 
 function squigTexture() {
   push()
@@ -57,9 +77,13 @@ function denominationTexture(denomination) {
   strokeWeight(1)
   for (let x = -W/2; x < W/2; x += 20)
   for (let y = -H/2; y < H/2; y += 20) {
-    textSize(rnd(3,6))
+    const s = rnd(0.01, 0.15)
 
-    text(denomination, x + rnd(-20, 20), y + rnd(-20, 20))
+    const straight = rnd() < 0.3
+    const xOffset = straight ? 0 : rnd(-10, 10)
+    const yOffset = straight ? 0 : rnd(-10, 10)
+
+    drawStr(denomination, x + xOffset, y + yOffset, s, STROKE_C)
   }
   pop()
 }
@@ -239,12 +263,12 @@ function bg6() {
 
 function bg7() {
   push()
-  strokeWeight(5)
-  stroke(color(HUE, 26, 95, 0.5))
+  strokeWeight(1)
+  stroke(BRIGHT_LIGHT_C)
   for (
     let x = -W/2 - H/2;
     x < H/2 + W/2;
-    x += 15
+    x += 5
   ) {
     line(x, -H/2, H/2 + x, 0)
     line(H/2+x, 0, x, H/2)
@@ -253,35 +277,32 @@ function bg7() {
 }
 
 function bg8() {
-  border1(0, 1, 0.333333)
-  border1(15, 1, 0.333333)
-  border1(30, 1, 0.333333)
-  border1(45, 1, 0.333333)
-  border1(60, 1, 0.333333)
-  border1(75, 1, 0.333333)
-  border1(90, 1, 0.333333)
-  border1(105, 1, 0.333333)
-  border1(120, 1, 0.333333)
-  border1(135, 1, 0.333333)
-  border1(150, 1, 0.333333)
-  border1(165, 1, 0.333333)
+  drawBorderGraphic(() => {
+    for (let i=-15; i<=165; i +=15) {
+      border1(i, 20, rnd(20,50))
+    }
+  })
 }
 
 function bg9() {
   push()
-  strokeWeight(2)
-  stroke(STROKE_LIGHT_C)
-  const p = genRosetteParams({ strokeC: STROKE_C })
-  dollarCheckeredRosette(-W/2, -H/2, W/2, W/4, p)
-  dollarCheckeredRosette(W/2, H/2, W/2, W/4, p)
+  // TODO mess with different iterations of corners
+  // maybe a function of where corners are
+  const p = genRosetteParams({ strokeC: STROKE_LIGHT_C, strokeW: 2 })
+  dollarRosette(-W/2, H/2, W/2, W/4, p)
+  dollarRosette(W/2, -H/2, W/2, W/4, p)
   pop()
 }
 
 function bg10() {
-  push()
-  strokeWeight(2)
-  stroke(STROKE_LIGHT_C)
-  drawCGK(110, 50, 300)
-
-  pop()
+  const compression = int(rnd(1, 11))
+  drawBorderGraphic(() => {
+    times(10, (i) => {
+      borderGraphic.strokeWeight(1 - i/13)
+      border7(i*17 - 5, compression)
+      // border7(i*17 - 5, 10-i)
+    })
+  })
 }
+
+

@@ -1,120 +1,26 @@
 
-function rosetteSketch(x_, y_, maxRad=200) {
-  push()
-  fill(FILL_C)
 
-  const c0Points = 90
-  const c1Points = c0Points * -1
-  const c2Points = c1Points/10
-
-  const c1Offset = c0Points/2
-  const rad1Adj = 0.3//1/rnd(12, 20)
-
-  const border = (rad, p, offset=0, r1a=null, r2a=null) => {
-    const angle0 = ((p + offset)/c0Points) * TWO_PI
-    const angle1 = ((p + c1Offset + offset)/c1Points) * TWO_PI
-    const angle2 = ((p + offset)/c2Points) * TWO_PI
-
-
-    const [x0, y0] = getXYRotation(
-      angle0,
-      rad,
-      x_, y_
-    )
-    const [x1, y1] = getXYRotation(
-      angle1,
-      rad * (r1a||rad1Adj),
-      x0, y0
-    )
-
-    return getXYRotation(
-      angle2,
-      rad * 0.1,
-      x1, y1
-    )
-
-  }
-
-  // for (let rad = minRad; rad <= maxRad; rad += 5) {
-    drawShape(c0Points, p => {
-      return border(maxRad, p, 90)
-    })
-  // }
-  pop()
-}
-
-function rosetteBorder(x_, y_, maxRad=200, minRad=100, params={}) {
-  push()
-  params.fillC && fill(params.fillC)
-  params.strokeC && stroke(params.strokeC)
-
-  const c1 = params.c1 || int(rnd(1, 16)) * posOrNeg()
-  const c2 = params.c2 || int(rnd(1, 13)) * posOrNeg()
-  const r1 = 1/(params.r1 || rnd(12, 20))
-  const r2 = 1/(params.r2 || rnd(12, 20))
-
-  const c0Points = params.points || 70
-  const c1Points = c0Points/c1
-  const c2Points = c0Points/c2
-
-  const border = createRosetteBorder(x_, y_, c0Points, c1Points, c2Points, r1, r2)
-
-  drawShape(c0Points, p => border(maxRad, p))
-  pop()
-}
-
-function rosetteGradientBorder(x_, y_, maxRad=200, minRad=100, params={}) {
-  push()
-  noFill()
-
-  const c1 = params.c1 || int(rnd(1, 16)) * posOrNeg()
-  const c2 = params.c2 || int(rnd(1, 13)) * posOrNeg()
-  const r1 = 1/(params.r1 || rnd(12, 20))
-  const r2 = 1/(params.r2 || rnd(12, 20))
-
-  const c0Points = params.points || 70
-  const c1Points = c0Points/c1
-  const c2Points = c0Points/c2
-
-  const border = createRosetteBorder(x_, y_, c0Points, c1Points, c2Points, r1, r2)
-
-
-
-
-  for (let rad = minRad; rad <= maxRad; rad += 1) {
-    const strokeC = lerpColor(
-      params.innerC,
-      params.outterC,
-      (rad - minRad)/(maxRad - minRad)
-    )
-    stroke(strokeC)
-    drawCircle(c0Points, p => {
-      return border(rad, p)
-    })
-  }
-  pop()
-}
 
 
 function dollarRosette(x_, y_, maxRad=200, minRad=100, params={}) {
   push()
   params.strokeC && stroke(params.strokeC)
-  params.strokeW && strokeWeight(params.strokeW)
 
-  const c1 = params.c1 || int(rnd(1, 16)) * posOrNeg()
-  const c2 = params.c2 || int(rnd(1, 13)) * posOrNeg()
-  const r1 = 1/(params.r1 || rnd(12, 20))
-  const r2 = 1/(params.r2 || rnd(12, 20))
 
-  const c0Points = params.points || 70
-  const c1Points = c0Points/c1
-  const c2Points = c0Points/c2
+  const r1 = 1/params.r1
+  const r2 = 1/params.r2
+
+  const c0Points = params.points
+  const c1Points = c0Points/params.c1
+  const c2Points = c0Points/params.c2
 
   const border = createRosetteBorder(x_, y_, c0Points, c1Points, c2Points, r1, r2)
 
   const midRad = (maxRad + minRad)/2
 
+  // border
   for (let off=0; off<6; off++) {
+    strokeWeight((params.strokeW || 1) + maxRad/150 - 1)
     drawShape(c0Points, p => {
       const [ox, oy] = border(maxRad, p, off/3)
       const [ix, iy] = border(maxRad*0.95, p, off/3)
@@ -123,64 +29,82 @@ function dollarRosette(x_, y_, maxRad=200, minRad=100, params={}) {
     })
   }
 
-  for (let off=0; off<6; off++) {
-    drawShape(c0Points, p => {
-      const [ox, oy] = border(maxRad, p, off/3)
-      const [ix, iy] = border(midRad*0.95, p, off/3)
+  let topRad = maxRad
+  let bottomRad = maxRad * 0.75
+  let i = 0
 
-      return p % 2 === 0 ? [ix, iy] : [ox, oy]
-    })
+  while (bottomRad >= minRad && i < 20) {
+    strokeWeight((params.strokeW || 1) + topRad/150 - 1)
+
+    for (let off=0; off<6; off++) {
+      drawShape(c0Points, p => {
+        const [ox, oy] = border(topRad, p, off/3)
+        const [ix, iy] = border(bottomRad, p, off/3)
+
+        return p % 2 === 0 ? [ix, iy] : [ox, oy]
+      })
+    }
+
+    topRad = bottomRad * 1.045
+    if (topRad < 10) {
+      bottomRad = 0
+    }
+    else if (bottomRad - bottomRad*0.75 < 10) {
+      bottomRad = topRad - 10
+    } else {
+      bottomRad = bottomRad*0.75
+
+    }
+
+
+    i++
   }
 
 
-  for (let off=0; off<6; off++) {
-    strokeWeight((params.strokeW||1)*0.65)
-    drawShape(c0Points, p => {
-      const [ox, oy] = border(midRad, p, off/3)
-      const [ix, iy] = border(minRad, p, off/3)
 
-      return p % 2 === 0 ? [ix, iy] : [ox, oy]
-    })
-  }
-
-
-  // good misprint
-  // for (let off=0; off<2; off+=0.3333) {
+  // for (let off=0; off<6; off++) {
+  //   strokeWeight((params.strokeW||1)*0.75)
   //   drawShape(c0Points, p => {
-  //     const [ox, oy] = border(maxRad*0.55, p, off)
-  //     const [ix, iy] = border(maxRad*0.0, p, off)
+  //     const [ox, oy] = border(midRad, p, off/3)
+  //     const [ix, iy] = border(minRad, p, off/3)
 
   //     return p % 2 === 0 ? [ix, iy] : [ox, oy]
   //   })
   // }
 
-
-  // stroke(FILL_C)
-  // drawShape(c0Points, p => {
-  //   return border(maxRad*0.75, p, 0.25, 0.25)
-  // })
   pop()
 }
 
 
 
-function dollarEchoRosette(x_=0, y_=0, maxRad=200, minRad=100, params={}) {
+function dollarRosetteBg(...args) {
+  dollarEchoRosette(...args, true)
+}
+
+
+function dollarEchoRosette(x_=0, y_=0, maxRad=200, minRad=100, params={}, bg=false) {
   push()
   params.strokeC && stroke(params.strokeC)
-  params.strokeW && strokeWeight(params.strokeW)
+  bg && strokeWeight(2)
 
-  const c1 = params.c1 || int(rnd(1, 16)) * posOrNeg()
-  const c2 = params.c2 || int(rnd(1, 13)) * posOrNeg()
-  const r1 = 1/(params.r1 || rnd(12, 20))
-  const r2 = 1/(params.r2 || rnd(12, 20))
+  const r1 = 1/(params.r1)
+  const r2 = 1/(params.r2)
 
-  const c0Points = params.points || 70
-  const c1Points = c0Points/c1
-  const c2Points = c0Points/c2
+  const c0Points = params.points
+  const c1Points = c0Points/params.c1
+  const c2Points = c0Points/params.c2
 
   const border = createRosetteBorder(x_, y_, c0Points, c1Points, c2Points, r1, r2)
 
-  for (let rad = minRad; rad <= maxRad; rad += 5) {
+  const r = bg ? 1 : 5
+  const m = bg ? 5 : 0
+  for (let rad = minRad; rad <= maxRad + m; rad += r) {
+    params.innerC && params.outterC && stroke(lerpColor(
+      params.innerC,
+      params.outterC,
+      (rad - minRad)/(maxRad - minRad)
+    ))
+
     drawCircle(c0Points, p => {
       return border(rad, p)
     })
@@ -188,19 +112,19 @@ function dollarEchoRosette(x_=0, y_=0, maxRad=200, minRad=100, params={}) {
   pop()
 }
 
+
+
 function dollarLineRosette(x_=0, y_=0, maxRad=200, minRad=100, params={}) {
   push()
   params.strokeC && stroke(params.strokeC)
   params.strokeW && strokeWeight(params.strokeW)
 
-  const c1 = params.c1 || int(rnd(1, 16)) * posOrNeg()
-  const c2 = params.c2 || int(rnd(1, 13)) * posOrNeg()
-  const r1 = 1/(params.r1 || rnd(12, 20))
-  const r2 = 1/(params.r2 || rnd(12, 20))
+  const r1 = 1/(params.r1)
+  const r2 = 1/(params.r2)
 
-  const c0Points = params.points || 70
-  const c1Points = c0Points/c1
-  const c2Points = c0Points/c2
+  const c0Points = params.points
+  const c1Points = c0Points/params.c1
+  const c2Points = c0Points/params.c2
 
   const border = createRosetteBorder(x_, y_, c0Points, c1Points, c2Points, r1, r2)
 
@@ -217,20 +141,24 @@ function dollarCheckeredRosette(x_=0, y_=0,maxRad=200, minRad=100, params={}) {
   dollarEchoRosette(x_, y_, maxRad, minRad, params)
 }
 
+//?
+function dollarDottedRosette(x_=0, y_=0,maxRad=200, minRad=100, params={}) {
+  dollarEchoRosette(x_, y_, maxRad, minRad, { ...params, strokeC: STROKE_C, strokeW: 1.5})
+  dollarLineRosette(x_, y_, maxRad, minRad, params)
+}
+
 const denominationRosette = denomination => (x_=0, y_=0, maxRad=200, minRad=0, params={}) => {
   push()
   params.strokeC && stroke(params.strokeC)
   params.strokeW && strokeWeight(params.strokeW)
 
   strokeWeight(1)
-  const c1 = params.c1 || int(rnd(1, 16)) * posOrNeg()
-  const c2 = params.c2 || int(rnd(1, 13)) * posOrNeg()
-  const r1 = 1/(params.r1 || rnd(12, 20))
-  const r2 = 1/(params.r2 || rnd(12, 20))
+  const r1 = 1/(params.r1)
+  const r2 = 1/(params.r2)
 
-  const c0Points = params.points || 70
-  const c1Points = c0Points/c1
-  const c2Points = c0Points/c2
+  const c0Points = params.points
+  const c1Points = c0Points/params.c1
+  const c2Points = c0Points/params.c2
 
   const border = createRosetteBorder(x_, y_, c0Points, c1Points, c2Points, r1, r2)
 
@@ -249,6 +177,7 @@ const denominationRosette = denomination => (x_=0, y_=0, maxRad=200, minRad=0, p
 function floralRosette(x_=0, y_=0, radius0=90, _=0, params={}) {
   push()
   params.strokeC && stroke(params.strokeC)
+  params.fillC && fill(params.fillC)
   params.strokeW && strokeWeight(params.strokeW)
 
   const radius1 = radius0 / (params.r1 || 9)
@@ -336,42 +265,30 @@ const genDistortedRosetteParams = (o) => ({
 
 
 const createRosetteBorder = (x_, y_, c0Points, c1Points, c2Points, rad1Adj, rad2Adj) => {
-  const c3 = c0Points / ((rnd(13, 30)) * posOrNeg())
-  const r3 = rnd(2, 4)
-  console.log(c0Points, c1Points, c2Points)
   return (rad, p, offset=0, r1a=null, r2a=null) => {
-    const angle0 = ((p + offset)/c0Points) * TWO_PI
-    const angle1 = ((p + offset)/c1Points) * TWO_PI
-    const angle2 = ((p + offset)/c2Points) * TWO_PI
-    const angle3 = ((p + offset)/c2Points) * TWO_PI
+    const angle0 = (p + offset)/c0Points
+    const angle1 = (p + offset)/c1Points
+    const angle2 = (p + offset)/c2Points
 
     const r1 = r1a || rad1Adj
     const r2 = r2a || rad2Adj
     const r0 = 1 - r1 - r2
 
     const [x0, y0] = getXYRotation(
-      angle0,
+      angle0 * TWO_PI,
       rad * r0,
       x_, y_
     )
     const [x1, y1] = getXYRotation(
-      angle1,
+      angle1 * TWO_PI,
       rad * r1,
       x0, y0
     )
 
-    const [x2, y2] = getXYRotation(
-      angle2,
+    return getXYRotation(
+      angle2 * TWO_PI,
       rad * r2,
       x1, y1
-    )
-
-    return [x2, y2]
-
-    return getXYRotation(
-      angle3,
-      rad / 10,
-      x2, y2
     )
   }
 }

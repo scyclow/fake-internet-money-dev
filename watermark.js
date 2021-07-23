@@ -1,63 +1,60 @@
 
+function cgkWatermark(x=150, y=75) {
+  push()
+  strokeWeight(2)
+  stroke(STROKE_LIGHT_C)
+  drawCGK(x, y, 300)
+
+  pop()
+}
+
+function randomWatermark(x, y, radius) {
+  const r = rnd()
+  if (r < 0.3333) watermark1(x, y, radius)
+  else if (r < 0.85) watermark2(x, y, radius)
+  else watermark3(x, y, radius)
+}
 
 
 
-
-function interestingPattern3() {
-
+function watermark1(x=0, y=0, c2Radius=100) {
   const speed0 = 360*3
-  const speed1 = speed0/22
-  // const speed1 = speed0/33
-  // const speed1 = speed0/44
-  // const speed1 = speed0/66
-  // const speed1 = speed0/99
-  // const speed1 = speed0/132
-  // const speed1 = speed0/32
-  // const speed1 = speed0/64
-  // const speed1 = speed0/128
-  // const speed1 = speed0/34
-  // const speed1 = speed0/68
-  // const speed1 = speed0/136
-  // const speed1 = speed0/70
+  const speed1 = speed0/sample([22, 32, 32.5, 33, 34, 64, 65, 66, 66.4])
+  drawCircle(speed0, p => {
+    const angle = (p/speed0) * TWO_PI
+    const [x0, y0] = getXYRotation(
+      angle,
+      c2Radius/100 + abs(sin(angle*33) * 75),
+      x, y
+    )
+    return getXYRotation(
+      (p/speed1) * TWO_PI,
+      c2Radius,
+      x0, y0
+    )
+
+  })
+}
+
+
+
+function watermark2(x=0, y=0, c1Radius=100) {
+  const modifier = sample([7, 13, 29, 31, 32, 34, 35, 36, 37, 44, 46, 58, 59, 60, 62, 85, 88, 92, 96])
+  const speed1 = 32
+  const speed0 = speed1 * modifier
+
+
   drawCircle(speed0, p => {
     const angle = (p/speed0) * TWO_PI
 
     const [x0, y0] = getXYRotation(
       angle,
-      abs(sin(angle*33) * 50)
+      c1Radius + abs(sin(angle*90) * 30),
+      x, y
     )
     return getXYRotation(
       (p/speed1) * TWO_PI,
-      70,
-      x0, y0
-    )
-    return [x0, y0]
-  })
-}
-
-function interestingPattern4() {
-
-  const x =32
-  const modifier = 35//int(random(12, 120))
-  const speed0 = x * modifier
-  const speed1 = x
-
-//7
-// 29, 35, 36, 44, 58, 59, 60, 62, 97, 88, 92, 120
-// 85, 13, 34, 96, 31, 32, 37, 46
-  console.log(modifier)
-
-  drawCircle(speed0, p => {
-
-    const angle = (p/speed0) * TWO_PI
-
-    const [x0, y0] = getXYRotation(
-      angle,
-      75 + abs(sin(angle*90) * 30)
-    )
-    return getXYRotation(
-      (p/speed1) * TWO_PI,
-      60 ,//+ abs(sin(angle*360) * 10),
+      c1Radius*0.8 + abs(sin(angle*360)),
       x0, y0
     )
     return [x0, y0]
@@ -65,181 +62,43 @@ function interestingPattern4() {
 }
 
 
-function interestingPattern5() {
-  const rotations = 11
-  const speed0 = 180
-  const speed1 = 45.5//(speed0)/85
-  console.log(speed1)
-  drawCircle(180 * rotations, p => {
+function watermark3(x0, y0, c1Radius=100) {
 
-    const angle = (p/speed0) * TWO_PI
+  const x = posOrNeg()
+  const params = sample([
+    [10, 96, 2],
+    [10, 96, -4],
+    [14, 96, 2],
+    [15, 29, -5],
+    [720, -5, 5],
+    [720, 6, -3],
+    [720, -4, 2],
+    [720, -6, 2],
+    [720, -3, 3],
+    // [720, -15, 5], // cool, but doesn't really fit here
+    // [50, -9, 10]
+  ])
 
-    const [x0, y0] = getXYRotation(
-      angle,
-      60 //+ abs(sin(angle*90) * 50)
-    )
-    return getXYRotation(
-      (p/speed1) * TWO_PI,
-      45,// + abs(sin(angle*360) * 10),
-      x0, y0
-    )
-    return [x0, y0]
-  })
-}
+  const c1DegPerTick = TWO_PI/params[0]
 
+  const c2Radius = c1Radius * 0.4
+  const c2DegPerTick = TWO_PI/params[1]
 
-// TODO: i think this is the same as drawCircle/drawShape
-const drawCircleSpirograph = (points, getXY) => {
-  beginShape()
-  curveVertex(...getXY(-1))
-  for (let p = 0; p <= points + 1; p++) {
-    curveVertex(...getXY(p))
-  }
-  endShape()
-}
+  const c3Radius = c1Radius * 0.2
+  const c3DegPerTick = TWO_PI/params[2]
 
-function spiragraph2(x0, y0, radius) {
-  const c1Radius = radius
-  const c1DegPerTick = TWO_PI/360
-
-  const c2Radius = radius * 0.4
-  const c2DegPerTick = -TWO_PI/5
-
-  const c3Radius = radius * 0.2
-  const c3DegPerTick = TWO_PI/5
-
-  drawCircleSpirograph(360, (p) => {
-    const [x1, y1] = getXYRotation(p*c1DegPerTick, c1Radius, x0, y0)
-    const [x2, y2] = getXYRotation(p*c2DegPerTick, c2Radius, x1, y1)
-    return getXYRotation(p*c3DegPerTick, c3Radius, x2, y2)
-  })
-
-  // fill(0)
-  // circle(0,0,20)
-  drawCircleSpirograph(360, (p) => {
-    const [x1, y1] = getXYRotation(p*c1DegPerTick, c1Radius/10, x0, y0)
-    const [x2, y2] = getXYRotation(p*c2DegPerTick, -c2Radius/20, x1, y1)
-    return getXYRotation(p*c3DegPerTick, c3Radius/20, x2, y2)
-  })
-}
-
-
-
-function spiragraph5(x0, y0, radius) {
-  const c1Radius = radius
-  const c1DegPerTick = TWO_PI/720
-
-  const c2Radius = radius * 0.4
-  const c2DegPerTick = TWO_PI/6
-
-  const c3Radius = radius * 0.15
-  const c3DegPerTick = -TWO_PI/3
-
-  drawCircleSpirograph(720, (p) => {
+  drawCircle(720, (p) => {
     const [x1, y1] = getXYRotation(p*c1DegPerTick, c1Radius, x0, y0)
     const [x2, y2] = getXYRotation(p*c2DegPerTick, c2Radius, x1, y1)
     return getXYRotation(p*c3DegPerTick, c3Radius, x2, y2)
   })
 }
-
-function spiragraph7(x0, y0, radius) {
-  const c1Radius = radius
-  const c1DegPerTick = TWO_PI/1440
-
-  const c2Radius = radius * 0.4
-  const c2DegPerTick = TWO_PI/20
-
-  const c3Radius = radius * 0.2
-  const c3DegPerTick = -TWO_PI/20
-
-  const c4Radius = radius * 0.1
-  const c4DegPerTick = -TWO_PI/4
-
-  const c5Radius = radius * 0.05
-  const c5DegPerTick = TWO_PI/10
-
-  drawCircleSpirograph(1440, (p) => {
-    const [x1, y1] = getXYRotation(p*c1DegPerTick, c1Radius, x0, y0)
-    const [x2, y2] = getXYRotation(p*c2DegPerTick, c2Radius, x1, y1)
-    const [x3, y3] = getXYRotation(p*c3DegPerTick, c3Radius, x2, y2)
-    const [x4, y4] = getXYRotation(p*c4DegPerTick, c4Radius, x3, y3)
-    return getXYRotation(p*c5DegPerTick, c5Radius, x4, y4)
-  })
-}
-
-
-function spiragraph8(x0, y0, radius) {
-  const c1Radius = radius *0.5
-  const c1DegPerTick = TWO_PI/2880
-
-  const c2Radius = radius
-  const c2DegPerTick = TWO_PI/80
-
-  const c3Radius = radius
-  const c3DegPerTick = -TWO_PI/40
-
-  const c4Radius = radius * 0.125
-  const c4DegPerTick = -TWO_PI/40
-
-  const c5Radius = radius * 0.0675
-  const c5DegPerTick = TWO_PI/8
-
-  drawCircleSpirograph(2880, (p) => {
-    const [x1, y1] = getXYRotation(p*c1DegPerTick, c1Radius, x0, y0)
-    const [x2, y2] = getXYRotation(p*c2DegPerTick, c2Radius, x1, y1)
-    const [x3, y3] = getXYRotation(p*c3DegPerTick, c3Radius, x2, y2)
-    const [x4, y4] = getXYRotation(p*c4DegPerTick, c4Radius, x3, y3)
-    return getXYRotation(p*c5DegPerTick, c5Radius, x4, y4)
-  })
-}
-
-
-function spiragraph9(x0, y0, radius, params={}) {
-  const c1Radius = radius * (params.r1 || 1)
-  const c1DegPerTick = TWO_PI/(params.c1 || 10)
-
-  const c2Radius = radius * (params.r2 || 0.4)
-  const c2DegPerTick = TWO_PI/(params.c2 || 96)
-
-  const c3Radius = radius * (params.r3 || 0.2)
-  const c3DegPerTick = TWO_PI/(params.c3 || 2)
-
-  drawCircleSpirograph(720, (p) => {
-    const [x1, y1] = getXYRotation(p*c1DegPerTick, c1Radius, x0, y0)
-    const [x2, y2] = getXYRotation(p*c2DegPerTick, c2Radius, x1, y1)
-    return getXYRotation(p*c3DegPerTick, c3Radius, x2, y2)
-  })
-}
-
-
 
 
 
 /// CGK
 function drawCGK(x=0, y=0, tBase) {
   push()
-  // PY_EYE = hshprb(1, 0.4275)
-  // const tCProb = hshprb(1, 0.5)
-  // const bCProb = hshprb(1, 0.5)
-  // const eIProb = hshprb(1, 0.5)
-  // const pt = hshrnd(2)
-
-  // PY_TOP_CIRCLE = !PY_EYE && tCProb // 30%
-  // PY_BOTTOM_CIRCLE = !PY_EYE && bCProb // 30%
-  // PY_EYE_INVERSE = !PY_EYE && !PY_TOP_CIRCLE && !PY_BOTTOM_CIRCLE && eIProb // 16%
-  // PY_TRIANGLE = pt < 0.85
-  // PY_TRIANGLE_INVERSE = pt > 0.85 && pt < 0.95
-  // PY_PUPIL = hshprb(1, 0.9)
-
-  // if (hshprb(1, 0.65)) PYRAMID_1 = true
-  // if (hshprb(1, 0.65)) PYRAMID_2 = true
-  // if (hshprb(1, 0.65)) PYRAMID_3 = true
-  // if (hshprb(1, 0.65)) PYRAMID_4 = true
-  // if (
-  //   hshprb(1, 0.65)
-  //   || !(PYRAMID_1 || PYRAMID_2 || PYRAMID_3 || PYRAMID_4)
-  // ) PYRAMID_5 = true
-
   const PY_EYE = rnd() < 0.4275
   const tCProb = rnd() < 0.5
   const bCProb = rnd() < 0.5
