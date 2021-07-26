@@ -1,7 +1,9 @@
 
 function signature(x, y, size) {
   push()
+  console.log(x, y, size)
   noFill()
+  strokeWeight(2)
   const points = int(rnd(10, 20))
   const w = size * points
   const startX = x - w/2

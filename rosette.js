@@ -2,9 +2,9 @@
 
 
 
-function dollarRosette(x_, y_, maxRad=200, minRad=100, params={}) {
-  push()
-  params.strokeC && stroke(params.strokeC)
+function dollarRosette(x_, y_, maxRad=200, minRad=100, params={}, graphic=window) {
+  graphic.push()
+  params.strokeC && graphic.stroke(params.strokeC)
 
 
   const r1 = 1/params.r1
@@ -20,13 +20,13 @@ function dollarRosette(x_, y_, maxRad=200, minRad=100, params={}) {
 
   // border
   for (let off=0; off<6; off++) {
-    strokeWeight((params.strokeW || 1) + maxRad/150 - 1)
+    graphic.strokeWeight((params.strokeW || 1) + maxRad/150 - 1)
     drawShape(c0Points, p => {
       const [ox, oy] = border(maxRad, p, off/3)
       const [ix, iy] = border(maxRad*0.95, p, off/3)
 
       return p % 2 === 0 ? [ix, iy] : [ox, oy]
-    })
+    }, graphic)
   }
 
   let topRad = maxRad
@@ -34,7 +34,7 @@ function dollarRosette(x_, y_, maxRad=200, minRad=100, params={}) {
   let i = 0
 
   while (bottomRad >= minRad && i < 20) {
-    strokeWeight((params.strokeW || 1) + topRad/150 - 1)
+    graphic.strokeWeight((params.strokeW || 1) + topRad/150 - 1)
 
     for (let off=0; off<6; off++) {
       drawShape(c0Points, p => {
@@ -42,7 +42,7 @@ function dollarRosette(x_, y_, maxRad=200, minRad=100, params={}) {
         const [ix, iy] = border(bottomRad, p, off/3)
 
         return p % 2 === 0 ? [ix, iy] : [ox, oy]
-      })
+      }, graphic)
     }
 
     topRad = bottomRad * 1.045
@@ -56,23 +56,10 @@ function dollarRosette(x_, y_, maxRad=200, minRad=100, params={}) {
 
     }
 
-
     i++
   }
 
-
-
-  // for (let off=0; off<6; off++) {
-  //   strokeWeight((params.strokeW||1)*0.75)
-  //   drawShape(c0Points, p => {
-  //     const [ox, oy] = border(midRad, p, off/3)
-  //     const [ix, iy] = border(minRad, p, off/3)
-
-  //     return p % 2 === 0 ? [ix, iy] : [ox, oy]
-  //   })
-  // }
-
-  pop()
+  graphic.pop()
 }
 
 
@@ -97,7 +84,7 @@ function dollarEchoRosette(x_=0, y_=0, maxRad=200, minRad=100, params={}, bg=fal
   const border = createRosetteBorder(x_, y_, c0Points, c1Points, c2Points, r1, r2)
 
   const r = bg ? 1 : 5
-  const m = bg ? 5 : 0
+  const m = bg ? int(maxRad/40) : 0
   for (let rad = minRad; rad <= maxRad + m; rad += r) {
     params.innerC && params.outterC && stroke(lerpColor(
       params.innerC,

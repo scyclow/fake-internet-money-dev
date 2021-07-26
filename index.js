@@ -12,6 +12,9 @@
 
 
 
+// Think of how many $1 USD bills there are floating around out there. Each one is worth exactly $1. Printing more just creates more dollars
+// minting as an act of wealth creation
+
 
 
 
@@ -44,42 +47,135 @@
 
 
 
-// color palletes: fiat, crypto, bullion, conterfeit, funny money
+// feature words: greenback, credit, guilloche
 
-// other feature words: greenback, credit, guilloche
 
-// serial number: star note, binary, radar
+
+
+/*
+Denominations
+1: 50%
+5: 25%
+10: 12.5%
+20: 6.25%
+50: 3.125%
+100: 1.5625%
+2: 0.78125%
+missing: 0.390625%
+mismatcg: 0.390625%
+
+roman numeral present: 5%
+  - main: number, secondary: numeral
+  - main: numeral, secondary: number
+  - main: numeral, secondary: numeral
+  -
+*/
+
+
+/*
+Misprints 10%
+- lathe malfunctions
+- low ink
+- missing pigmentation
+- mirrored
+- off center
+- too much ink
+- missing denomination
+- obstructed printing
+- transparent print on top of another print
+- all rosettes have a fill color set (semi common)
+*/
+
+
+/*
+Serial numbers 10%
+- star note
+- standard
+- radar note
+- binary note
+- solid (every number the same)
+- ladder (every digit higher than same)
+- repeated (first half same as second half)
+- low serial number
+- high serial number
+- missing serial number
+
+http://www.coolserialnumbers.com/FancySerialNumbers.aspx
+*/
+
+/*
+Color scheme
+- Fiat (desaturated) 70%
+- Bullion (gradient) 20%
+- Crypto (saturated) 10%
+- Funny Money -- all over the place
+
+https://en.numista.com/catalogue/note203275.html
+*/
+
+/*
+Rare Backgrounds
+- denomination pattern
+- infinity pattern
+- lots of random rosettes
+
+*/
+
+/*
+Other rarities
+- holographic
+- cgk
+- counterfeit (missing signature)
+*/
+
+
+
+/*
+Center piece
+- portrait
+  - empty
+  - denomination
+  - watermark
+- rosette
+- double rosette
+- florrette
+- large florette
+*/
+
+
+
+
+
+
+
+
+
 
 
 
 
 /* TODO
 
-- numbers
-  - 1, 2, 5, 0
-  - I, V, X, L, C
-- side emblem
-  - federal reserve-style green star
+- line up corner instances with location of watermark
+- make corners smaller
+- certain border types have special corer possabilities
+  - ex. missing border + curved corner borders can have plain numbers
+  - bars can have light number text
+- swap in different rosette types
+- fix rosette bg -- for use dollarRosette for dollar rosette with higher stroke weight AND FILL
+- only use floral borders with floral rosettes/numismatic
+- move signature around depending on BL corner
+- fix number lines
+- parameterize rosettes better (type, bg color, hole, number/numeral/empty/$)
+- reassess bg; maybe swap one out for something chain-y. maybe something that looks like a financial chart
+- add some sort of numisotic stripe
 
-- watermarks
-  - cryptogodking
-  - echo star
-  - spirograph
 
-- center piece
-  - number
-  - face? smiley face?
-  - cgk
-  - star
-  empty
 
-- corners
-  - square
-  - solid background + standard rosette
-  https://en.numista.com/catalogue/note213565.html
 
-- border
-  - overlapping guilloche patterns (ex 100 bill)
+
+
+
 
 
 - middle rosette
@@ -88,15 +184,7 @@
   - little rosettes making up one larger rosette
   - smaller alternating rosette/bg/rosette/bg https://en.numista.com/catalogue/note231376.html
 
-- holograph
 
-- styles
-  - floral
-  - guilloche
-  - numeric
-  - digital (grid)
-  - hodgepodge
-  - echo
 
 - colors
   - red/green/yellow https://en.numista.com/catalogue/note218041.html
@@ -115,7 +203,8 @@ let SCALE,
     BRIGHT_LIGHT_C,
     ACCENT_C,
     HUE,
-    DENOMINATION
+    DENOMINATION,
+    SHOW_NUMERALS
 
 let W = 600
 let H = 400
@@ -124,8 +213,11 @@ const GRAPHIC_RESOLUTION = 4
 
 
 
+
+
 let __canvas
 let borderGraphic
+let stripeGraphic
 
 let ellapsed=0
 function setup() {
@@ -145,6 +237,7 @@ function setup() {
   }
 
   borderGraphic = createGraphics(W*GRAPHIC_RESOLUTION,H*GRAPHIC_RESOLUTION)
+  stripeGraphic = createGraphics(W/4,H*GRAPHIC_RESOLUTION)
 
 
   noLoop()
@@ -152,17 +245,19 @@ function setup() {
 
 
 
-  DENOMINATION = sample(['1', '2', '5', '10', '20', '50', '100', 'I', 'II', 'V', 'X', 'XX', 'L', 'C', '$'])
+  DENOMINATION = sample(['1', '2', '5', '10', '20', '50', '100'])
   HUE = int(rnd(0,360))
   // STROKE_C = color(HUE, 26, 25)
   STROKE_C = color(hfix(HUE), 26, 25)
-  STROKE_LIGHT_C = color(hfix(HUE), 36, 30)
+  STROKE_LIGHT_C = color(HUE, 26, 50)
   FILL_C = color(hfix(HUE-72), 6, 91)
   STROKE_C2 = color(hfix(HUE-132), 6, 91)
 
   BRIGHT_C = color(HUE-40, 75, 85)
   BRIGHT_LIGHT_C = color(HUE-40, 25, 75)
   ACCENT_C = color(HUE-40, 77, 64)
+
+  SHOW_NUMERALS = rnd() < 0.5
 
 
 
@@ -202,32 +297,21 @@ function draw() {
   stroke(STROKE_C)
   background(FILL_C)
 
-  randomBgPattern()
+  // standardLayout()
+  stripLayout()
 
-  squigTexture()
-  pointTexture()
 
-  randomBorder()
 
-  const centerP = genRosetteParams({strokeC: FILL_C})
-  dollarRosetteBg(0,0, 150, 0, {
-    ...centerP,
-    outterC: STROKE_C,
-    innerC: BRIGHT_C,
-  })
-  dollarRosette(0,0,150, 0, centerP)
 
-  dollarRosetteBg(0,0, 67, 0, {
-    ...centerP,
-    outterC: STROKE_C,
-    innerC: BRIGHT_C,
-  })
-  dollarRosette(0,0,70, 60, centerP)
+// push()
+// stroke(STROKE_LIGHT_C)
+//   randomWatermark(150, 60)
+//   randomWatermark(-150, -60)
+// pop()
 
-  drawStr(DENOMINATION, 2,2, 0.4, STROKE_C)
-  drawStr(DENOMINATION, 0,0, 0.4, FILL_C)
 
-  corners1()
+
+  // corners1()
 
 
   //   const p = genBorder5Params()
@@ -327,69 +411,16 @@ function draw() {
 }
 
 
-
-function corners1() {
-  const T = 58-H/2
-  const L = 58-W/2
-  const B = H/2-58
-  const R = W/2-58
-
-  const p = genFloralRosetteParams()
-  const p2 = genFloralRosetteParams()
-  floralRosette(L, T, 40, 30, {...p, fillC: FILL_C})
-  drawStr(DENOMINATION, L, T, 0.3, STROKE_C)
-
-  floralRosette(R, T, 40, 30, {...p, fillC: FILL_C})
-  drawStr(DENOMINATION, R, T, 0.3, STROKE_C)
-
-  floralRosette(L, B, 40, 30, {...p, fillC: FILL_C})
-  drawStr(DENOMINATION, L, B, 0.3, STROKE_C)
-
-  floralRosette(R, B, 40, 30, {...p, fillC: FILL_C})
-  drawStr(DENOMINATION, R, B, 0.3, STROKE_C)
-
-  // const pc = genRosetteParams({strokeC: FILL_C})
-  // console.log(pc)
-
-  // dollarRosetteBg(62-W/2,62-H/2,60, 0, {
-  //   ...pc,
-  //   outterC: STROKE_C,
-  //   innerC: BRIGHT_C,
-  // })
-  // dollarRosette(62-W/2,62-H/2,60, 30, pc)
-  // drawStr(DENOMINATION,62-W/2,62-H/2,0.3, FILL_C)
-
-  // dollarRosetteBg(W/2-62,62-H/2,60, 0, {
-  //   ...pc,
-  //   outterC: STROKE_C,
-  //   innerC: BRIGHT_C,
-  // })
-  // dollarRosette(W/2-62,62-H/2,60, 30, pc)
-  // drawStr(DENOMINATION,W/2-62,62-H/2,0.3, FILL_C)
-
-
-
-  // dollarRosetteBg(62-W/2,H/2-62,60, 0, {
-  //   ...pc,
-  //   outterC: STROKE_C,
-  //   innerC: BRIGHT_C,
-  // })
-  // dollarRosette(62-W/2,H/2-62,60, 30, pc)
-  // drawStr(DENOMINATION,62-W/2,H/2-62,0.3, FILL_C)
-
-  // dollarRosetteBg(W/2-62,H/2-62,60, 0, {
-  //   ...pc,
-  //   outterC: STROKE_C,
-  //   innerC: BRIGHT_C,
-  // })
-  // dollarRosette(W/2-62,H/2-62,60, 30, pc)
-  // drawStr(DENOMINATION,W/2-62,H/2-62,0.3, FILL_C)
-
-
-
-  drawStr(DENOMINATION, 2,2, 0.4, STROKE_C)
-  drawStr(DENOMINATION, 0,0, 0.4, FILL_C)
+function serialNumber(x, y, sNumber) {
+  push()
+  fill(FILL_C)
+  stroke(STROKE_C)
+  rect(x, y, 60, 20)
+  // drawStr('99999999', 141,131, 0.125, STROKE_C)
+  drawStr(sNumber, 140,130, 0.125, STROKE_C, ACCENT_C)
+  pop()
 }
+
 
 function layout1() {
 

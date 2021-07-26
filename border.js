@@ -16,9 +16,10 @@
 
 function randomBorder() {
   drawBorderGraphic(() => {
+
     const borderSeed = rnd()
     if (borderSeed < 0.25 ) solidBorder5()
-    else if (borderSeed < 0.45) border8()
+    else if (borderSeed < 0.45) border8(-10, rnd() < 0.5)
     else if (borderSeed < 0.5) border9()
     else if (borderSeed < 0.65) {
       const floralBorderSeed = rnd()
@@ -198,7 +199,7 @@ function border7(padding=20, compression=4) {
 }
 
 
-function border8(padding=-10) {
+function border8(padding=-10, sides=true) {
   const compression = int(rnd(1, 7))
 
   borderGraphic.background(STROKE_C)
@@ -209,18 +210,27 @@ function border8(padding=-10) {
 
   border7(padding+2, compression)
   border7(padding+19, compression)
+  border7(padding+36, compression)
 
-  const p = padding+35
+  const p = padding+(sides ? 35 : 55)
   console.log(p, compression)
 
   borderGraphic.stroke(STROKE_C)
   borderGraphic.erase()
   borderGraphic.fill(0)
-  borderGraphic.rect(p-W/2, p-H/2, W-2*p, H-2*p)
+  sides
+    ? borderGraphic.rect(p-W/2, p-H/2, W-2*p, H-2*p)
+    : borderGraphic.rect(-W/2, p-H/2, W, H-2*p)
+
+
   borderGraphic.noErase()
   borderGraphic.noFill()
-  borderGraphic.rect(p-W/2, p-H/2, W-2*p, H-2*p)
-  border2(p + 5)
+  if (sides){
+    borderGraphic.rect(p-W/2, p-H/2, W-2*p, H-2*p)
+    border2(p + 5)
+  } else {
+    borderGraphic.rect(-W/2, p-H/2, W, H-2*p)
+  }
 }
 
 function border9() {

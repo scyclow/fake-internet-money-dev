@@ -2,8 +2,9 @@ function randomBgPattern() {
   const r = rnd()
   if (r < 0.125) bg1()
   else if (r < 0.25) bg2()
+  else if (r < 0.375) bg4()
 
-  else if (r < 0.5) bg4()
+  else if (r < 0.5) bg3()
   else if (r < 0.625) bg5()
   else if (r < 0.75) bg6()
   else if (r < 0.875) bg7()
@@ -12,10 +13,16 @@ function randomBgPattern() {
 
 function randomBorderlessBg() {
   const r = rnd()
+  console.log(r)
 
   if (r < 0.25) bg8()
   else if (r < 0.5) bg9()
   else if (r < 0.75) bg10()
+  else bg11()
+
+  // TODO
+  // large rosette bg that fades into rest of bg
+  //
 }
 
 
@@ -121,52 +128,36 @@ function bg2() {
   pop()
 }
 
+
 function bg3() {
   push()
-  stroke(STROKE_C)
+  const size = 100
+  noFill()
   strokeWeight(0.5)
-  const size = 10
 
-  for (let x = -W/2; x < W/2; x += size)
-  for (let y = -H/2; y < H/2; y += size) {
-    if (rnd() < 0.5) {
-      line(x, y, x + size, y + size)
-    } else {
-      line(x+size*2, y, x, y + size*2)
+  const w = 30
+  const h = 15
+  const showCircle = rnd() < 0.5
+
+  for (let y = 0, i = 0; y <= H+5; y += h, i++) {
+    const y_ = y - H/2
+    console.log(y_, y)
+    beginShape()
+    curveVertex(-w-W/2, y_-h/2)
+    for (let x = 0; x < W/w + 2; x++) {
+      const yAdj = i % 2 === 0
+        ? (x % 2 === 0 ? h/2 : -h/2)
+        : (x % 2 === 0 ? -h/2 : h/2)
+
+      curveVertex(x*w - W/2, y_ + yAdj)
+      showCircle && circle(x*w - W/2, y_ + yAdj, 4)
     }
+    endShape()
+
   }
   pop()
 }
-// function bg11() {
-//   push()
-//   stroke(STROKE_C)
-//   strokeWeight(0.5)
-//   const size = 25
-//   noFill()
 
-//   for (let x = -W/2; x < W/2; x += size)
-//   for (let y = -H/2; y < H/2; y += size) {
-
-//     if (y % 2 === 0) {
-
-//       if (x % 2 === 0) {
-//       line(x + size, y, x, y+ size)
-//       line(x, y, x+size, y+ size)
-//       }
-//     } else {
-//       if (x % 2 === 0) {
-//         // line(x, y, x+size, y+ size)
-//         // line(x + size, y, x, y+ size)
-//       } else {
-//         circle(x+ size/2, y+size/2, size*3)
-//         circle(x+ size/2, y+size/2, size)
-//         circle(x+ size/2, y+size/2, size/2)
-//         circle(x+ size/2, y+size/2, size/4)
-//       }
-//     }
-//   }
-//   pop()
-// }
 function bg4() {
   push()
   const size = 100
@@ -212,7 +203,7 @@ function bg5() {
   const h = 15
   const n = 100
 
-  for (let y = -3; y < H+5; y += H/n) {
+  for (let y = -5; y < H+8; y += H/n) {
     const y_ = y - H/2
     beginShape()
     curveVertex(-w-W/2, y_-h/2)
@@ -285,24 +276,49 @@ function bg8() {
 }
 
 function bg9() {
+  const L = -W/2
+  const R = W/2
+  const T = -H/2
+  const B = H/2
   push()
   // TODO mess with different iterations of corners
   // maybe a function of where corners are
-  const p = genRosetteParams({ strokeC: STROKE_LIGHT_C, strokeW: 2 })
-  dollarRosette(-W/2, H/2, W/2, W/4, p)
-  dollarRosette(W/2, -H/2, W/2, W/4, p)
+  const seed = rnd()
+  let layout
+  if (seed < 0.125) layout = [[L, T], [R, B]]
+  else if (seed < 0.25) layout = [[L, T], [R, T]]
+  else if (seed < 0.375) layout = [[L, B], [R, T]]
+  else if (seed < 0.5) layout = [[L, B], [R, B]]
+  else if (seed < 0.625) layout = [[L, T]]
+  else if (seed < 0.75) layout = [[L, B]]
+  else if (seed < 0.875) layout = [[R, T]]
+  else layout = [[R, B]]
+
+  const p = genRosetteParams({ strokeC: STROKE_LIGHT_C, strokeW: 1 })
+  const inner = random(W/4, 0)
+  layout.forEach(([x, y]) => dollarRosette(x, y, W/2, inner, p))
   pop()
 }
 
 function bg10() {
   const compression = int(rnd(1, 11))
   drawBorderGraphic(() => {
-    times(10, (i) => {
-      borderGraphic.strokeWeight(1 - i/13)
+    times(12, (i) => {
+      borderGraphic.strokeWeight(1 - i/12)
       border7(i*17 - 5, compression)
       // border7(i*17 - 5, 10-i)
     })
   })
+}
+
+function bg11() {
+  const params = genRosetteParams({strokeC: FILL_C})
+
+  dollarRosetteBg(0,0, W, 0, {
+    ...params,
+    strokeC: STROKE_C,
+  })
+  dollarRosette(0,0,W, 0, params)
 }
 
 

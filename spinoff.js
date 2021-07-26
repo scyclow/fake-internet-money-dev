@@ -178,3 +178,52 @@ function border_outtake_3(padding=20, params={}) {
     }, borderGraphic)
   }
 }
+
+
+
+function bg3() {
+  push()
+  stroke(STROKE_C)
+  strokeWeight(0.5)
+  const size = 10
+
+  for (let x = -W/2; x < W/2; x += size)
+  for (let y = -H/2; y < H/2; y += size) {
+    if (rnd() < 0.5) {
+      line(x, y, x + size, y + size)
+    } else {
+      line(x+size*2, y, x, y + size*2)
+    }
+  }
+  pop()
+}
+// function bg11() {
+//   push()
+//   stroke(STROKE_C)
+//   strokeWeight(0.5)
+//   const size = 25
+//   noFill()
+
+//   for (let x = -W/2; x < W/2; x += size)
+//   for (let y = -H/2; y < H/2; y += size) {
+
+//     if (y % 2 === 0) {
+
+//       if (x % 2 === 0) {
+//       line(x + size, y, x, y+ size)
+//       line(x, y, x+size, y+ size)
+//       }
+//     } else {
+//       if (x % 2 === 0) {
+//         // line(x, y, x+size, y+ size)
+//         // line(x + size, y, x, y+ size)
+//       } else {
+//         circle(x+ size/2, y+size/2, size*3)
+//         circle(x+ size/2, y+size/2, size)
+//         circle(x+ size/2, y+size/2, size/2)
+//         circle(x+ size/2, y+size/2, size/4)
+//       }
+//     }
+//   }
+//   pop()
+// }

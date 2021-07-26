@@ -8,6 +8,24 @@ function cgkWatermark(x=150, y=75) {
   pop()
 }
 
+function smilyFace(x, y, radius=200) {
+  push()
+  strokeWeight(2)
+  arc(x, y, radius*0.9, radius, 0,TWO_PI)
+  noFill()
+  drawStr('$', x - radius*0.17, y - radius*0.125, 0.125, STROKE_C)
+  drawStr('$', x + radius*0.17, y - radius*0.125, 0.125, STROKE_C)
+
+  circle(x - radius*0.17, y - radius*0.125, radius*0.1)
+  // circle(x - radius*0.175, y - radius*0.125, radius/15)
+  circle(x + radius*0.17, y - radius*0.125, radius*0.1)
+  // circle(x + radius*0.175, y - radius*0.125, radius/15)
+  arc(x, y, radius*0.6, radius*0.7, TWO_PI+PI*0.15, PI*0.85)
+  // arc(x, y+5, radius*0.6, radius*0.5, TWO_PI+PI*0.15, PI*0.85)
+  pop()
+}
+
+// ~37
 function randomWatermark(x, y, radius) {
   const r = rnd()
   if (r < 0.3333) watermark1(x, y, radius)
@@ -95,7 +113,7 @@ function watermark3(x0, y0, c1Radius=100) {
 }
 
 
-
+// 24 - 96
 /// CGK
 function drawCGK(x=0, y=0, tBase) {
   push()
