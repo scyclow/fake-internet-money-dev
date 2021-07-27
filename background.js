@@ -15,9 +15,9 @@ function randomBorderlessBg() {
   const r = rnd()
   console.log(r)
 
-  if (r < 0.25) bg8()
-  else if (r < 0.5) bg9()
-  else if (r < 0.75) bg10()
+
+  if (r < 0.3333) bg9()
+  else if (r < 0.66666) bg10()
   else bg11()
 
   // TODO
@@ -268,11 +268,14 @@ function bg7() {
 }
 
 function bg8() {
+  push()
+
   drawBorderGraphic(() => {
     for (let i=-15; i<=165; i +=15) {
       border1(i, 20, rnd(20,50))
     }
   })
+  pop()
 }
 
 function bg9() {

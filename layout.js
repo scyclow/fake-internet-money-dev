@@ -25,17 +25,54 @@ function stripLayout() {
 
   // stripBorder(1)
   // stripDenominationThirds(1)
+  randomBgPattern()
+  const stripSide = posOrNeg()
 
 
 
-  rnd() < 0.5 && stripBorder(-1)
 
-  stripDenominationThirds(-1)
 
-  randomWatermark(W/6, 0, 100)
+  if (rnd() < 0.1) {
+    stripDenominationThirds(stripSide, true)
+    stripDenominationThirds(0, true)
+    stripDenominationThirds(stripSide*-1, true)
+    serialNumber(-W/6-25, H/3, '99999999')
 
-  rnd() < 0.5 && cornerThing(1, 1)
-  rnd() < 0.5 && cornerThing(1, -1)
+    return
+  }
+
+  rnd() < 0.5 && stripBorder(stripSide)
+  stripDenominationThirds(stripSide)
+
+  const mainSeed = rnd()
+
+  const rosette = () => {
+    const params = genRosetteParams({strokeC: FILL_C})
+    dollarRosetteBg(W/-6*stripSide,0, 180, 0, {
+      ...params,
+      strokeC: STROKE_C,
+    })
+    dollarRosette(W/-6*stripSide,0,180, 0, params)
+  }
+
+  const mainX = W/-6*stripSide
+  if (mainSeed < 0.5) {
+    rosette()
+    if (rnd() < 0.1) drawCGK(mainX, 0, 250)
+  } else if (mainSeed < 0.8) {
+    randomWatermark(mainX, 0, 100)
+    if (rnd() < 0.1) drawCGK(mainX, 0, 250)
+  } else if (mainSeed < 0.95) {
+    drawCGK(mainX, 0, 250)
+  } else {
+    drawStrAdj(getDenominationDisplay(), mainX, 0, 3, STROKE_C)
+  }
+
+  // if (rnd() < 0.5)
+  // else
+
+  rnd() < 0.5 && cornerThing(-1*stripSide, 1)
+  rnd() < 0.5 && cornerThing(-1*stripSide, -1)
 
   // stripDenominationThirds(0)
   // strip
@@ -62,6 +99,8 @@ function stripBorder(lOrR=-1) {
   line(W*lOrR/6+1, 20-H/2, W*lOrR/6+1, H/2-20)
 }
 
+const sidewaysDenomination = (x, y, direction=-1) =>
+
 function sidewaysDenomination(x, y, direction=-1) {
   push()
   translate(x, y)
@@ -70,17 +109,29 @@ function sidewaysDenomination(x, y, direction=-1) {
   pop()
 }
 
-function stripDenominationThirds(lOrR=-1) {
-  drawStripThird(-H/3, lOrR)
-  drawStripThird(0, lOrR, true)
-  drawStripThird(H/3, lOrR, true)
+function stripDenominationThirds(lOrR=-1, full=false) {
+
+  if (rnd() < 0.333 && !full) {
+    drawStripThird(-H/3, lOrR)
+    serialNumber(W/3*lOrR-30, H/3, '99999999')
+    // serialNumber(H/3 + 50, W/3*lOrR, '99999999')
+  } else if (rnd() < 0.666 && !full) {
+    drawStripThird(H/3, lOrR)
+    // serialNumber(110, 120, '99999999')
+    // serialNumber(50 - H/3, W/3*lOrR, '99999999')
+
+  } else {
+    const num = sample([1,2,3])
+    drawStripThird(-H/3, lOrR, num != 1)
+    drawStripThird(0, lOrR, num != 2)
+    drawStripThird(H/3, lOrR, num != 3)
+  }
 }
 
-function drawStripThird(y, lOrR, canBeBlank=false) {
+function drawStripThird(y, lOrR, canBeRosette=false) {
   const seed = rnd()
   const x = W/3*lOrR
-  if (seed < 0.1 && canBeBlank) {}
-  else if (seed < 0.85) drawStrAdj(getDenominationDisplay(), x, y, 1.1, STROKE_C)
+  if (seed < 0.85 || !canBeRosette) drawStrAdj(getDenominationDisplay(), x, y, 1.1, STROKE_C)
   else {
     const params = genRosetteParams({strokeC: FILL_C})
     dollarRosetteBg(x,y, 55, 0, {

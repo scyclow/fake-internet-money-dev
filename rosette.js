@@ -35,7 +35,8 @@ function dollarRosette(x_, y_, maxRad=200, minRad=100, params={}, graphic=window
 
   while (bottomRad >= minRad && i < 20) {
     graphic.strokeWeight((params.strokeW || 1) + topRad/150 - 1)
-
+    // awesome misprint
+    // graphic.rotate(0.2)
     for (let off=0; off<6; off++) {
       drawShape(c0Points, p => {
         const [ox, oy] = border(topRad, p, off/3)

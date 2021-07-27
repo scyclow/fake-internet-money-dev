@@ -31,7 +31,7 @@ const offsets = {
   '6': -3,
 }
 function drawStr(str, x, y, s, stroke_, fill_) {
-  // line(0, -height/2, 0, height/2)
+  if (!str) return
   const center = floor(str.length/2)
   for (let c=0; c<str.length; c++) {
     const offCenter = c - center

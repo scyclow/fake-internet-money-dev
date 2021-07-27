@@ -1,10 +1,9 @@
 
-function cgkWatermark(x=150, y=75) {
+function cgkWatermark(x=150, y=75, base=300) {
   push()
   strokeWeight(2)
   stroke(STROKE_LIGHT_C)
-  drawCGK(x, y, 300)
-
+  drawCGK(x, y, base)
   pop()
 }
 
@@ -35,19 +34,19 @@ function randomWatermark(x, y, radius) {
 
 
 
-function watermark1(x=0, y=0, c2Radius=100) {
+function watermark1(x=0, y=0, radius=100) {
   const speed0 = 360*3
   const speed1 = speed0/sample([22, 32, 32.5, 33, 34, 64, 65, 66, 66.4])
   drawCircle(speed0, p => {
     const angle = (p/speed0) * TWO_PI
     const [x0, y0] = getXYRotation(
       angle,
-      c2Radius/100 + abs(sin(angle*33) * 75),
+      radius/100 + abs(sin(angle*33) * 75),
       x, y
     )
     return getXYRotation(
       (p/speed1) * TWO_PI,
-      c2Radius,
+      radius,
       x0, y0
     )
 
@@ -56,23 +55,22 @@ function watermark1(x=0, y=0, c2Radius=100) {
 
 
 
-function watermark2(x=0, y=0, c1Radius=100) {
-  const modifier = sample([7, 13, 29, 31, 32, 34, 35, 36, 37, 44, 46, 58, 59, 60, 62, 85, 88, 92, 96])
+function watermark2(x=0, y=0, radius=100) {
   const speed1 = 32
-  const speed0 = speed1 * modifier
-
-
+  const speed0 = speed1 * sample([7, 13, 29, 31, 32, 34, 35, 36, 37, 44, 46, 58, 59, 60, 62, 85, 88, 92, 96])
+  const c1r = radius*5/6
+  const c2r = radius*4/6
   drawCircle(speed0, p => {
     const angle = (p/speed0) * TWO_PI
 
     const [x0, y0] = getXYRotation(
       angle,
-      c1Radius + abs(sin(angle*90) * 30),
+      c1r + abs(sin(angle*90) * 30),
       x, y
     )
     return getXYRotation(
       (p/speed1) * TWO_PI,
-      c1Radius*0.8 + abs(sin(angle*360)),
+      c2r*0.8 + abs(sin(angle*360)),
       x0, y0
     )
     return [x0, y0]
@@ -115,8 +113,10 @@ function watermark3(x0, y0, c1Radius=100) {
 
 // 24 - 96
 /// CGK
-function drawCGK(x=0, y=0, tBase) {
+function drawCGK(x=0, y=0, tBase, params={}) {
   push()
+  const c1 = params.c1 || STROKE_C
+  const c2 = params.c2 || FILL_C
   const PY_EYE = rnd() < 0.4275
   const tCProb = rnd() < 0.5
   const bCProb = rnd() < 0.5
@@ -153,11 +153,11 @@ function drawCGK(x=0, y=0, tBase) {
     invertedTriangle: PY_TRIANGLE_INVERSE,
     pupil: PY_PUPIL
   }
-  if (PYRAMID_1) drawPyramid(x, y, tBase, STROKE_LIGHT_C, strokeW*9, pyParams)
-  if (PYRAMID_2) drawPyramid(x, y, tBase, !flipColor ? FILL_C : STROKE_LIGHT_C, strokeW*7, pyParams)
-  if (PYRAMID_3) drawPyramid(x, y, tBase, STROKE_LIGHT_C, strokeW*5, pyParams)
-  if (PYRAMID_4) drawPyramid(x, y, tBase, !flipColor ? FILL_C : STROKE_LIGHT_C, strokeW*3, pyParams)
-  if (PYRAMID_5) drawPyramid(x, y, tBase, STROKE_LIGHT_C, strokeW, pyParams)
+  if (PYRAMID_1) drawPyramid(x, y, tBase, c1, strokeW*9, pyParams)
+  if (PYRAMID_2) drawPyramid(x, y, tBase, !flipColor ? c2 : c1, strokeW*7, pyParams)
+  if (PYRAMID_3) drawPyramid(x, y, tBase, c1, strokeW*5, pyParams)
+  if (PYRAMID_4) drawPyramid(x, y, tBase, !flipColor ? c2 : c1, strokeW*3, pyParams)
+  if (PYRAMID_5) drawPyramid(x, y, tBase, c1, strokeW, pyParams)
   pop()
 }
 

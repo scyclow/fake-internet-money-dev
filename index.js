@@ -84,6 +84,9 @@ Misprints 10%
 - obstructed printing
 - transparent print on top of another print
 - all rosettes have a fill color set (semi common)
+- numotic and prickly borders/rosettes mixed together
+- counterfeit (missing signature)
+- rosette graphic.rotate(0.2)
 */
 
 
@@ -117,7 +120,7 @@ https://en.numista.com/catalogue/note203275.html
 Rare Backgrounds
 - denomination pattern
 - infinity pattern
-- lots of random rosettes
+- lots of random rosettes all over the place
 
 */
 
@@ -142,6 +145,12 @@ Center piece
 - large florette
 */
 
+/*
+Layouts:
+- Vintage
+- Modern
+- misprint: random shit everywhere
+*/
 
 
 
@@ -155,6 +164,32 @@ Center piece
 
 
 /* TODO
+- write generic function for displaying a rosette w/ background
+  - light/dark bg
+  - choose the right rosette style
+  - hole or no hole
+  - single/double
+- generic centerpiece fn
+  - large rosette
+  - portrait
+    - empty
+    - denomination
+    - shape
+    - smily face
+    - CGK
+  - florrette
+  - double florette
+
+- sides of centerpiece
+  - double denomination ex [20 ( ) 20]
+  - double centerpiece ex [( ) 20 ( )]
+
+-
+
+
+
+
+
 
 - line up corner instances with location of watermark
 - make corners smaller
@@ -245,7 +280,17 @@ function setup() {
 
 
 
-  DENOMINATION = sample(['1', '2', '5', '10', '20', '50', '100'])
+  const denominationSeed = rnd()
+  if (denominationSeed < 0.5) DENOMINATION = '1'
+  else if (denominationSeed < 3/4) DENOMINATION = '5'
+  else if (denominationSeed < 7/8) DENOMINATION = '10'
+  else if (denominationSeed < 15/16) DENOMINATION = '20'
+  else if (denominationSeed < 31/32) DENOMINATION = '50'
+  else if (denominationSeed < 63/64) DENOMINATION = '100'
+  else if (denominationSeed < 127/128) DENOMINATION = '2'
+
+
+
   HUE = int(rnd(0,360))
   // STROKE_C = color(HUE, 26, 25)
   STROKE_C = color(hfix(HUE), 26, 25)
@@ -257,7 +302,7 @@ function setup() {
   BRIGHT_LIGHT_C = color(HUE-40, 25, 75)
   ACCENT_C = color(HUE-40, 77, 64)
 
-  SHOW_NUMERALS = rnd() < 0.5
+  SHOW_NUMERALS = rnd() < 0.2
 
 
 
@@ -284,6 +329,7 @@ function setup() {
 
 function draw() {
   ellapsed++
+
   translate(width/2, height/2)
   scale(SCALE)
   noFill()
@@ -297,8 +343,8 @@ function draw() {
   stroke(STROKE_C)
   background(FILL_C)
 
-  // standardLayout()
-  stripLayout()
+  if (rnd() < 0.666) standardLayout()
+  else stripLayout()
 
 
 
@@ -417,7 +463,7 @@ function serialNumber(x, y, sNumber) {
   stroke(STROKE_C)
   rect(x, y, 60, 20)
   // drawStr('99999999', 141,131, 0.125, STROKE_C)
-  drawStr(sNumber, 140,130, 0.125, STROKE_C, ACCENT_C)
+  drawStr(sNumber, x+30,y+10, 0.125, STROKE_C, ACCENT_C)
   pop()
 }
 
