@@ -17,6 +17,7 @@ const posOrNeg = () => prb(0.5) ? 1 : -1
 
 const sample = (a) => a[int(rnd(a.length))]
 const hfix = h => (h + 360) % 360
+const noop = () => {}
 
 function drawCircle (points, getXY) {
   beginShape()

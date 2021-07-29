@@ -15,28 +15,33 @@
 
 
 function randomBorder() {
+  const borderSeed = rnd()
+  if (borderSeed < 0.01) return denominationBorder()
+
   drawBorderGraphic(() => {
+    if (borderSeed < 0.3 )
+      solidBorder5()
+    else if (borderSeed < 0.55)
+      border8(-10, rnd() < 0.7)
 
-    const borderSeed = rnd()
-    if (borderSeed < 0.25 ) solidBorder5()
-    else if (borderSeed < 0.45) border8(-10, rnd() < 0.5)
-    else if (borderSeed < 0.5) border9()
-    else if (borderSeed < 0.65) {
-      const floralBorderSeed = rnd()
+    else if (borderSeed < 0.8) {
+      const vintageBorderSeed = rnd()
+      const degAdj = vintageBorderSeed < 0.6 ? 2 * posOrNeg()
+        : vintageBorderSeed < 0.8 ? 1
+        : 3 * posOrNeg()
 
-      const params = floralBorderSeed < 0.3 ? genBorder5Params({ degAdj: 1 })
-        : floralBorderSeed < 0.6 ? genBorder5Params({ degAdj: 2 * posOrNeg() })
-        : genBorder5Params({ degAdj: 3 * posOrNeg() })
-      const padding = 35 - (30 - params.radius)
+      const params = genBorder5Params({ degAdj })
+
+      const padding = 5 + params.radius
 
       border5(padding, params)
     }
-    else if (borderSeed < 0.75) border1(10, int(rnd(20, 200)), rnd(20,50))
-    else if (borderSeed < 0.9) border2(30)
-
-    else if (borderSeed < 0.95) border7(20, int(rnd(1, 7)))
-
-    else denominationBorder(5)
+    else if (borderSeed < 0.85)
+      border1(10, int(rnd(20, 200)))
+    else if (borderSeed < 0.9)
+      border2(20)
+    else
+      border7(20, int(rnd(1, 7)))
 
   })
 }
@@ -100,11 +105,11 @@ function drawBorderGraphic(borderFn) {
   pop()
 }
 
-function border1(padding=10, points=100, depth=20) {
+function border1(padding=10, points=100) {
   for (let off=0; off<2; off+=0.5) {
     drawShape(points, p => {
       const [ox, oy] = getXYBorder(p + off, points, padding)
-      const [ix, iy] = getXYBorder(p + off, points, padding+depth)
+      const [ix, iy] = getXYBorder(p + off, points, padding+20)
 
       return p % 2 === 0 ? [ix, iy] : [ox, oy]
     }, borderGraphic)
@@ -129,12 +134,12 @@ function border2(padding=10, cRad=3) {
 
 
 function genBorder5Params(o) {
-  const radius = random(15, 31)
-  const degAdj = (o.degAdj || int(random(1, 5)))
+  const radius = rnd(15, 31)
+  const degAdj = (o.degAdj || int(rnd(1, 5)))
   const offsetAmt = (
-    abs(degAdj) === 1 ? random(15, 51) :
-    abs(degAdj) === 2 ? random(3, 26) :
-                        random(1, 13)
+    abs(degAdj) === 1 ? rnd(15, 51) :
+    abs(degAdj) === 2 ? rnd(3, 26) :
+                        rnd(1, 13)
   )
 
   return {
@@ -187,6 +192,7 @@ function getCurvedXYBorder(p, points, padding, direction=1) {
 
 function border7(padding=20, compression=4) {
   const points = compression*50
+  console.log('sad')
 
   for (let off=0; off<2; off+=0.3333) {
     drawShape(points, p => {
@@ -205,15 +211,13 @@ function border8(padding=-10, sides=true) {
   borderGraphic.background(STROKE_C)
   borderGraphic.stroke(FILL_C)
   borderGraphic.strokeWeight(1.1 - compression/12)
-
-
+  if (rnd() < 0.1) borderGraphic.fill(STROKE_C)
 
   border7(padding+2, compression)
   border7(padding+19, compression)
   border7(padding+36, compression)
 
   const p = padding+(sides ? 35 : 55)
-  console.log(p, compression)
 
   borderGraphic.stroke(STROKE_C)
   borderGraphic.erase()
@@ -225,19 +229,14 @@ function border8(padding=-10, sides=true) {
 
   borderGraphic.noErase()
   borderGraphic.noFill()
-  if (sides){
+
+  if (sides) {
     borderGraphic.rect(p-W/2, p-H/2, W-2*p, H-2*p)
     border2(p + 5)
   } else {
     borderGraphic.rect(-W/2, p-H/2, W, H-2*p)
   }
 }
-
-function border9() {
-  borderGraphic.fill(STROKE_C)
-  border8()
-}
-
 
 
 
@@ -291,18 +290,18 @@ function borderTest(padding=10, cRad=3) {
   pop()
 }
 
-function denominationBorder(denomination, padding=10) {
-  push()
-  strokeWeight(1)
+function denominationBorder(padding=10) {
+
   const adjW = W - 2*padding
   const adjH = H - 2*padding
   const adjPrm = (adjW + adjH) * 2
   const points = 80
+  const denomination = getDenominationDisplay()
   times(points, p => {
     const [x,y] = getXYBorder(p, points, padding)
-    text(denomination, x, y)
+    drawStrAdj(denomination, x, y, 0.1, STROKE_C)
   })
-  pop()
+
 }
 
 function solidBorder1(weight=80) {

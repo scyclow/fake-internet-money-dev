@@ -119,10 +119,6 @@ function draw() {
   translate(width/2, height/2)
   scale(SCALE)
   noFill()
-  // stroke('#344130')
-  // background('#e4e7da')
-  // background('#d3d6bc')
-  // stroke('#273823')
 
 
 
@@ -145,6 +141,9 @@ function draw() {
 
 
 
+
+
+
 // sideEmblemDollar()
 // randLayout()
 
@@ -160,103 +159,6 @@ function draw() {
 //   randomWatermark(-150, -60)
 // pop()
 
-
-
-  // corners1()
-
-
-  //   const p = genBorder5Params()
-  //   solidBorder5()
-  // })
-  // bg4()
-  // drawBorderGraphic(() => {
-  //   trancendentalMoneyBg()
-  //   // border8()
-  // //   border2(10)
-  // //   border1(15)
-  // //   border1(30)
-  // })
-  // gradientRosette()
-
-  // strokeWeight(3)
-  // interestingPattern4()
-  // strokeWeight(2)
-  // stroke(FILL_C)
-  // interestingPattern4()
-  // strokeWeight(1)
-  // stroke(STROKE_C)
-  // interestingPattern4()
-
-
-  // sketch()
-
-
-
-
-
-
-
-
-
-
-
-// rosetteBgFn(-125, 0,radius, radius*radAdj, params1)
-  // dollarRosette(0, 0, 150, 40, genRosetteParams())
-
-
-
-    // vintageRosette(0,0,90)
-
-
-
-
-
-  // middleRosette(80, vintageRosette, () => {}, genVintageRosetteParams, 0.4)
-
-
-
-
-  // standardDollar()
-  // pointTexture()
-  // denominationTexture(10)
-  // bg6()
-  // denominationBorder(5, 20)
-  // const params = genRosetteParams()
-  // denominationRosette(5,0,0,130, params)
-  // denominationRosette(5,0,0,110, params)
-  // denominationRosette(5,0,0,90, params)
-  // denominationRosette(5,0,0,70, params)
-  // denominationRosette(5,0,0,50, params)
-  // denominationRosette(5,0,0,30, params)
-
-  // border1(10)
-
-  // fuckedBorder1()
-  // border1(15)
-  // border1(30)
-  // border4(15)
-
-
-  // standardDollar()
-  // sideEmblemDollar()
-  // middleRosette(70)
-  // distortedRosette(0,0,120)
-  // distortedMiddleRosette()
-  // distortedrosetteBg()
-  // frameGenerator()
-  // rosetteSketch(0,0, 180, 0)
-  // dollarRosette(0, 0, 150, 150*75)
-
-
-
-
-
-  // running out of ink:
-  // for(let x=0; x<W; x++)
-  // for(let y=0; y<H; y++) {
-  //   stroke(color(0,0,100, rnd(0, 1)))
-  //   point(x-W/2, y-H/2)
-  // }
 
 }
 
@@ -281,10 +183,10 @@ function randLayout() {
 
 
 
-  const noop = () => {}
+
   let rosetteFn
-  let borderFn = () => {}
-  let paramFn = random() < 0.5
+  let borderFn = noop
+  let paramFn = rnd() < 0.5
     ? genRosetteParams
     : genDistortedRosetteParams
 
@@ -382,12 +284,12 @@ function shrinkingCorners() {
   // dollarRosette(200,0,40,15,p2)
 
   times(50, () => {
-    const radius = random(20, 150)
-    const x = random(-W/2, W/2)
-    const y = random(-H/2, H/2)
+    const radius = rnd(20, 150)
+    const x = rnd(-W/2, W/2)
+    const y = rnd(-H/2, H/2)
     const p = genRosetteParams({ strokeW: radius/160 })
     // dollarRosette(x, y, radius+5, 0, {...p, strokeC: FILL_C})
-    dollarRosette(x, y, radius, radius/2, {...p, strokeC: random() < 0.5 ? FILL_C : STROKE_C})
+    dollarRosette(x, y, radius, radius/2, {...p, strokeC: rnd() < 0.5 ? FILL_C : STROKE_C})
   })
 }
 

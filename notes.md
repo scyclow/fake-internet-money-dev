@@ -147,6 +147,8 @@ https://en.numista.com/catalogue/note203275.html
 - make sure all numerals are shadowed on thirds layout
 - make max rosette stroke weight ~1.25
 - make echo version of the numismatic border/background
+- denominationBorder is probably broken
+- incorporate denomination rosette
 - write generic function for displaying a rosette w/ background
   - choose the right rosette style
   - hole or no hole

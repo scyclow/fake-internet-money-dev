@@ -1,19 +1,19 @@
 function randomBgPattern() {
   const r = rnd()
-  if (r < 0.125) bg1()
-  else if (r < 0.25) bg2()
-  else if (r < 0.375) bg4()
+  // if (r < 0.125) bg1()
+  if (r < 0.125) bg8() // chainlink
+  else if (r < 0.25) bg2() // labrynth
+  else if (r < 0.375) bg3() // penny pincher
 
-  else if (r < 0.5) bg3()
+  else if (r < 0.5) bg4() // fabric
   else if (r < 0.625) bg5()
-  else if (r < 0.75) bg6()
+  else if (r < 0.75) bg6() // mainframe
   else if (r < 0.875) bg7()
   else denominationTexture(DENOMINATION)
 }
 
 function randomBorderlessBg() {
   const r = rnd()
-  console.log(r)
 
 
   if (r < 0.3333) bg9()
@@ -29,7 +29,7 @@ function randomBorderlessBg() {
 function squigTexture() {
   push()
   noFill()
-  strokeWeight(random(0.1, 0.5))
+  strokeWeight(rnd(0.1, 0.5))
   const squigs = 60
 
   for (let i=0; i<squigs; i++) {
@@ -268,16 +268,20 @@ function bg7() {
 
 function bg8() {
   push()
+  const size = 10
+  strokeWeight(0.35)
+  stroke(STROKE_LIGHT_C)
 
-  drawBorderGraphic(() => {
-    for (let i=-15; i<=165; i +=15) {
-      border1(i, 20, rnd(20,50))
-    }
-  })
+  for (let x = -W/2; x < W/2+1; x += size)
+  for (let y = -H/2; y < H/2+1; y += size) {
+    circle(x, y, size+4)
+  }
   pop()
 }
 
-function bg9() {
+
+
+function bg9(corners=[2, 4]) {
   const L = -W/2
   const R = W/2
   const T = -H/2
@@ -297,8 +301,8 @@ function bg9() {
   else layout = [[R, B]]
 
   const p = genParams({ strokeC: STROKE_LIGHT_C, strokeW: 1 })
-  const inner = random(W/4, 0)
-  const rFn = ROSETTE_STYLE === 'VINTAGE' ? vintageRosette : getRosetteStyleFn()
+  const inner = rnd(0, W/4)
+  const rFn = ROSETTE_STYLE === 'VINTAGE' ? dollarRosette : getRosetteStyleFn()
   layout.forEach(([x, y]) => rFn(x, y, W/2, inner, p))
   pop()
 }

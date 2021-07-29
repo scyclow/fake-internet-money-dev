@@ -5,6 +5,8 @@ function rosetteWithBackground(x, y, r, r2=0, params={}) {
     ? genVintageRosetteParams(params)
     : genRosetteParams(params)
 
+  console.log(p)
+
   const isPrimStroke = p.strokeC === STROKE_C
 
   if (p.innerC) dollarRosetteBg(x,y, r, r2, p)
@@ -21,13 +23,7 @@ function rosetteWithBackground(x, y, r, r2=0, params={}) {
     })
   }
 
-  const rosetteFn =
-    ROSETTE_STYLE === 'NUMISMATIC' ? dollarRosette :
-    ROSETTE_STYLE === 'ECHO'? dollarEchoRosette :
-    ROSETTE_STYLE === 'DIGITAL' ? dollarCheckeredRosette :
-    ROSETTE_STYLE === 'LINE' ? dollarLineRosette :
-    isVintage ? vintageRosette :
-    () => {}
+  const rosetteFn = getRosetteStyleFn()
 
   rosetteFn(x,y, r, params.holeR || r2, {...p, strokeC: isPrimStroke ? STROKE_C : FILL_C, innerC: false })
 
@@ -37,7 +33,9 @@ const getRosetteStyleFn = () =>
   ROSETTE_STYLE === 'NUMISMATIC' ? dollarRosette :
   ROSETTE_STYLE === 'ECHO'? dollarEchoRosette :
   ROSETTE_STYLE === 'DIGITAL' ? dollarCheckeredRosette :
-  ROSETTE_STYLE === 'LINE' ? dollarLineRosette : () => {}
+  ROSETTE_STYLE === 'LINE' ? dollarLineRosette :
+  ROSETTE_STYLE === 'VINTAGE' ? vintageRosette :
+  noop
 
 
 function decoRosetter() {

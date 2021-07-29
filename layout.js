@@ -2,9 +2,44 @@ function fuckItDoTheLayoutFromScratch() {
   squigTexture()
   pointTexture()
 
-rosetteWithBackground(0,0, 180, 0, {strokeC: STROKE_C})
 
   const centerPieceSeed = rnd()
+  // if (centerPieceSeed < 0.1)
+    // CENTER_PIECE = 0 // no center piece
+  // else if (centerPieceSeed < 0.2)
+    CENTER_PIECE = 1 // single
+  // else if (centerPieceSeed < 0.3)
+    // CENTER_PIECE = 2 // bouquet
+  // else if (centerPieceSeed < 0.4)
+    // CENTER_PIECE = 3 // portrait
+  // else if (centerPieceSeed < 0.5)
+    // CENTER_PIECE = 4 // single center piece offset 1/2
+  // else if (centerPieceSeed < 0.6)
+    // CENTER_PIECE = 5 // single center piece offset 2/3
+  // else if (centerPieceSeed < 0.7)
+    // CENTER_PIECE = 6 // number sandwich
+  // else if (centerPieceSeed < 0.8)
+    // CENTER_PIECE = 7 // rosette sandwich
+  // else if (centerPieceSeed < 0.9)
+    // CENTER_PIECE = 8 // rosette sandwich clusterfuck
+  // else if (centerPieceSeed < 1)
+    // CENTER_PIECE = 9 // total chaos
+
+
+  // portrait()
+
+  const showBorder = rnd() < 0.75
+
+  if (CENTER_PIECE === 1) {
+    if (showBorder) randomBgPattern()
+    else {
+
+      bg9()
+    }
+    showBorder && randomBorder()
+    // denominationBorder()
+    singleCenterPiece()
+  }
 
   // large single rosette
     // double
@@ -23,7 +58,7 @@ rosetteWithBackground(0,0, 180, 0, {strokeC: STROKE_C})
   // rosette takes up 2/3 of bill
   // rosette sandwich
   // number sandwich
-  // no centerpiece
+  // no center piece
 }
 
 
@@ -85,7 +120,7 @@ function standardLayout() {
 
   const centerSeed = rnd()
   if (centerSeed < 0.5) {
-    centerPiece()
+    singleCenterPiece()
     if (rnd() < 0.2) emblem(posOrNeg())
   }
   else if (centerSeed < 0.65)
@@ -166,6 +201,33 @@ function stripLayout() {
     // lower strip
     // watermark
     //
+}
+
+function portrait() {
+  rosetteWithBackground(0,0,180, 0, {
+    holeR: 160,
+    c1: 1,
+    c2: -1,
+    r1: 15,
+    r2: 14,
+    innerC: STROKE_LIGHT_C,
+    outterC: STROKE_C
+  })
+
+  const pSeed = rnd()
+
+  if (pSeed < 0.75) {
+    push()
+    stroke(FILL_C)
+    randomWatermark(0,0, 50)
+    pop()
+  } else if (pSeed < 0.85) {
+    drawStrAdj('$', 0, 0, 3, STROKE_C)
+  } else if (pSeed < 0.95) {
+    drawCGK(0, 0, 200)
+  } else {
+    smilyFace(0,0, 250)
+  }
 }
 
 function emblem(side) {
@@ -264,9 +326,8 @@ function cornerThing(lOrR=1, tOrB=1) {
 
 
 
-function centerPiece() {
+function singleCenterPiece() {
   const seed = rnd()
-  console.log('seed', seed)
   if (seed < 0.25) singleCenterWithHole()
   else if (seed < 0.5) singleCenterNoHole()
   else if (seed < 0.75) singleCenterGradient()
@@ -359,7 +420,6 @@ function numberSandwich() {
 
 
 function singleCenterWithHole() {
-  console.log('...')
   const centerP = genRosetteParams({
     strokeC: FILL_C,
     innerC: STROKE_LIGHT_C,
