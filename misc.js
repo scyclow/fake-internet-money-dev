@@ -31,6 +31,17 @@ function signature(x, y, size) {
 }
 
 
+function serialNumber(x, y, sNumber) {
+  push()
+  fill(FILL_C)
+  stroke(STROKE_C)
+  rect(x, y, 60, 20)
+  // drawStr('99999999', 141,131, 0.125, STROKE_C)
+  drawStr(sNumber, x+30,y+10, 0.125, STROKE_C, ACCENT_C)
+  pop()
+}
+
+
 
 
 function standardRosette() {
@@ -131,7 +142,7 @@ function interestingPattern2() {
   })
 }
 
-function interestingPattern2_1() {
+function interestingPattern3() {
   const speed0 = 1440
   const speed1 = 480
   console.log(speed0, speed1)
@@ -152,7 +163,7 @@ function interestingPattern2_1() {
   })
 }
 
-function interestingPattern3_1() {
+function interestingPattern4() {
 
   const speed0 = 1620
   const speed1 = 1620/22

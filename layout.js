@@ -1,3 +1,64 @@
+function fuckItDoTheLayoutFromScratch() {
+  squigTexture()
+  pointTexture()
+
+
+  const centerPieceSeed = rnd()
+
+  // large single rosette
+    // double
+    // hole/no hole
+    // denomination/no denomination
+  // bouquet
+  // portrait
+    // object
+    // smiley
+    // cgk
+    // dollar sign
+    // empty
+  // something takes up half of bill
+    // single rosette
+    // watermark
+  // rosette takes up 2/3 of bill
+  // rosette sandwich
+  // number sandwich
+  // no centerpiece
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 function standardLayout() {
   squigTexture()
   pointTexture()
@@ -9,8 +70,38 @@ function standardLayout() {
     randomBorder()
   }
 
-  corners1()
-  centerPiece()
+  // single center piece
+    // emblem on one side, watermark on other side
+
+  // portrait
+    // empty
+    // denomination
+    // watermark
+    // cgk
+    // smiley face
+
+
+  const centerSeed = rnd()
+  if (centerSeed < 0.5) {
+    centerPiece()
+    if (rnd() < 0.2) emblem(posOrNeg())
+  }
+  else if (centerSeed < 0.65)
+    rosetteSandwich()
+  else if (centerSeed < 0.8) numberSandwich()
+  else bouquet(DENOMINATION, sample([1,2,3]))
+
+
+  // MISPRINT
+  //rosetteFlurry()
+
+  // TODO have some corners not show number, some numbers without rosettes
+  // TODO have bg9 match up or contrast with corners
+
+  if (rnd() < 0.95) corners()
+
+
+
 
   serialNumber(110, 120, '99999999')
   signature(-100, 120, 10)
@@ -20,16 +111,9 @@ function standardLayout() {
 function stripLayout() {
   squigTexture()
   pointTexture()
-  const x = 0
-  const y = 0
 
-  // stripBorder(1)
-  // stripDenominationThirds(1)
   randomBgPattern()
   const stripSide = posOrNeg()
-
-
-
 
 
   if (rnd() < 0.1) {
@@ -45,19 +129,10 @@ function stripLayout() {
   stripDenominationThirds(stripSide)
 
   const mainSeed = rnd()
-
-  const rosette = () => {
-    const params = genRosetteParams({strokeC: FILL_C})
-    dollarRosetteBg(W/-6*stripSide,0, 180, 0, {
-      ...params,
-      strokeC: STROKE_C,
-    })
-    dollarRosette(W/-6*stripSide,0,180, 0, params)
-  }
-
   const mainX = W/-6*stripSide
+
   if (mainSeed < 0.5) {
-    rosette()
+    rosetteWithBackground(W/-6*stripSide,0, 180)
     if (rnd() < 0.1) drawCGK(mainX, 0, 250)
   } else if (mainSeed < 0.8) {
     randomWatermark(mainX, 0, 100)
@@ -68,8 +143,6 @@ function stripLayout() {
     drawStrAdj(getDenominationDisplay(), mainX, 0, 3, STROKE_C)
   }
 
-  // if (rnd() < 0.5)
-  // else
 
   rnd() < 0.5 && cornerThing(-1*stripSide, 1)
   rnd() < 0.5 && cornerThing(-1*stripSide, -1)
@@ -92,6 +165,24 @@ function stripLayout() {
     //
 }
 
+function emblem(side) {
+  const c1 = int(rnd(3, 11)) * posOrNeg()
+  const p = genRosetteParams({
+    innerC: ACCENT_C,
+    outterC: STROKE_C,
+    strokeMod: 6,
+    c1,
+    c2: (c1 + 5) * posOrNeg()
+  })
+
+  dollarRosetteBg(190*side,20, 45, 0, p)
+  dollarEchoRosette(190*side,20, 40, 10, p)
+
+  if (rnd() < 0.2) {
+    dollarRosetteBg(190*side*-1,20, 45, 0, p)
+    dollarEchoRosette(190*side*-1,20, 40, 10, p)
+  }
+}
 
 
 function stripBorder(lOrR=-1) {
@@ -133,12 +224,7 @@ function drawStripThird(y, lOrR, canBeRosette=false) {
   const x = W/3*lOrR
   if (seed < 0.85 || !canBeRosette) drawStrAdj(getDenominationDisplay(), x, y, 1.1, STROKE_C)
   else {
-    const params = genRosetteParams({strokeC: FILL_C})
-    dollarRosetteBg(x,y, 55, 0, {
-      ...params,
-      strokeC: STROKE_C,
-    })
-    dollarRosette(x,y,55, 0, params)
+    rosetteWithBackground(x, y, 55)
   }
 }
 
@@ -177,104 +263,151 @@ function cornerThing(lOrR=1, tOrB=1) {
 
 function centerPiece() {
   const seed = rnd()
+  console.log('seed', seed)
   if (seed < 0.25) singleCenterWithHole()
   else if (seed < 0.5) singleCenterNoHole()
   else if (seed < 0.75) singleCenterGradient()
   else doubleCenter()
-  // single with center hole
-  // single without center hole
-  // double
 }
 
+function bouquet(d, level) {
+  if (level === 3) {
+    const p0 = genRosetteParams()
+    rosetteWithBackground(150,0,80, 0, p0)
+    rosetteWithBackground(-150,0,80, 0, p0)
+  }
+
+  const p1 = genRosetteParams()
+  rosetteWithBackground(110,0,100, 0, p1)
+  rosetteWithBackground(-110,0,100, 0, p1)
+
+  if (level > 1) {
+    const p2 = genRosetteParams()
+    rosetteWithBackground(60,0,130, 0, p2)
+    rosetteWithBackground(-60,0,130, 0, p2)
+  }
+
+  const p3 = genRosetteParams()
+  rosetteWithBackground(0,0,150, 0, p3)
+
+  const p4 = genRosetteParams()
+  rosetteWithBackground(0,0,70, 0, {...p4, holeR: d ? 60 : 0})
+
+  if (d) {
+    drawStr(DENOMINATION, 2,2, 0.65, STROKE_C)
+    drawStr(DENOMINATION, 0,0, 0.65, STROKE_C, FILL_C)
+  }
+}
+
+function rosetteFlurry() {
+  times(10, i => {
+    rosetteWithBackground(rnd(-W/2, W/2),rnd(-H/2, H/2), 180 - i*15)
+  })
+}
+
+
+function rosetteSandwich() {
+  const p00 = genRosetteParams()
+  rosetteWithBackground(130,0,90, 0, p00)
+  rosetteWithBackground(-130,0,90, 0, p00)
+
+  const p1 = genRosetteParams()
+  rosetteWithBackground(100,-50,70, 0, p1)
+  rosetteWithBackground(100,50,70, 0, p1)
+  rosetteWithBackground(-100,-50,70, 0, p1)
+  rosetteWithBackground(-100,50,70, 0, p1)
+
+
+  const p2 = genRosetteParams()
+  rosetteWithBackground(70,-100,45, 0, p2)
+  rosetteWithBackground(70,100,45, 0, p2)
+  rosetteWithBackground(-70,-100,45, 0, p2)
+  rosetteWithBackground(-70,100,45, 0, p2)
+
+
+
+  // drawStrAdj(getDenominationDisplay(), 2,2, 0.65, STROKE_C)
+  // drawStrAdj(getDenominationDisplay(), 0,0, 0.65, STROKE_C)
+  drawStrAdj(DENOMINATION, 2,2, 0.65, STROKE_C)
+  drawStrAdj(DENOMINATION, 0,0, 0.65, STROKE_C, FILL_C)
+}
+
+function numberSandwich() {
+  const p00 = genRosetteParams()
+  rosetteWithBackground(0,0,90, 0, p00)
+
+  const p1 = genRosetteParams()
+  rosetteWithBackground(0,0,70, 0, p1)
+
+  const p2 = genRosetteParams()
+  rosetteWithBackground(0,0,45, 0, p2)
+
+
+  // drawStrAdj(getDenominationDisplay(), 2,2, 0.65, STROKE_C)
+  // drawStrAdj(getDenominationDisplay(), 0,0, 0.65, STROKE_C)
+  drawStrAdj(DENOMINATION, -132,2, 0.65, STROKE_C)
+  drawStrAdj(DENOMINATION, 132,2, 0.65, STROKE_C)
+  drawStrAdj(DENOMINATION, -130,0, 0.65, STROKE_C, FILL_C)
+  drawStrAdj(DENOMINATION, 130,0, 0.65, STROKE_C, FILL_C)
+}
+
+
+
+
+
 function singleCenterWithHole() {
-  const centerP = genRosetteParams({strokeC: FILL_C})
-
-  dollarRosetteBg(0,0, 150, 0, {
-    ...centerP,
-    strokeC: STROKE_C,
+  console.log('...')
+  const centerP = genRosetteParams({
+    strokeC: FILL_C,
+    innerC: STROKE_LIGHT_C,
+    outterC: STROKE_C,
   })
-  dollarRosette(0,0,150, 0, centerP)
+  rosetteWithBackground(0,0,150, 0, centerP)
+  rosetteWithBackground(0,0,70, 0, {...centerP, holeR: 60})
 
-  dollarRosetteBg(0,0, 67, 0, {
-    ...centerP,
-    strokeC: STROKE_C,
-    // outterC: STROKE_C,
-    // innerC: BRIGHT_C,
-  })
-  dollarRosette(0,0,70, 60, centerP)
-
-  drawStr(DENOMINATION, 2,2, 0.7, STROKE_C)
-  drawStr(DENOMINATION, 0,0, 0.7, STROKE_C, FILL_C)
+  drawStr(DENOMINATION, 2,2, 0.65, STROKE_C)
+  drawStr(DENOMINATION, 0,0, 0.65, STROKE_C, FILL_C)
 }
 
 function singleCenterNoHole() {
-  const centerP = genRosetteParams({strokeC: FILL_C})
-
-  dollarRosetteBg(0,0, 150, 0, {
-    ...centerP,
-    strokeC: STROKE_C,
-  })
-  dollarRosette(0,0,150, 0, centerP)
+  rosetteWithBackground(0,0,150)
 
   drawStr(DENOMINATION, 2,2, 1, STROKE_C)
   drawStr(DENOMINATION, 0,0, 1, STROKE_C, FILL_C)
 }
 
 function singleCenterGradient() {
-  const centerP = genRosetteParams({strokeC: FILL_C})
-
-  dollarRosetteBg(0,0, 150, 0, {
-    ...centerP,
-    strokeC: STROKE_C,
-    innerC: ACCENT_C,
+  const centerP = genRosetteParams({
+    strokeC: FILL_C,
+    innerC: GRADIENT_C,
     outterC: STROKE_C,
   })
-  dollarRosette(0,0,150, 0, centerP)
+  rosetteWithBackground(0,0,150, 0, centerP)
+  rosetteWithBackground(0,0,70, 0, {...centerP, holeR: 60})
 
-  dollarRosetteBg(0,0, 67, 0, {
-    ...centerP,
-    outterC: STROKE_C,
-    innerC: ACCENT_C,
-    strokeC: STROKE_C,
-  })
-  dollarRosette(0,0,70, 60, centerP)
-
-  drawStr(DENOMINATION, 2,2, 0.7, STROKE_C)
-  drawStr(DENOMINATION, 0,0, 0.7, STROKE_C, FILL_C)
+  drawStr(DENOMINATION, 2,2, 0.65, STROKE_C)
+  drawStr(DENOMINATION, 0,0, 0.65, STROKE_C, FILL_C)
 }
 
 
 function doubleCenter() {
-  const centerP = genRosetteParams({strokeC: FILL_C})
-  const secondP = genRosetteParams({strokeC: FILL_C})
+  rosetteWithBackground(0,0,150)
+  rosetteWithBackground(0,0,110, 60)
 
-  dollarRosetteBg(0,0, 150, 0, {
-    ...centerP,
-    strokeC: STROKE_C,
-  })
-  dollarRosette(0,0,150, 0, centerP)
 
-  dollarRosetteBg(0,0, 110, 0, {
-    ...secondP,
-    strokeC: STROKE_C,
-    // outterC: STROKE_C,
-    // innerC: BRIGHT_C,
-  })
-  dollarRosette(0,0,110, 60, secondP)
-
-  drawStr(DENOMINATION, 2,2, 0.7, STROKE_C)
-  drawStr(DENOMINATION, 0,0, 0.7, STROKE_C, FILL_C)
+  drawStr(DENOMINATION, 2,2, 0.65, STROKE_C)
+  drawStr(DENOMINATION, 0,0, 0.65, STROKE_C, FILL_C)
 }
 
 
 
 
 
-function corners1() {
+function corners() {
   const colors = rnd() < 0.5 ? [STROKE_C, FILL_C] : [FILL_C, STROKE_C]
   const floral = false//rnd() < 0.5
-  const padding = floral ? 58 : 62
-  const radius = floral ? 40 : 60
+  const padding = floral ? 58 : 57
+  const radius = floral ? 40 : 55
   const frameFn = floral ? floralRosette : dollarRosette
   const bgFn = floral ? () => {} : dollarRosetteBg
   const denominationC = floral ? colors[1] : colors[0]
@@ -291,27 +424,29 @@ function corners1() {
 
   if (cornerPatternSeed < 0.25) {
     show = [[L, T],[R, T], [L, B], [R, B]]
-  } else if (cornerPatternSeed < 0.45) {
+  } else if (cornerPatternSeed < 0.5) {
     show = [[L, T], [R, B]]
-  } else if (cornerPatternSeed < 0.65) {
-    show = [[R, T], [L, B]]
-  } else if (cornerPatternSeed < 0.7) {
-    show = [[L, T]]
   } else if (cornerPatternSeed < 0.75) {
-    show = [[R, T]]
-  } else if (cornerPatternSeed < 0.8) {
-    show = [[L, B]]
-  } else if (cornerPatternSeed < 0.85) {
-    show = [[R, B]]
-  } else if (cornerPatternSeed < 0.9) {
+    show = [[R, T], [L, B]]
+  } else if (cornerPatternSeed < 0.86) {
     show = [[L, T], [R, T]]
-  } else if (cornerPatternSeed < 0.95) {
+  } else if (cornerPatternSeed < 0.94) {
     show = [[L, B], [R, B]]
+
+  } else if (cornerPatternSeed < 0.96) {
+    show = [[L, T]]
+  } else if (cornerPatternSeed < 0.98) {
+    show = [[R, T]]
+  } else if (cornerPatternSeed < 0.99) {
+    show = [[L, B]]
+  } else {
+    show = [[R, B]]
   }
 
   show.forEach(([x, y]) => {
-    bgFn(x, y, radius, 0, {...params, strokeC: colors[1]})
-    frameFn(x, y, radius, 0, params)
+    rosetteWithBackground(x, y, radius, 0, params)
+    // bgFn(x, y, radius, 0, {...params, strokeC: colors[1]})
+    // frameFn(x, y, radius, 0, params)
     drawStr(DENOMINATION, x+1, y+1, 0.35, denominationOutlineC)
     drawStr(DENOMINATION, x-1, y-1, 0.35, denominationOutlineC)
     drawStr(DENOMINATION, x-1, y+1, 0.35, denominationOutlineC)
@@ -319,7 +454,6 @@ function corners1() {
     drawStr(DENOMINATION, x, y, 0.35, denominationC)
   })
 }
-
 
 
 
@@ -351,22 +485,22 @@ function sideEmblemDollar() {
   bg7()
   // oversaturaedRosette()
   // middleRosette(80)
-  drawBorderGraphic(() => {
-  //   trancendentalMoneyBg()
-    border8()
-  // //   border2(10)
-  // //   border1(15)
-  // //   border1(30)
+  // drawBorderGraphic(() => {
+  // //   trancendentalMoneyBg()
+  //   border8()
+  // // //   border2(10)
+  // // //   border1(15)
+  // // //   border1(30)
 
-  })
+  // })
 
-  rosetteCorners()
+  // rosetteCorners()
 
-  // dollarRosette(0, 0, 100, 75)
+  // // dollarRosette(0, 0, 100, 75)
 
-  translate(100,0)
-  interestingPattern4()
-  translate(-100,0)
+  // translate(100,0)
+  // interestingPattern4()
+  // translate(-100,0)
   // const params = genRosetteParams()
   // dollarLineRosette(0,0,200, 80, params)
   // strokeWeight(2)
@@ -402,8 +536,8 @@ function standardDollar() {
   rosetteCorners()
 
   const params = genRosetteParams()
-  rosetteBg(0, 0, 100, 75, params)
-  dollarRosette(0, 0, 100, 75, params)
+  // rosetteBg(0, 0, 100, 75, params)
+  rosetteWithBackground(0, 0, 100, 75, params)
 
 
   textSize(16)
@@ -420,17 +554,13 @@ function rosetteCorners() {
   strokeWeight(0.25)
   const params = genRosetteParams()
   const cornerPadding = 70
-  rosetteBg(-W/2+cornerPadding, -H/2+cornerPadding, cornerPadding, cornerPadding/2, params)
-  dollarRosette(-W/2+cornerPadding, -H/2+cornerPadding, cornerPadding, cornerPadding/2, params)
+  rosetteWithBackground(-W/2+cornerPadding, -H/2+cornerPadding, cornerPadding, cornerPadding/2, params)
 
-  rosetteBg(W/2-cornerPadding, -H/2+cornerPadding, cornerPadding, cornerPadding/2, params)
-  dollarRosette(W/2-cornerPadding, -H/2+cornerPadding, cornerPadding, cornerPadding/2, params)
+  rosetteWithBackground(W/2-cornerPadding, -H/2+cornerPadding, cornerPadding, cornerPadding/2, params)
 
-  rosetteBg(-W/2+cornerPadding, H/2-cornerPadding, cornerPadding, cornerPadding/2, params)
-  dollarRosette(-W/2+cornerPadding, H/2-cornerPadding, cornerPadding, cornerPadding/2, params)
+  rosetteWithBackground(-W/2+cornerPadding, H/2-cornerPadding, cornerPadding, cornerPadding/2, params)
 
-  rosetteBg(W/2-cornerPadding, H/2-cornerPadding, cornerPadding, cornerPadding/2, params)
-  dollarRosette(W/2-cornerPadding, H/2-cornerPadding, cornerPadding, cornerPadding/2, params)
+  rosetteWithBackground(W/2-cornerPadding, H/2-cornerPadding, cornerPadding, cornerPadding/2, params)
 }
 
 
@@ -448,22 +578,23 @@ function middleRosette(radius=100, rosetteFn, rosetteBgFn, paramsFn, radAdj) {
   // strokeWeight(0.25)
   const params1 = paramsFn()
   const params2 = paramsFn()
+  const smallRadius = 50
 
 
   // strokeWeight(0.5)
-  withStyle(() => rosetteBgFn(-125, 0,radius, radius*radAdj, params1))
-  withStyle(() => rosetteFn(-125, 0, radius, radius*radAdj, params1))
+  // withStyle(() => rosetteBgFn(-125, 0,radius, radius*radAdj, params1))
+  withStyle(() => rosetteWithBackground(-125, 0, radius, radius*radAdj, params1))
   // rosetteBgFn(-125, 0,smallRadius, smallRadius*0.7, params1)
-  // rosetteFn(-125, 0, smallRadius, smallRadius*0.7, params1)
+  rosetteWithBackground(-125, 0, smallRadius, smallRadius*0.7, params1)
 
-  withStyle(() => rosetteBgFn(125, 0,radius, radius*radAdj, params1))
-  withStyle(() => rosetteFn(125, 0, radius, radius*radAdj, params1))
+  // withStyle(() => rosetteBgFn(125, 0,radius, radius*radAdj, params1))
+  withStyle(() => rosetteWithBackground(125, 0, radius, radius*radAdj, params1))
 
   // rosetteBgFn(125, 0,smallRadius, smallRadius*0.7, params1)
-  // rosetteFn(125, 0, smallRadius, smallRadius*0.7, params1)
+  rosetteWithBackground(125, 0, smallRadius, smallRadius*0.7, params1)
 
-  withStyle(() => rosetteBgFn(0, 0, radius*1.2, radius*1.2*radAdj, params2))
-  withStyle(() => rosetteFn(0, 0, radius*1.2, radius*1.2*radAdj, params2))
+  // withStyle(() => rosetteBgFn(0, 0, radius*1.2, radius*1.2*radAdj, params2))
+  withStyle(() => rosetteWithBackground(0, 0, radius*1.2, radius*1.2*radAdj, params2))
 
 
   // strokeWeight(3)

@@ -141,7 +141,6 @@ function bg3() {
 
   for (let y = 0, i = 0; y <= H+5; y += h, i++) {
     const y_ = y - H/2
-    console.log(y_, y)
     beginShape()
     curveVertex(-w-W/2, y_-h/2)
     for (let x = 0; x < W/w + 2; x++) {
@@ -315,13 +314,7 @@ function bg10() {
 }
 
 function bg11() {
-  const params = genRosetteParams({strokeC: FILL_C})
-
-  dollarRosetteBg(0,0, W, 0, {
-    ...params,
-    strokeC: STROKE_C,
-  })
-  dollarRosette(0,0,W, 0, params)
+  rosetteWithBackground(0,0, W, 0, {strokeC: rnd() < 0.5 ? STROKE_C : FILL_C})
 }
 
 

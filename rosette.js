@@ -1,10 +1,47 @@
+function rosetteWithBackground(x, y, r, r2=0, params={}) {
+  const p = genRosetteParams(params)
+  const isPrimStroke = p.strokeC === STROKE_C
+  // TODO look at global rosette style
+  if (p.innerC) dollarRosetteBg(x,y, r, r2, p)
+  else if (ROSETTE_STYLE === 'NUMISMATIC') {
+    dollarRosette(x,y, r, r2, {
+      ...p,
+      strokeC: isPrimStroke ? FILL_C : STROKE_C,
+      fillC: isPrimStroke ? FILL_C : STROKE_C,
+      strokeMod: 6
+    })
+  } else {
+    dollarRosetteBg(x,y, r, r2, {
+      ...p,
+      strokeC: isPrimStroke ? FILL_C : STROKE_C,
+      fillC: isPrimStroke ? FILL_C : STROKE_C
+    })
+  }
+
+  const rosetteFn =
+    ROSETTE_STYLE === 'NUMISMATIC' ? dollarRosette :
+    ROSETTE_STYLE === 'ECHO'? dollarEchoRosette :
+    ROSETTE_STYLE === 'DIGITAL' ? dollarCheckeredRosette :
+    ROSETTE_STYLE === 'LINE' ? dollarLineRosette : () => {}
+
+  rosetteFn(x,y, r, params.holeR || r2, {...p, strokeC: isPrimStroke ? STROKE_C : FILL_C, innerC: false })
+
+}
 
 
-
+function decoRosetter() {
+  rosetteWithBackground(0,0, 90, 0, genRosetteParams({
+    // innerC: ACCENT_C,
+    fillC: STROKE_C,
+    strokeMod: 6
+  }))
+}
 
 function dollarRosette(x_, y_, maxRad=200, minRad=100, params={}, graphic=window) {
   graphic.push()
   params.strokeC && graphic.stroke(params.strokeC)
+  params.fillC && graphic.fill(params.fillC)
+  const strokeMod = params.strokeMod || 1
 
 
   const r1 = 1/params.r1
@@ -20,7 +57,7 @@ function dollarRosette(x_, y_, maxRad=200, minRad=100, params={}, graphic=window
 
   // border
   for (let off=0; off<6; off++) {
-    graphic.strokeWeight((params.strokeW || 1) + maxRad/150 - 1)
+    graphic.strokeWeight(((params.strokeW || 1) + maxRad/150 - 1) * strokeMod)
     drawShape(c0Points, p => {
       const [ox, oy] = border(maxRad, p, off/3)
       const [ix, iy] = border(maxRad*0.95, p, off/3)
@@ -87,6 +124,7 @@ function dollarEchoRosette(x_=0, y_=0, maxRad=200, minRad=100, params={}, bg=fal
   const r = bg ? 1 : 5
   const m = bg ? int(maxRad/40) : 0
   for (let rad = minRad; rad <= maxRad + m; rad += r) {
+    !bg && strokeWeight(rad/130)
     params.innerC && params.outterC && stroke(lerpColor(
       params.innerC,
       params.outterC,
@@ -110,6 +148,7 @@ function dollarLineRosette(x_=0, y_=0, maxRad=200, minRad=100, params={}) {
   const r1 = 1/(params.r1)
   const r2 = 1/(params.r2)
 
+  // TODO have fewer points for smaller maxRad
   const c0Points = params.points
   const c1Points = c0Points/params.c1
   const c2Points = c0Points/params.c2
