@@ -1,20 +1,23 @@
 function rosetteWithBackground(x, y, r, r2=0, params={}) {
-  const p = genRosetteParams(params)
+  const isVintage = ROSETTE_STYLE === 'VINTAGE'
+  if (isVintage) r = r*0.75
+  const p = isVintage
+    ? genVintageRosetteParams(params)
+    : genRosetteParams(params)
+
   const isPrimStroke = p.strokeC === STROKE_C
-  // TODO look at global rosette style
+
   if (p.innerC) dollarRosetteBg(x,y, r, r2, p)
-  else if (ROSETTE_STYLE === 'NUMISMATIC') {
-    dollarRosette(x,y, r, r2, {
+  else {
+    const bgFn =
+      ROSETTE_STYLE === 'NUMISMATIC' ? dollarRosette :
+      isVintage ? vintageRosette :
+      dollarRosetteBg
+    bgFn(x, y, r, r2, {
       ...p,
       strokeC: isPrimStroke ? FILL_C : STROKE_C,
       fillC: isPrimStroke ? FILL_C : STROKE_C,
       strokeMod: 6
-    })
-  } else {
-    dollarRosetteBg(x,y, r, r2, {
-      ...p,
-      strokeC: isPrimStroke ? FILL_C : STROKE_C,
-      fillC: isPrimStroke ? FILL_C : STROKE_C
     })
   }
 
@@ -22,11 +25,19 @@ function rosetteWithBackground(x, y, r, r2=0, params={}) {
     ROSETTE_STYLE === 'NUMISMATIC' ? dollarRosette :
     ROSETTE_STYLE === 'ECHO'? dollarEchoRosette :
     ROSETTE_STYLE === 'DIGITAL' ? dollarCheckeredRosette :
-    ROSETTE_STYLE === 'LINE' ? dollarLineRosette : () => {}
+    ROSETTE_STYLE === 'LINE' ? dollarLineRosette :
+    isVintage ? vintageRosette :
+    () => {}
 
   rosetteFn(x,y, r, params.holeR || r2, {...p, strokeC: isPrimStroke ? STROKE_C : FILL_C, innerC: false })
 
 }
+
+const getRosetteStyleFn = () =>
+  ROSETTE_STYLE === 'NUMISMATIC' ? dollarRosette :
+  ROSETTE_STYLE === 'ECHO'? dollarEchoRosette :
+  ROSETTE_STYLE === 'DIGITAL' ? dollarCheckeredRosette :
+  ROSETTE_STYLE === 'LINE' ? dollarLineRosette : () => {}
 
 
 function decoRosetter() {
@@ -201,14 +212,14 @@ const denominationRosette = denomination => (x_=0, y_=0, maxRad=200, minRad=0, p
 
 
 
-function floralRosette(x_=0, y_=0, radius0=90, _=0, params={}) {
+function vintageRosette(x_=0, y_=0, radius0=90, _=0, params={}) {
   push()
   params.strokeC && stroke(params.strokeC)
   params.fillC && fill(params.fillC)
   params.strokeW && strokeWeight(params.strokeW)
 
-  const radius1 = radius0 / (params.r1 || 9)
-  const radius2 = radius0 / (params.r2 || 5)
+  const radius1 = radius0 / (params.r1)
+  const radius2 = radius0 / (params.r2)
 
   //// for more of a pattern:
   // const r2 = radius / 3
@@ -223,9 +234,9 @@ function floralRosette(x_=0, y_=0, radius0=90, _=0, params={}) {
   // const r2 = radius / _x
   // const r3 = radius / _y
 
-  const c0Points = params.points || 360
-  const c1Points = c0Points/(params.c1 || int(rnd(1, 13)) * posOrNeg())
-  const c2Points = c0Points/(params.c2 || int(rnd(170, 192)) * posOrNeg())
+  const c0Points = params.points
+  const c1Points = c0Points/params.c1
+  const c2Points = c0Points/params.c2
 
   drawShape(c0Points, p => {
     const angle0 = (p/c0Points) * TWO_PI
@@ -261,11 +272,16 @@ function floralRosette(x_=0, y_=0, radius0=90, _=0, params={}) {
 }
 
 
-const genFloralRosetteParams = (o) => ({
+const genParams = o => ROSETTE_STYLE === 'VINTAGE'
+  ? genVintageRosetteParams(o)
+  : genRosetteParams(0)
+
+const genVintageRosetteParams = (o) => ({
   c1: int(rnd(1, 13)) * posOrNeg(),
   c2: int(rnd(170, 192)) * posOrNeg(),
   r1: 9,
   r2: 5,
+  strokeC: STROKE_C,
   points: 360,
   ...o
 })

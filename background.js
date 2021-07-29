@@ -296,9 +296,10 @@ function bg9() {
   else if (seed < 0.875) layout = [[R, T]]
   else layout = [[R, B]]
 
-  const p = genRosetteParams({ strokeC: STROKE_LIGHT_C, strokeW: 1 })
+  const p = genParams({ strokeC: STROKE_LIGHT_C, strokeW: 1 })
   const inner = random(W/4, 0)
-  layout.forEach(([x, y]) => dollarRosette(x, y, W/2, inner, p))
+  const rFn = ROSETTE_STYLE === 'VINTAGE' ? vintageRosette : getRosetteStyleFn()
+  layout.forEach(([x, y]) => rFn(x, y, W/2, inner, p))
   pop()
 }
 

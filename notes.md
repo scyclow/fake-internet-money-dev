@@ -144,6 +144,9 @@ https://en.numista.com/catalogue/note203275.html
 
 
 # TODO
+- make sure all numerals are shadowed on thirds layout
+- make max rosette stroke weight ~1.25
+- make echo version of the numismatic border/background
 - write generic function for displaying a rosette w/ background
   - choose the right rosette style
   - hole or no hole
@@ -168,6 +171,7 @@ https://en.numista.com/catalogue/note203275.html
 
 - audit backgrounds
   - add floral/bowtie type pattern background?
+
 
 
 

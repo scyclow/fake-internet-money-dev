@@ -2,6 +2,7 @@ function fuckItDoTheLayoutFromScratch() {
   squigTexture()
   pointTexture()
 
+rosetteWithBackground(0,0, 180, 0, {strokeC: STROKE_C})
 
   const centerPieceSeed = rnd()
 
@@ -69,6 +70,7 @@ function standardLayout() {
     randomBgPattern()
     randomBorder()
   }
+
 
   // single center piece
     // emblem on one side, watermark on other side
@@ -142,6 +144,7 @@ function stripLayout() {
   } else {
     drawStrAdj(getDenominationDisplay(), mainX, 0, 3, STROKE_C)
   }
+  // smilyFace(W/-6*stripSide,0, 250)
 
 
   rnd() < 0.5 && cornerThing(-1*stripSide, 1)
@@ -272,25 +275,25 @@ function centerPiece() {
 
 function bouquet(d, level) {
   if (level === 3) {
-    const p0 = genRosetteParams()
+    const p0 = genParams()
     rosetteWithBackground(150,0,80, 0, p0)
     rosetteWithBackground(-150,0,80, 0, p0)
   }
 
-  const p1 = genRosetteParams()
+  const p1 = genParams()
   rosetteWithBackground(110,0,100, 0, p1)
   rosetteWithBackground(-110,0,100, 0, p1)
 
   if (level > 1) {
-    const p2 = genRosetteParams()
+    const p2 = genParams()
     rosetteWithBackground(60,0,130, 0, p2)
     rosetteWithBackground(-60,0,130, 0, p2)
   }
 
-  const p3 = genRosetteParams()
+  const p3 = genParams()
   rosetteWithBackground(0,0,150, 0, p3)
 
-  const p4 = genRosetteParams()
+  const p4 = genParams()
   rosetteWithBackground(0,0,70, 0, {...p4, holeR: d ? 60 : 0})
 
   if (d) {
@@ -307,18 +310,18 @@ function rosetteFlurry() {
 
 
 function rosetteSandwich() {
-  const p00 = genRosetteParams()
+  const p00 = genParams()
   rosetteWithBackground(130,0,90, 0, p00)
   rosetteWithBackground(-130,0,90, 0, p00)
 
-  const p1 = genRosetteParams()
+  const p1 = genParams()
   rosetteWithBackground(100,-50,70, 0, p1)
   rosetteWithBackground(100,50,70, 0, p1)
   rosetteWithBackground(-100,-50,70, 0, p1)
   rosetteWithBackground(-100,50,70, 0, p1)
 
 
-  const p2 = genRosetteParams()
+  const p2 = genParams()
   rosetteWithBackground(70,-100,45, 0, p2)
   rosetteWithBackground(70,100,45, 0, p2)
   rosetteWithBackground(-70,-100,45, 0, p2)
@@ -333,13 +336,13 @@ function rosetteSandwich() {
 }
 
 function numberSandwich() {
-  const p00 = genRosetteParams()
+  const p00 = genParams()
   rosetteWithBackground(0,0,90, 0, p00)
 
-  const p1 = genRosetteParams()
+  const p1 = genParams()
   rosetteWithBackground(0,0,70, 0, p1)
 
-  const p2 = genRosetteParams()
+  const p2 = genParams()
   rosetteWithBackground(0,0,45, 0, p2)
 
 
@@ -405,14 +408,15 @@ function doubleCenter() {
 
 function corners() {
   const colors = rnd() < 0.5 ? [STROKE_C, FILL_C] : [FILL_C, STROKE_C]
-  const floral = false//rnd() < 0.5
-  const padding = floral ? 58 : 57
-  const radius = floral ? 40 : 55
-  const frameFn = floral ? floralRosette : dollarRosette
-  const bgFn = floral ? () => {} : dollarRosetteBg
-  const denominationC = floral ? colors[1] : colors[0]
-  const denominationOutlineC = floral ? colors[0] : colors[1]
-  const params = floral ? genFloralRosetteParams({fillC: colors[0]}) : genRosetteParams({strokeC: colors[0]})
+  // TODO can probably refactor this
+  const vintage = ROSETTE_STYLE === 'VINTAGE'
+  const padding = 57
+  const radius = 55
+
+
+  const denominationC = vintage ? colors[1] : colors[0]
+  const denominationOutlineC = vintage ? colors[0] : colors[1]
+  const params = vintage ? genVintageRosetteParams({strokeC: colors[0]}) : genRosetteParams({strokeC: colors[0]})
 
   const T = padding-H/2
   const L = padding-W/2

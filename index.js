@@ -53,7 +53,7 @@ function setup() {
 
 
   const denominationSeed = rnd()
-  if (denominationSeed < 0.5) DENOMINATION = '1'
+  if (denominationSeed < 1/2) DENOMINATION = '1'
   else if (denominationSeed < 3/4) DENOMINATION = '5'
   else if (denominationSeed < 7/8) DENOMINATION = '10'
   else if (denominationSeed < 15/16) DENOMINATION = '20'
@@ -78,12 +78,16 @@ function setup() {
 
 
   const rosetteStyleSeed = rnd()
-  if (rosetteStyleSeed < 0.75) ROSETTE_STYLE = 'NUMISMATIC'
-  // } else if (rosetteStyleSeed < 0.7) {
-  //   ROSETTE_STYLE = 'VINTAGE'
-  else if (rosetteStyleSeed < 0.85) ROSETTE_STYLE = 'ECHO'
-  else if (rosetteStyleSeed < 0.95) ROSETTE_STYLE = 'DIGITAL'
-  else ROSETTE_STYLE = 'LINE'
+  if (rosetteStyleSeed < 0.65)
+    ROSETTE_STYLE = 'NUMISMATIC'
+  else if (rosetteStyleSeed < 0.8)
+    ROSETTE_STYLE = 'VINTAGE'
+  else if (rosetteStyleSeed < 0.85)
+    ROSETTE_STYLE = 'ECHO'
+  else if (rosetteStyleSeed < 0.95)
+    ROSETTE_STYLE = 'DIGITAL'
+  else
+    ROSETTE_STYLE = 'LINE'
 
 
 
@@ -127,7 +131,7 @@ function draw() {
 
 
 
-  fuckItDoTheLayoutFromScratch()
+  // fuckItDoTheLayoutFromScratch()
 
 
 
@@ -201,13 +205,13 @@ function draw() {
 
 
 
-    // floralRosette(0,0,90)
+    // vintageRosette(0,0,90)
 
 
 
 
 
-  // middleRosette(80, floralRosette, () => {}, genFloralRosetteParams, 0.4)
+  // middleRosette(80, vintageRosette, () => {}, genVintageRosetteParams, 0.4)
 
 
 
@@ -294,8 +298,8 @@ function randLayout() {
   } else if (ros < 0.65) {
     rosetteFn = dollarCheckeredRosette
   } else if (ros < 0.75) {
-    rosetteFn = floralRosette
-    paramFn = genFloralRosetteParams
+    rosetteFn = vintageRosette
+    paramFn = genVintageRosetteParams
   } else if (ros < 0.85) {
     rosetteFn = denominationRosette(5)
     borderFn = noop

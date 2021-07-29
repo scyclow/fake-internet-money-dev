@@ -10,6 +10,7 @@ function cgkWatermark(x=150, y=75, base=300) {
 function smilyFace(x, y, radius=200) {
   push()
   strokeWeight(2)
+  fill(FILL_C)
   arc(x, y, radius*0.9, radius, 0,TWO_PI)
   noFill()
   drawStr('$', x - radius*0.17, y - radius*0.125, 0.125, STROKE_C)
