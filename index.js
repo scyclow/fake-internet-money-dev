@@ -13,11 +13,22 @@ let SCALE,
     ROSETTE_STYLE,
     SHOW_NUMERALS
 
-let W = 600
-let H = 400
+const W = 600
+const H = 400
 const W_H_RATIO = W/H
 const GRAPHIC_RESOLUTION = 4
 
+
+const L = -W/2
+const R = W/2
+const T = -H/2
+const B = H/2
+const CORNERS = {
+  1: [L, T],
+  2: [R, T],
+  3: [L, B],
+  4: [R, B],
+}
 
 
 
@@ -78,13 +89,13 @@ function setup() {
 
 
   const rosetteStyleSeed = rnd()
-  if (rosetteStyleSeed < 0.65)
+  if (rosetteStyleSeed < 0.625)
     ROSETTE_STYLE = 'NUMISMATIC'
-  else if (rosetteStyleSeed < 0.8)
+  else if (rosetteStyleSeed < 0.8125)
     ROSETTE_STYLE = 'VINTAGE'
-  else if (rosetteStyleSeed < 0.85)
+  else if (rosetteStyleSeed < 0.875)
     ROSETTE_STYLE = 'ECHO'
-  else if (rosetteStyleSeed < 0.95)
+  else if (rosetteStyleSeed < 0.9375)
     ROSETTE_STYLE = 'DIGITAL'
   else
     ROSETTE_STYLE = 'LINE'
@@ -127,17 +138,17 @@ function draw() {
 
 
 
-  // fuckItDoTheLayoutFromScratch()
+  fuckItDoTheLayoutFromScratch()
 
 
 
 
 
 
-  if (rnd() < 0.666)
-    standardLayout()
-  else
-  stripLayout()
+  // if (rnd() < 0.666)
+  //   standardLayout()
+  // else
+  // stripLayout()
 
 
 

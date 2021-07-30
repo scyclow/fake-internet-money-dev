@@ -282,29 +282,9 @@ function bg8() {
 
 
 function bg9(corners=[2, 4]) {
-  const L = -W/2
-  const R = W/2
-  const T = -H/2
-  const B = H/2
-  push()
-  // TODO mess with different iterations of corners
-  // maybe a function of where corners are
-  const seed = rnd()
-  let layout
-  if (seed < 0.125) layout = [[L, T], [R, B]]
-  else if (seed < 0.25) layout = [[L, T], [R, T]]
-  else if (seed < 0.375) layout = [[L, B], [R, T]]
-  else if (seed < 0.5) layout = [[L, B], [R, B]]
-  else if (seed < 0.625) layout = [[L, T]]
-  else if (seed < 0.75) layout = [[L, B]]
-  else if (seed < 0.875) layout = [[R, T]]
-  else layout = [[R, B]]
-
   const p = genParams({ strokeC: STROKE_LIGHT_C, strokeW: 1 })
-  const inner = rnd(0, W/4)
   const rFn = ROSETTE_STYLE === 'VINTAGE' ? dollarRosette : getRosetteStyleFn()
-  layout.forEach(([x, y]) => rFn(x, y, W/2, inner, p))
-  pop()
+  corners.forEach(c => rFn(CORNERS[c][0], CORNERS[c][1], W/2, rnd(0, W/4), p))
 }
 
 function bg10() {

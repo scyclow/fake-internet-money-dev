@@ -5,7 +5,6 @@ function rosetteWithBackground(x, y, r, r2=0, params={}) {
     ? genVintageRosetteParams(params)
     : genRosetteParams(params)
 
-  console.log(p)
 
   const isPrimStroke = p.strokeC === STROKE_C
 
@@ -158,7 +157,7 @@ function dollarLineRosette(x_=0, y_=0, maxRad=200, minRad=100, params={}) {
   const r2 = 1/(params.r2)
 
   // TODO have fewer points for smaller maxRad
-  const c0Points = params.points
+  const c0Points = params.points/2
   const c1Points = c0Points/params.c1
   const c2Points = c0Points/params.c2
 

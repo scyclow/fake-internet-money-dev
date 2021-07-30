@@ -1,15 +1,6 @@
 // TODO
-// - combine border 1+ 2
-// - 3 + 4 should be different outcomes of same border
-// - split border 5 into different types depending on degAdj.
-//    - 1/-1
-//    - 2/-2
-//    - 3/4/-3/-4
-//    - overlays of 2 borders with different degAdj
-// - get rid of border 6
-// - border 7 points = 50 * (1-8)
-// - fuckedBorder1 as bg
-// - kill solidBorder1, 2 (maybe 3, 4)
+// - make vintage border more likely to come up with vintage rosette style
+// - vintage borders can intermingle
 
 
 
@@ -18,13 +9,9 @@ function randomBorder() {
   const borderSeed = rnd()
   if (borderSeed < 0.01) return denominationBorder()
 
+  const vintageBorderProb = ROSETTE_STYLE === 'VINTAGE' ? 0.5 : 0.25
   drawBorderGraphic(() => {
-    if (borderSeed < 0.3 )
-      solidBorder5()
-    else if (borderSeed < 0.55)
-      border8(-10, rnd() < 0.7)
-
-    else if (borderSeed < 0.8) {
+    if (borderSeed < vintageBorderProb) {
       const vintageBorderSeed = rnd()
       const degAdj = vintageBorderSeed < 0.6 ? 2 * posOrNeg()
         : vintageBorderSeed < 0.8 ? 1
@@ -32,14 +19,25 @@ function randomBorder() {
 
       const params = genBorder5Params({ degAdj })
 
-      const padding = 5 + params.radius
+      const padding = 8 + params.radius
 
       border5(padding, params)
+      rnd() < 0.5 && border5(padding, genBorder5Params({ degAdj: degAdj * -1 }))
     }
+
+    else if (borderSeed < 0.55)
+      solidBorder5()
+
+    else if (borderSeed < 0.8)
+      border8(-10, rnd() < 0.7)
+
+
     else if (borderSeed < 0.85)
       border1(10, int(rnd(20, 200)))
+
     else if (borderSeed < 0.9)
       border2(20)
+
     else
       border7(20, int(rnd(1, 7)))
 
@@ -192,7 +190,6 @@ function getCurvedXYBorder(p, points, padding, direction=1) {
 
 function border7(padding=20, compression=4) {
   const points = compression*50
-  console.log('sad')
 
   for (let off=0; off<2; off+=0.3333) {
     drawShape(points, p => {

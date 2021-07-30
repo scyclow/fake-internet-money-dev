@@ -2,6 +2,11 @@ Fake Internet Money explores the relationship between art and financial assets. 
 
 
 
+Basically, it's impossible to divorce the money from the art.
+
+
+
+
 
 Fake Internet Money has value as money because it's backed by Proof of Art. It has value as art because it literally is money. It has value because of its high-tech anti conterfeiting devices, letting you know that it's authentic.
 
@@ -34,7 +39,8 @@ Fake Internet Money invites the viewer/holder to critically examine the relation
 
 // feature words: greenback, credit, guilloche
 
-
+## DROP
+- Sydney FOREX trading hours (4pm - 1am EST)
 
 
 
@@ -165,14 +171,8 @@ https://en.numista.com/catalogue/note203275.html
   - florrette
   - double florette
 
-- sides of centerpiece
-  - double denomination ex [20 ( ) 20]
-  - double centerpiece ex [( ) 20 ( )]
-  - wax emblem
-  - logic to have watermark, emblem on oposite sides
 
-- audit backgrounds
-  - add floral/bowtie type pattern background?
+
 
 
 
@@ -181,7 +181,7 @@ https://en.numista.com/catalogue/note203275.html
 
 
 - line up corner instances with location of watermark
-- make corners smaller
+
 - certain border types have special corer possabilities
   - ex. missing border + curved corner borders can have plain numbers
   - bars can have light number text
@@ -214,5 +214,84 @@ https://en.numista.com/catalogue/note203275.html
   - red/green/yellow https://en.numista.com/catalogue/note218041.html
   - https://en.numista.com/catalogue/note212473.html
   - black/white/red/green https://en.numista.com/catalogue/note218332.html
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+LAYOUT TODOS
+- keep track of whether denomination has been shown in center
+  - need to handlempty case
+- maybe have denomination mirror emblem
+- bouquet does not show denomination
+- have border patterns respect line/echo/checkered rosette patterns
+- number sandwich bigger?
+- random watermark function that
+  - includes cgk
+  - includes $
+  - is properly sized
+  - is properly colored
+  - includes single large rosette corner WM
+  - only shows up in a corner without a corner component
+
+- keep track of space that center piece allows
+- vintage double WM is pretty fucked
+- bg 10/11 fucked for vintage
+- add only-dark rosette
+- address tiedie emlem?
+
+"I probably don't need to do the explicit tree mechanism. i can probably get away with keeping track of where everything is going as i go "
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
