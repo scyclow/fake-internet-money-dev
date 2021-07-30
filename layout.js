@@ -24,7 +24,7 @@ function fuckItDoTheLayoutFromScratch() {
     // CENTER_PIECE = 8 // rosette sandwich clusterfuck borders
   // else if (centerPieceSeed < 1)
     // CENTER_PIECE = 9 // total chaos
-  CENTER_PIECE = 7//sample([1,2,3, 6, 7])
+  CENTER_PIECE = sample([1,2,3, 6,7,8])
 
 
   const showBorder = [0, 1, 2, 3, 6, 7, 8].includes(CENTER_PIECE) && rnd() < 0.75
@@ -66,14 +66,13 @@ function fuckItDoTheLayoutFromScratch() {
     case 2: bouquet(DENOMINATION, sample([1,2,3])); break
     case 3: portrait(); break
     case 6: numberSandwich(); break
-    case 7: rosetteSandwich(); break
+    case 7:
+    case 8: rosetteSandwich(CENTER_PIECE===8); break
   }
 
 
   if (sideSpace && rnd() < 0.0625) emblem(posOrNeg())
 
-  // if (CENTER_PIECE === 3) displayBillDataSide(wmCorners)
-  // else
     displayBillData(
     wmCorners.length || cornerComponentLocations.length === 4
       ? wmCorners
@@ -340,6 +339,51 @@ function doubleCenter() {
 }
 
 
+function rosetteSandwich(showExtras) {
+  if (showExtras) {
+    const p2 = genParams()
+    rosetteWithBackground(70,-100,45, 0, p2)
+    rosetteWithBackground(70,100,45, 0, p2)
+    rosetteWithBackground(-70,-100,45, 0, p2)
+    rosetteWithBackground(-70,100,45, 0, p2)
+
+    const p1 = genParams()
+    rosetteWithBackground(100,-50,70, 0, p1)
+    rosetteWithBackground(100,50,70, 0, p1)
+    rosetteWithBackground(-100,-50,70, 0, p1)
+    rosetteWithBackground(-100,50,70, 0, p1)
+  }
+
+  const p00 = genParams()
+  rosetteWithBackground(130,0,90, 0, p00)
+  rosetteWithBackground(-130,0,90, 0, p00)
+
+
+  // drawStrAdj(getDenominationDisplay(), 2,2, 0.65, STROKE_C)
+  // drawStrAdj(getDenominationDisplay(), 0,0, 0.65, STROKE_C)
+  drawStrAdj(DENOMINATION, 2,2, 0.65, STROKE_C)
+  drawStrAdj(DENOMINATION, 0,0, 0.65, STROKE_C, FILL_C)
+}
+
+function numberSandwich() {
+  const p00 = genParams()
+  rosetteWithBackground(0,0,90, 0, p00)
+
+  const p1 = genParams()
+  rosetteWithBackground(0,0,70, 0, p1)
+
+  const p2 = genParams()
+  rosetteWithBackground(0,0,45, 0, p2)
+
+
+  // drawStrAdj(getDenominationDisplay(), 2,2, 0.65, STROKE_C)
+  // drawStrAdj(getDenominationDisplay(), 0,0, 0.65, STROKE_C)
+  drawStrAdj(DENOMINATION, -132,2, 0.65, STROKE_C)
+  drawStrAdj(DENOMINATION, 132,2, 0.65, STROKE_C)
+  drawStrAdj(DENOMINATION, -130,0, 0.65, STROKE_C, FILL_C)
+  drawStrAdj(DENOMINATION, 130,0, 0.65, STROKE_C, FILL_C)
+}
+
 
 
 
@@ -575,52 +619,6 @@ function rosetteFlurry() {
   })
 }
 
-
-function rosetteSandwich() {
-
-
-  const p2 = genParams()
-  rosetteWithBackground(70,-100,45, 0, p2)
-  rosetteWithBackground(70,100,45, 0, p2)
-  rosetteWithBackground(-70,-100,45, 0, p2)
-  rosetteWithBackground(-70,100,45, 0, p2)
-
-  const p1 = genParams()
-  rosetteWithBackground(100,-50,70, 0, p1)
-  rosetteWithBackground(100,50,70, 0, p1)
-  rosetteWithBackground(-100,-50,70, 0, p1)
-  rosetteWithBackground(-100,50,70, 0, p1)
-
-  const p00 = genParams()
-  rosetteWithBackground(130,0,90, 0, p00)
-  rosetteWithBackground(-130,0,90, 0, p00)
-
-
-
-  // drawStrAdj(getDenominationDisplay(), 2,2, 0.65, STROKE_C)
-  // drawStrAdj(getDenominationDisplay(), 0,0, 0.65, STROKE_C)
-  drawStrAdj(DENOMINATION, 2,2, 0.65, STROKE_C)
-  drawStrAdj(DENOMINATION, 0,0, 0.65, STROKE_C, FILL_C)
-}
-
-function numberSandwich() {
-  const p00 = genParams()
-  rosetteWithBackground(0,0,90, 0, p00)
-
-  const p1 = genParams()
-  rosetteWithBackground(0,0,70, 0, p1)
-
-  const p2 = genParams()
-  rosetteWithBackground(0,0,45, 0, p2)
-
-
-  // drawStrAdj(getDenominationDisplay(), 2,2, 0.65, STROKE_C)
-  // drawStrAdj(getDenominationDisplay(), 0,0, 0.65, STROKE_C)
-  drawStrAdj(DENOMINATION, -132,2, 0.65, STROKE_C)
-  drawStrAdj(DENOMINATION, 132,2, 0.65, STROKE_C)
-  drawStrAdj(DENOMINATION, -130,0, 0.65, STROKE_C, FILL_C)
-  drawStrAdj(DENOMINATION, 130,0, 0.65, STROKE_C, FILL_C)
-}
 
 
 
