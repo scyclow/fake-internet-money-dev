@@ -1,31 +1,30 @@
 function rosetteWithBackground(x, y, r, r2=0, params={}) {
-  const isVintage = ROSETTE_STYLE === 'VINTAGE'
-  if (isVintage) r = r*0.75
-  if (ROSETTE_STYLE === 'DECO') params = {...params, fillC: STROKE_C, strokeMod: 6}
-  const p = isVintage
+  if (IS_VINTAGE) r = r*0.75
+  if (IS_DECO) params = {...params, fillC: ROSETTE_FILL_C, strokeMod: 6}
+  const p = IS_VINTAGE
     ? genVintageRosetteParams(params)
     : genRosetteParams(params)
 
 
-  const isPrimStroke = p.strokeC === STROKE_C
+
 
   if (p.innerC) dollarRosetteBg(x,y, r, r2, p)
   else {
     const bgFn =
       ROSETTE_STYLE === 'NUMISMATIC' ? dollarRosette :
-      isVintage ? vintageRosette :
+      IS_VINTAGE ? vintageRosette :
       dollarRosetteBg
     bgFn(x, y, r, r2, {
       ...p,
-      strokeC: isPrimStroke ? FILL_C : STROKE_C,
-      fillC: isPrimStroke ? FILL_C : STROKE_C,
+      strokeC: ROSETTE_FILL_C,
+      fillC: ROSETTE_FILL_C,
       strokeMod: 6
     })
   }
 
   const rosetteFn = getRosetteStyleFn()
 
-  rosetteFn(x,y, r, params.holeR || r2, {...p, strokeC: isPrimStroke ? STROKE_C : FILL_C, innerC: false })
+  rosetteFn(x,y, r, params.holeR || r2, {...p, strokeC: ROSETTE_STROKE_C, innerC: false })
 
 }
 
@@ -34,14 +33,14 @@ const getRosetteStyleFn = () =>
   ROSETTE_STYLE === 'ECHO'? dollarEchoRosette :
   ROSETTE_STYLE === 'DIGITAL' ? dollarCheckeredRosette :
   ROSETTE_STYLE === 'LINE' ? dollarLineRosette :
-  ROSETTE_STYLE === 'VINTAGE' ? vintageRosette :
+  IS_VINTAGE ? vintageRosette :
   noop
 
 
 function decoRosette() {
   rosetteWithBackground(0,0, 90, 0, genRosetteParams({
     // innerC: ACCENT_C,
-    fillC: STROKE_C,
+    fillC: ROSETTE_FILL_C,
     strokeMod: 6
   }))
 }
@@ -163,7 +162,7 @@ function dollarCheckeredRosette(x_=0, y_=0,maxRad=200, minRad=100, params={}) {
 
 //?
 // function dollarDottedRosette(x_=0, y_=0,maxRad=200, minRad=100, params={}) {
-//   dollarEchoRosette(x_, y_, maxRad, minRad, { ...params, strokeC: STROKE_C, strokeW: 1.5})
+//   dollarEchoRosette(x_, y_, maxRad, minRad, { ...params, strokeC: DARK_C, strokeW: 1.5})
 //   dollarLineRosette(x_, y_, maxRad, minRad, params)
 // }
 
@@ -204,7 +203,7 @@ function vintageRosette(x_=0, y_=0, radius0=90, _=0, params={}) {
     const angle1 = (p/c1Points) * TWO_PI
     const angle2 = (p/c2Points) * TWO_PI
 
-    const [x0, y0] = getXYRotation(
+    const xy = getXYRotation(
       angle0,
       radius0,
       x_, y_
@@ -212,7 +211,7 @@ function vintageRosette(x_=0, y_=0, radius0=90, _=0, params={}) {
     const [x1, y1] = getXYRotation(
       angle1,
       radius1,
-      x0, y0
+      xy[0], xy[1]
     )
 
     return getXYRotation(
@@ -233,7 +232,7 @@ function vintageRosette(x_=0, y_=0, radius0=90, _=0, params={}) {
 }
 
 
-const genParams = o => ROSETTE_STYLE === 'VINTAGE'
+const genParams = o => IS_VINTAGE
   ? genVintageRosetteParams(o)
   : genRosetteParams(o)
 
@@ -242,7 +241,7 @@ const genVintageRosetteParams = (o) => ({
   c2: int(rnd(170, 192)) * posOrNeg(),
   r1: 9,
   r2: 5,
-  strokeC: STROKE_C,
+  strokeC: ROSETTE_STROKE_C,
   points: 360,
   ...o
 })

@@ -22,12 +22,12 @@ function signature(x, y, size) {
     y + size/2
   ])
 
-  stroke(FILL_C)
+  stroke(LIGHT_C)
   beginShape()
   points.forEach(([x, y]) => curveVertex(x+1, y+1))
   endShape()
 
-  stroke(STROKE_C)
+  stroke(DARK_C)
   beginShape()
   points.forEach(([x, y]) => curveVertex(x, y))
   endShape()
@@ -44,11 +44,11 @@ function genSerialNumber() {
 function serialNumber(x, y) {
   push()
   const sNumber = genSerialNumber()
-  fill(FILL_C)
-  stroke(STROKE_C)
+  fill(LIGHT_C)
+  stroke(DARK_C)
   rect(x, y, 60, 20)
-  // drawStr('99999999', 141,131, 0.125, STROKE_C)
-  drawStr(sNumber, x+30,y+10, 0.125, STROKE_C, ACCENT_C)
+  // drawStr('99999999', 141,131, 0.125, DARK_C)
+  drawStr(sNumber, x+30,y+10, 0.125, DARK_C, ACCENT_C)
   pop()
 }
 

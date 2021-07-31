@@ -37,6 +37,7 @@
 
     <script>
       function genTokenData(projectNum) {
+        const hashesLookedAt = JSON.parse(localStorage.getItem('hashesLookedAt')) || 0
         const tokenId = projectNum * 1000000 + Math.floor(Math.random() * 1000)
         let hash = '0x'
         if (window.location.search.includes('?hash=')) {
@@ -51,6 +52,7 @@
           last10hashes.unshift(hash)
 
           localStorage.setItem('last10Hashes', JSON.stringify(last10hashes.slice(0, 10)))
+          localStorage.setItem('hashesLookedAt', JSON.stringify(hashesLookedAt+1))
         }
         return {
           hash,

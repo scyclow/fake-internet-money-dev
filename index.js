@@ -2,15 +2,17 @@
 
 
 let SCALE,
-    STROKE_C,
+    DARK_C,
     STROKE_LIGHT_C,
-    FILL_C,
+    LIGHT_C,
     BRIGHT_C,
     BRIGHT_LIGHT_C,
     ACCENT_C,
     HUE,
     DENOMINATION,
     ROSETTE_STYLE,
+    IS_VINTAGE,
+    IS_DECO,
     SHOW_NUMERALS
 
 const W = 600
@@ -72,30 +74,17 @@ function setup() {
   else if (denominationSeed < 63/64) DENOMINATION = '100'
   else if (denominationSeed < 127/128) DENOMINATION = '2'
 
-
-
-
-  HUE = int(rnd(0,360))
-  STROKE_C = color(HUE, 26, 25)
-  STROKE_LIGHT_C = color(HUE, 26, 35)
-  FILL_C = color(hfix(HUE-72), 6, 91)
-  STROKE_C2 = color(hfix(HUE-132), 6, 91)
-
-  BRIGHT_C = color(hfix(HUE-40), 75, 85)
-  BRIGHT_LIGHT_C = color(hfix(HUE-40), 25, 75)
-  ACCENT_C = color(hfix(HUE-40), 77, 64)
-  GRADIENT_C = color(hfix(HUE-180), 40, 60)
-
-  SHOW_NUMERALS = rnd() < 0.2
-
-
   const rosetteStyleSeed = rnd()
-  if (rosetteStyleSeed < 0.0625)
+  if (rosetteStyleSeed < 0.0625){
     ROSETTE_STYLE = 'DECO'
+    IS_DECO = true
+  }
   else if (rosetteStyleSeed < 0.625)
     ROSETTE_STYLE = 'NUMISMATIC'
-  else if (rosetteStyleSeed < 0.8125)
+  else if (rosetteStyleSeed < 0.8125) {
     ROSETTE_STYLE = 'VINTAGE'
+    IS_VINTAGE = true
+  }
   else if (rosetteStyleSeed < 0.875)
     ROSETTE_STYLE = 'ECHO'
   else if (rosetteStyleSeed < 0.9375)
@@ -105,26 +94,52 @@ function setup() {
 
 
 
+  HUE = int(rnd(0,360))
+  DARK_C = color(HUE, 26, 25)
+  LIGHT_C = color(hfix(HUE-72), 6, 91)
 
-  // STROKE_C = '#65aaba'
-  // FILL_C = '#cc5b95'
-  // STROKE_C2 = '#4145a7'
+  // TODO swap these for non vintage occasionally
+  ROSETTE_FILL_C = IS_VINTAGE ? LIGHT_C : DARK_C
+  ROSETTE_STROKE_C = IS_VINTAGE ? DARK_C : LIGHT_C
+
+
+
+  STROKE_LIGHT_C = color(HUE, 26, 35)
+  DARK_C2 = color(hfix(HUE-132), 6, 91)
+
+  BRIGHT_C = color(hfix(HUE-40), 75, 85)
+  BRIGHT_LIGHT_C = color(hfix(HUE-40), 25, 75)
+  ACCENT_C = color(hfix(HUE-40), 77, 64)
+  GRADIENT_C = color(hfix(HUE-180), 40, 60)
+
+  SHOW_NUMERALS = rnd() < 0.2
+
+
+
+
+
+
+
+
+  // DARK_C = '#65aaba'
+  // LIGHT_C = '#cc5b95'
+  // DARK_C2 = '#4145a7'
 
   // const sample = a => a[int(rnd(0, a.length))]
 
-  const softColors = [
-    color(23, 95, 95),
-    color(150, 57, 95),
-    color(270, 65, 35),
-    color(250, 65, 35),
-    color(210, 75, 100),
-    color(0, 75, 100),
-    color(31, 48, 34),
-  ]
+  // const softColors = [
+  //   color(23, 95, 95),
+  //   color(150, 57, 95),
+  //   color(270, 65, 35),
+  //   color(250, 65, 35),
+  //   color(210, 75, 100),
+  //   color(0, 75, 100),
+  //   color(31, 48, 34),
+  // ]
   // if (rnd() < 0.8) {
-  //   STROKE_C = sample(softColors)
-  //   FILL_C = sample(softColors)
-  //   STROKE_C2 = sample(softColors)
+  //   DARK_C = sample(softColors)
+  //   LIGHT_C = sample(softColors)
+  //   DARK_C2 = sample(softColors)
   // }
 }
 
@@ -138,11 +153,11 @@ function draw() {
 
 
 
-  stroke(STROKE_C)
-  background(FILL_C)
+  stroke(DARK_C)
+  background(LIGHT_C)
 
 
-  if (rnd() < 0.666)
+  if (rnd() < 0.8125)
     mainLayout()
   else
   stripLayout()

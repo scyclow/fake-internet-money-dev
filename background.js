@@ -90,13 +90,13 @@ function denominationTexture(denomination) {
     const xOffset = straight ? 0 : rnd(-10, 10)
     const yOffset = straight ? 0 : rnd(-10, 10)
 
-    drawStr(denomination, x + xOffset, y + yOffset, s, STROKE_C)
+    drawStr(denomination, x + xOffset, y + yOffset, s, DARK_C)
   }
   pop()
 }
 function bg1() {
   push()
-  stroke(STROKE_C)
+  stroke(DARK_C)
   strokeWeight(0.5)
   const size = 10
 
@@ -113,7 +113,7 @@ function bg1() {
 
 function bg2() {
   push()
-  stroke(STROKE_C)
+  stroke(DARK_C)
   strokeWeight(0.5)
   const size = 10
 
@@ -219,7 +219,7 @@ function bg5() {
 // function bg15() {
 //   push()
 //   noFill()
-//   stroke(STROKE_C)
+//   stroke(DARK_C)
 //   strokeWeight(0.5)
 //   for (let i = 0; i < 100; i++) {
 //     rect(rnd(-W/2, W/2), rnd(-H/2, H/2), W/2, H/2)
@@ -282,7 +282,7 @@ function bg8() {
 
 
 function bg9(corners=[2, 4]) {
-  const rFn = ROSETTE_STYLE === 'VINTAGE' ? dollarRosette : getRosetteStyleFn()
+  const rFn = IS_VINTAGE ? dollarRosette : getRosetteStyleFn()
   const p = genRosetteParams({ strokeC: STROKE_LIGHT_C, strokeW: 1 })
   corners.forEach(c => rFn(CORNERS[c][0], CORNERS[c][1], W/2, rnd(0, W/4), p))
 }

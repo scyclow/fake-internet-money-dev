@@ -151,6 +151,7 @@ https://en.numista.com/catalogue/note203275.html
 
 
 # TODO
+- be really careful about showing object, numeral in strip layout
 - make sure dneomination is always displayed, exspecially in portrait
 - make sure all numerals are shadowed on thirds layout
 - make max rosette stroke weight ~1.25

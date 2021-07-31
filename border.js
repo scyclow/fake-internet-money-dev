@@ -1,6 +1,3 @@
-// TODO
-// - make vintage border more likely to come up with vintage rosette style
-// - vintage borders can intermingle
 
 
 
@@ -9,7 +6,7 @@ function randomBorder() {
   const borderSeed = rnd()
   if (borderSeed < 0.01) return denominationBorder()
 
-  const vintageBorderProb = ROSETTE_STYLE === 'VINTAGE' ? 0.5 : 0.25
+  const vintageBorderProb = IS_VINTAGE ? 0.5 : 0.25
   drawBorderGraphic(() => {
     if (borderSeed < vintageBorderProb) {
       const vintageBorderSeed = rnd()
@@ -25,21 +22,26 @@ function randomBorder() {
       rnd() < 0.25 && border5(padding, genBorder5Params({ degAdj: degAdj * -1 }))
     }
 
-    else if (borderSeed < 0.55)
+    else if (borderSeed < 0.55) {
       solidBorder5()
+    }
 
-    else if (borderSeed < 0.8)
+    else if (borderSeed < 0.8) {
       border8(-10, rnd() < 0.7)
+    }
 
 
-    else if (borderSeed < 0.85)
+    else if (borderSeed < 0.85) {
       border1(10, int(rnd(20, 200)))
+    }
 
-    else if (borderSeed < 0.9)
+    else if (borderSeed < 0.9) {
       border2(20)
+    }
 
-    else
+    else {
       border7(20, int(rnd(1, 7)), posOrNeg())
+    }
 
   })
 }
@@ -97,7 +99,7 @@ function drawBorderGraphic(borderFn) {
 
   borderGraphic.translate(W/2, H/2)
   borderGraphic.noFill()
-  borderGraphic.stroke(STROKE_C)
+  borderGraphic.stroke(DARK_C)
   borderFn()
   image(borderGraphic,-W * GRAPHIC_RESOLUTION / 2,-H * GRAPHIC_RESOLUTION / 2)
   pop()
@@ -191,7 +193,10 @@ function getCurvedXYBorder(p, points, padding, direction=1) {
 function border7(padding=20, compression=4, d=1) {
   const points = compression*50
 
-  if (ROSETTE_STYLE === 'DECO') borderGraphic.fill(STROKE_C)
+  if (IS_DECO) {
+    borderGraphic.fill(ROSETTE_FILL_C)
+    borderGraphic.stroke(ROSETTE_STROKE_C)
+  }
 
   if (['NUMISMATIC', 'VINTAGE', 'DECO'].includes(ROSETTE_STYLE))
   for (let off=0; off<2; off+=0.3333) {
@@ -214,14 +219,21 @@ function border7(padding=20, compression=4, d=1) {
     const [ix, iy] = getCurvedXYBorder(p, points, padding+22, d)
     borderGraphic.line(ox, oy, ix, iy)
   }
+
+  if (IS_DECO) {
+    borderGraphic.erase()
+    drawShape(points, p => getCurvedXYBorder(p, points, padding+20, d), borderGraphic)
+    borderGraphic.noErase()
+  }
+
 }
 
 
 function border8(padding=-10, sides=true) {
   const compression = int(rnd(1, 7))
 
-  borderGraphic.background(STROKE_C)
-  borderGraphic.stroke(FILL_C)
+  borderGraphic.background(ROSETTE_FILL_C)
+  borderGraphic.stroke(ROSETTE_STROKE_C)
   borderGraphic.strokeWeight(1.1 - compression/12)
   const direction = posOrNeg()
 
@@ -232,7 +244,7 @@ function border8(padding=-10, sides=true) {
 
   const p = padding+(sides ? 35 : 55)
 
-  borderGraphic.stroke(STROKE_C)
+  borderGraphic.stroke(DARK_C)
   borderGraphic.erase()
   borderGraphic.fill(0)
   sides
@@ -263,7 +275,7 @@ function denominationBorder(padding=10) {
   const denomination = getDenominationDisplay()
   times(points, p => {
     const [x,y] = getXYBorder(p, points, padding)
-    drawStrAdj(denomination, x, y, 0.1, STROKE_C)
+    drawStrAdj(denomination, x, y, 0.1, DARK_C)
   })
 
 }
@@ -281,10 +293,10 @@ function solidBorder5(weight=60) {
   const lines = int(rnd(4, 11))
 
 
-  borderGraphic.stroke(STROKE_C)
+  borderGraphic.stroke(DARK_C)
   for (let i = 0; i < lines; i++) {
     if (i % 2 !== 0 || i === lines-1) borderGraphic.erase()
-    borderGraphic.fill(STROKE_C)
+    borderGraphic.fill(DARK_C)
     borderGraphic.strokeWeight(weight -(i* weightAdj))
     borderGraphic.line(left, top, right, top)
     borderGraphic.line(right, top, right, bottom)

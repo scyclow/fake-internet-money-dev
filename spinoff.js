@@ -183,7 +183,7 @@ function border_outtake_3(padding=20, params={}) {
 
 function bg3() {
   push()
-  stroke(STROKE_C)
+  stroke(DARK_C)
   strokeWeight(0.5)
   const size = 10
 
@@ -199,7 +199,7 @@ function bg3() {
 }
 // function bg11() {
 //   push()
-//   stroke(STROKE_C)
+//   stroke(DARK_C)
 //   strokeWeight(0.5)
 //   const size = 25
 //   noFill()
@@ -307,9 +307,9 @@ function standardLayout() {
 //   // stripeGraphic.scale(GRAPHIC_RESOLUTION)
 
 //   stripeGraphic.translate(W/2, H/2)
-//   const centerP = genRosetteParams({strokeC: FILL_C})
+//   const centerP = genRosetteParams({strokeC: LIGHT_C})
 
-//   stripeGraphic.background(STROKE_C)
+//   stripeGraphic.background(DARK_C)
 //   stripeGraphic.noFill()
 //   dollarRosette(50,500,1200, 0, centerP, stripeGraphic)
 
@@ -333,16 +333,14 @@ function rosetteFlurry() {
 
 
 function corners() {
-  const colors = rnd() < 0.5 ? [STROKE_C, FILL_C] : [FILL_C, STROKE_C]
+  const colors = rnd() < 0.5 ? [DARK_C, LIGHT_C] : [LIGHT_C, DARK_C]
   // TODO can probably refactor this
-  const vintage = ROSETTE_STYLE === 'VINTAGE'
   const padding = 57
   const radius = 55
 
-
-  const denominationC = vintage ? colors[1] : colors[0]
-  const denominationOutlineC = vintage ? colors[0] : colors[1]
-  const params = vintage ? genVintageRosetteParams({strokeC: colors[0]}) : genRosetteParams({strokeC: colors[0]})
+  const denominationC = IS_VINTAGE ? colors[1] : colors[0]
+  const denominationOutlineC = IS_VINTAGE ? colors[0] : colors[1]
+  const params = IS_VINTAGE ? genVintageRosetteParams({strokeC: colors[0]}) : genRosetteParams({strokeC: colors[0]})
 
   const T = padding-H/2
   const L = padding-W/2
@@ -476,10 +474,10 @@ function rosetteCorners() {
 
 
 const withStyle = (cb) => {
-  // stroke(STROKE_C)
+  // stroke(DARK_C)
   // strokeWeight(2)
   // cb()
-  // stroke(STROKE_C2)
+  // stroke(DARK_C2)
   // strokeWeight(1)
   // cb()
 }
@@ -518,19 +516,19 @@ function middleRosette(radius=100, rosetteFn, rosetteBgFn, paramsFn, radAdj) {
 function centerSymbol() {
   push()
   noFill()
-  stroke(STROKE_C)
+  stroke(DARK_C)
   strokeWeight(14)
   multiCurve(0, 0, 30, radians(125), radians(235), 0.7, 3)
-  stroke(FILL_C)
+  stroke(LIGHT_C)
   strokeWeight(10)
   multiCurve(0, 0, 30, radians(125), radians(235), 0.7, 3)
-  stroke(STROKE_C)
+  stroke(DARK_C)
   strokeWeight(8)
   multiCurve(0, 0, 30, radians(125), radians(235), 0.7, 3)
-  stroke(FILL_C)
+  stroke(LIGHT_C)
   strokeWeight(4)
   multiCurve(0, 0, 30, radians(125), radians(235), 0.7, 3)
-  stroke(STROKE_C)
+  stroke(DARK_C)
   strokeWeight(2)
   multiCurve(0, 0, 30, radians(125), radians(235), 0.7, 3)
   pop()
@@ -557,9 +555,9 @@ function shrinkingCorners() {
   // console.log('p1', p1)
 
 
-  // dollarRosette(105-width/2,105-height/2,85, 50,{...p0, strokeC: FILL_C})
-  // dollarRosette(120,0,75,30,{...p1, strokeC: FILL_C})
-  // dollarRosette(200,0,45,15,{...p2, strokeC: FILL_C})
+  // dollarRosette(105-width/2,105-height/2,85, 50,{...p0, strokeC: LIGHT_C})
+  // dollarRosette(120,0,75,30,{...p1, strokeC: LIGHT_C})
+  // dollarRosette(200,0,45,15,{...p2, strokeC: LIGHT_C})
 
   // dollarRosette(105-width/2,105-height/2,80, 30,p0)
   // dollarRosette(240-width/2,85-height/2,50,10,p1)
@@ -571,8 +569,8 @@ function shrinkingCorners() {
     const x = rnd(-W/2, W/2)
     const y = rnd(-H/2, H/2)
     const p = genRosetteParams({ strokeW: radius/160 })
-    // dollarRosette(x, y, radius+5, 0, {...p, strokeC: FILL_C})
-    dollarRosette(x, y, radius, radius/2, {...p, strokeC: rnd() < 0.5 ? FILL_C : STROKE_C})
+    // dollarRosette(x, y, radius+5, 0, {...p, strokeC: LIGHT_C})
+    dollarRosette(x, y, radius, radius/2, {...p, strokeC: rnd() < 0.5 ? LIGHT_C : DARK_C})
   })
 }
 
@@ -795,7 +793,7 @@ function solidBorder1(weight=80) {
 
   push()
   strokeWeight(weight)
-  stroke(STROKE_C)
+  stroke(DARK_C)
   line(left, top, right, top)
   line(right, top, right, bottom)
   line(right, bottom, left, bottom)
@@ -818,12 +816,12 @@ function solidBorder2(weight=60) {
 
   push()
   strokeWeight(weight)
-  stroke(STROKE_C)
+  stroke(DARK_C)
   line(left, top, right, top)
   line(right, top, right, bottom)
   line(right, bottom, left, bottom)
   line(left, bottom, left, top)
-  stroke(FILL_C)
+  stroke(LIGHT_C)
   circle(left+rad, top+rad, rad)
   circle(left+rad, bottom-rad, rad)
   circle(right-rad, top+rad, rad)
@@ -842,7 +840,7 @@ function solidBorder3(weight=60) {
 
   push()
   borderGraphic.strokeWeight(weight)
-  borderGraphic.stroke(STROKE_C)
+  borderGraphic.stroke(DARK_C)
   borderGraphic.line(left, top, right, top)
   borderGraphic.line(right, top, right, bottom)
   borderGraphic.line(right, bottom, left, bottom)
@@ -898,7 +896,7 @@ function solidBorder4(weight=60) {
 
   push()
   strokeWeight(weight)
-  stroke(STROKE_C)
+  stroke(DARK_C)
   line(left, top, right, top)
   line(right, top, right, bottom)
   line(right, bottom, left, bottom)
@@ -912,7 +910,7 @@ function solidBorder4(weight=60) {
   // cool ->
   strokeWeight(weight/2)
   // strokeWeight(weight/5)
-  stroke(FILL_C)
+  stroke(LIGHT_C)
   line(
     left + weight + rad, top+weight/4,
     right - weight - rad, top+weight/4
@@ -964,15 +962,15 @@ function trancendentalMoneyBg() {
 function border5Layer() {
   push()
   strokeWeight(4)
-  stroke(STROKE_C)
+  stroke(DARK_C)
   border5(40, genBorder5Params())
 
   strokeWeight(2)
-  stroke(STROKE_C2)
+  stroke(DARK_C2)
   border5(40, genBorder5Params())
 
   // strokeWeight(1)
-  // stroke(STROKE_C)
+  // stroke(DARK_C)
   // border5(40)
   pop()
 }
