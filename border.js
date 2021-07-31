@@ -22,7 +22,7 @@ function randomBorder() {
       const padding = 8 + params.radius
 
       border5(padding, params)
-      rnd() < 0.5 && border5(padding, genBorder5Params({ degAdj: degAdj * -1 }))
+      rnd() < 0.25 && border5(padding, genBorder5Params({ degAdj: degAdj * -1 }))
     }
 
     else if (borderSeed < 0.55)
@@ -39,7 +39,7 @@ function randomBorder() {
       border2(20)
 
     else
-      border7(20, int(rnd(1, 7)))
+      border7(20, int(rnd(1, 7)), posOrNeg())
 
   })
 }
@@ -188,16 +188,31 @@ function getCurvedXYBorder(p, points, padding, direction=1) {
   )
 }
 
-function border7(padding=20, compression=4) {
+function border7(padding=20, compression=4, d=1) {
   const points = compression*50
 
+  if (ROSETTE_STYLE === 'DECO') borderGraphic.fill(STROKE_C)
+
+  if (['NUMISMATIC', 'VINTAGE', 'DECO'].includes(ROSETTE_STYLE))
   for (let off=0; off<2; off+=0.3333) {
     drawShape(points, p => {
-      const [ox, oy] = getCurvedXYBorder(p + off, points, padding)
-      const [ix, iy] = getCurvedXYBorder(p + off, points, padding+22)
+      const [ox, oy] = getCurvedXYBorder(p + off, points, padding, d)
+      const [ix, iy] = getCurvedXYBorder(p + off, points, padding+22, d)
 
       return p % 2 === 0 ? [ix, iy] : [ox, oy]
     }, borderGraphic)
+  }
+
+  if (['ECHO', 'DIGITAL'].includes(ROSETTE_STYLE))
+  for (let off=0; off<25; off+=5) {
+    drawShape(points, p => getCurvedXYBorder(p, points, padding+off), borderGraphic, d)
+  }
+
+  if (['LINE', 'DIGITAL'].includes(ROSETTE_STYLE))
+  for (let p=0; p < points; p += 0.2) {
+    const [ox, oy] = getCurvedXYBorder(p, points, padding, d)
+    const [ix, iy] = getCurvedXYBorder(p, points, padding+22, d)
+    borderGraphic.line(ox, oy, ix, iy)
   }
 }
 
@@ -208,11 +223,11 @@ function border8(padding=-10, sides=true) {
   borderGraphic.background(STROKE_C)
   borderGraphic.stroke(FILL_C)
   borderGraphic.strokeWeight(1.1 - compression/12)
-  if (rnd() < 0.1) borderGraphic.fill(STROKE_C)
+  const direction = posOrNeg()
 
-  border7(padding+2, compression)
-  border7(padding+19, compression)
-  border7(padding+36, compression)
+  border7(padding+2, compression, direction)
+  border7(padding+19, compression, direction)
+  border7(padding+36, compression, direction)
 
   const p = padding+(sides ? 35 : 55)
 
@@ -238,55 +253,6 @@ function border8(padding=-10, sides=true) {
 
 
 
-function border7Multiple() {
-  times(5, (i) => {
-    borderGraphic.strokeWeight(1 - i/13)
-    border7(i*17 - 5)
-  })
-}
-
-
-function trancendentalMoneyBg() {
-  times(12, (i) => {
-    borderGraphic.strokeWeight(1 - i/13)
-    border7(i*17 - 3)
-  })
-}
-
-
-function border5Layer() {
-  push()
-  strokeWeight(4)
-  stroke(STROKE_C)
-  border5(40, genBorder5Params())
-
-  strokeWeight(2)
-  stroke(STROKE_C2)
-  border5(40, genBorder5Params())
-
-  // strokeWeight(1)
-  // stroke(STROKE_C)
-  // border5(40)
-  pop()
-}
-
-function borderTest(padding=10, cRad=3) {
-  push()
-  strokeWeight(1)
-  const adjW = W - 2*padding
-  const adjH = H - 2*padding
-  const adjPrm = (adjW + adjH) * 2
-  const points = adjPrm/cRad-2
-  times(points+1, p => {
-    const [x,y] = getXYBorder(p, points, padding+cRad)
-    circle(x, y, cRad*2)
-  })
-  // drawShape(points, p => {
-  //   return getXYBorder(p, points, padding+(cRad*2))
-  // })
-  pop()
-}
-
 function denominationBorder(padding=10) {
 
   const adjW = W - 2*padding
@@ -299,162 +265,6 @@ function denominationBorder(padding=10) {
     drawStrAdj(denomination, x, y, 0.1, STROKE_C)
   })
 
-}
-
-function solidBorder1(weight=80) {
-  const top = -H/2
-  const bottom = H/2
-  const left = -W/2
-  const right = W/2
-  const rad = weight/2
-
-  push()
-  strokeWeight(weight)
-  stroke(STROKE_C)
-  line(left, top, right, top)
-  line(right, top, right, bottom)
-  line(right, bottom, left, bottom)
-  line(left, bottom, left, top)
-
-  circle(left+rad, top+rad, rad)
-  circle(left+rad, bottom-rad, rad)
-  circle(right-rad, top+rad, rad)
-  circle(right-rad, bottom-rad, rad)
-  pop()
-}
-
-
-function solidBorder2(weight=60) {
-  const top = -H/2
-  const bottom = H/2
-  const left = -W/2
-  const right = W/2
-  const rad = weight/2
-
-  push()
-  strokeWeight(weight)
-  stroke(STROKE_C)
-  line(left, top, right, top)
-  line(right, top, right, bottom)
-  line(right, bottom, left, bottom)
-  line(left, bottom, left, top)
-  stroke(FILL_C)
-  circle(left+rad, top+rad, rad)
-  circle(left+rad, bottom-rad, rad)
-  circle(right-rad, top+rad, rad)
-  circle(right-rad, bottom-rad, rad)
-  pop()
-}
-
-
-
-function solidBorder3(weight=60) {
-  const top = -H/2
-  const bottom = H/2
-  const left = -W/2
-  const right = W/2
-  const rad = weight/2
-
-  push()
-  borderGraphic.strokeWeight(weight)
-  borderGraphic.stroke(STROKE_C)
-  borderGraphic.line(left, top, right, top)
-  borderGraphic.line(right, top, right, bottom)
-  borderGraphic.line(right, bottom, left, bottom)
-  borderGraphic.line(left, bottom, left, top)
-
-  borderGraphic.circle(left+rad, top+rad, rad)
-  borderGraphic.circle(left+rad, bottom-rad, rad)
-  borderGraphic.circle(right-rad, top+rad, rad)
-  borderGraphic.circle(right-rad, bottom-rad, rad)
-
-  // cool ->
-
-
-  borderGraphic.erase()
-  borderGraphic.strokeWeight(weight/5)
-  borderGraphic.line(
-    left + weight + rad, top+weight/4,
-    right - weight - rad, top+weight/4
-  )
-
-  borderGraphic.line(
-    left + weight + rad, bottom-weight/4,
-    right - weight - rad, bottom-weight/4
-  )
-
-  borderGraphic.line(
-    left + weight/4, bottom - weight - rad,
-    left + weight/4, top + weight + rad
-  )
-
-  borderGraphic.line(
-    right - weight/4, bottom - weight - rad,
-    right - weight/4, top + weight + rad
-  )
-
-  borderGraphic.noFill()
-  borderGraphic.circle(left+rad, top+rad, rad)
-  borderGraphic.circle(left+rad, bottom-rad, rad)
-  borderGraphic.circle(right-rad, top+rad, rad)
-  borderGraphic.circle(right-rad, bottom-rad, rad)
-  borderGraphic.noErase()
-
-  pop()
-}
-
-
-function solidBorder4(weight=60) {
-  const top = -H/2
-  const bottom = H/2
-  const left = -W/2
-  const right = W/2
-  const rad = weight/2
-
-  push()
-  strokeWeight(weight)
-  stroke(STROKE_C)
-  line(left, top, right, top)
-  line(right, top, right, bottom)
-  line(right, bottom, left, bottom)
-  line(left, bottom, left, top)
-
-  circle(left+rad, top+rad, rad)
-  circle(left+rad, bottom-rad, rad)
-  circle(right-rad, top+rad, rad)
-  circle(right-rad, bottom-rad, rad)
-
-  // cool ->
-  strokeWeight(weight/2)
-  // strokeWeight(weight/5)
-  stroke(FILL_C)
-  line(
-    left + weight + rad, top+weight/4,
-    right - weight - rad, top+weight/4
-  )
-
-  line(
-    left + weight + rad, bottom-weight/4,
-    right - weight - rad, bottom-weight/4
-  )
-
-  line(
-    left + weight/4, bottom - weight - rad,
-    left + weight/4, top + weight + rad
-  )
-
-  line(
-    right - weight/4, bottom - weight - rad,
-    right - weight/4, top + weight + rad
-  )
-
-  noFill()
-  circle(left+rad, top+rad, rad)
-  circle(left+rad, bottom-rad, rad)
-  circle(right-rad, top+rad, rad)
-  circle(right-rad, bottom-rad, rad)
-
-  pop()
 }
 
 

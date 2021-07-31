@@ -89,7 +89,9 @@ function setup() {
 
 
   const rosetteStyleSeed = rnd()
-  if (rosetteStyleSeed < 0.625)
+  if (rosetteStyleSeed < 0.0625)
+    ROSETTE_STYLE = 'DECO'
+  else if (rosetteStyleSeed < 0.625)
     ROSETTE_STYLE = 'NUMISMATIC'
   else if (rosetteStyleSeed < 0.8125)
     ROSETTE_STYLE = 'VINTAGE'
@@ -137,98 +139,12 @@ function draw() {
   background(FILL_C)
 
 
-
-  fuckItDoTheLayoutFromScratch()
-
-
-
-
-
-
   // if (rnd() < 0.666)
-  //   standardLayout()
+    fuckItDoTheLayoutFromScratch()
   // else
   // stripLayout()
 
-
-
-
-
-
-// sideEmblemDollar()
-// randLayout()
-
-
-
-
-
-
-
-// push()
-// stroke(STROKE_LIGHT_C)
-//   randomWatermark(150, 60)
-//   randomWatermark(-150, -60)
-// pop()
-
-
 }
-
-
-
-
-
-
-
-function randLayout() {
-
-  // const r = rnd()
-  // if (r < 0.125) bg1()
-  // else if (r < 0.25) bg2()
-  // else if (r < 0.375) bg3()
-  // else if (r < 0.5) bg4()
-  // else if (r < 0.625) bg5()
-  // else if (r < 0.75) bg6()
-  // else if (r < 0.875) bg7()
-  // else bg8()
-  // bg10()
-
-
-
-
-  let rosetteFn
-  let borderFn = noop
-  let paramFn = rnd() < 0.5
-    ? genRosetteParams
-    : genDistortedRosetteParams
-
-  const ros = rnd()
-  if (ros < 0.25) {
-    rosetteFn = dollarRosette
-  } else if (ros < 0.45) {
-    rosetteFn = dollarEchoRosette
-  } else if (ros < 0.55) {
-    rosetteFn = dollarLineRosette
-  } else if (ros < 0.65) {
-    rosetteFn = dollarCheckeredRosette
-  } else if (ros < 0.75) {
-    rosetteFn = vintageRosette
-    paramFn = genVintageRosetteParams
-  } else if (ros < 0.85) {
-    rosetteFn = denominationRosette(5)
-    borderFn = noop
-  } else {
-    rosetteFn = rosetteBg
-  }
-  middleRosette(80, dollarRosette, borderFn, paramFn, 0.4)
-  standardDollar()
-  centerSymbol()
-  // pointTexture()
-
-}
-
-
-
-
 
 
 function keyPressed() {
@@ -236,95 +152,3 @@ function keyPressed() {
     saveCanvas(__canvas, 'FIM-' + Date.now(), 'jpg');
   }
 }
-
-// function mouseWheel(event) {
-//   SCALE -= (SCALE*event.delta/500)
-// }
-
-
-
-function centerSymbol() {
-  push()
-  noFill()
-  stroke(STROKE_C)
-  strokeWeight(14)
-  multiCurve(0, 0, 30, radians(125), radians(235), 0.7, 3)
-  stroke(FILL_C)
-  strokeWeight(10)
-  multiCurve(0, 0, 30, radians(125), radians(235), 0.7, 3)
-  stroke(STROKE_C)
-  strokeWeight(8)
-  multiCurve(0, 0, 30, radians(125), radians(235), 0.7, 3)
-  stroke(FILL_C)
-  strokeWeight(4)
-  multiCurve(0, 0, 30, radians(125), radians(235), 0.7, 3)
-  stroke(STROKE_C)
-  strokeWeight(2)
-  multiCurve(0, 0, 30, radians(125), radians(235), 0.7, 3)
-  pop()
-}
-
-
-function sketch() {
-  // circle(0,0, 100)
-
-  getXYCurveLine(-201, -20, 200, 20)
-
-  // shrinkingCorners()
-}
-
-
-
-
-function shrinkingCorners() {
-  // const p0 = genRosetteParams()
-  // const p1 = genRosetteParams({ strokeW: 0.75})
-  // const p2 = genRosetteParams({ strokeW: 0.5})
-
-  // console.log('p0', p0)
-  // console.log('p1', p1)
-
-
-  // dollarRosette(105-width/2,105-height/2,85, 50,{...p0, strokeC: FILL_C})
-  // dollarRosette(120,0,75,30,{...p1, strokeC: FILL_C})
-  // dollarRosette(200,0,45,15,{...p2, strokeC: FILL_C})
-
-  // dollarRosette(105-width/2,105-height/2,80, 30,p0)
-  // dollarRosette(240-width/2,85-height/2,50,10,p1)
-
-  // dollarRosette(200,0,40,15,p2)
-
-  times(50, () => {
-    const radius = rnd(20, 150)
-    const x = rnd(-W/2, W/2)
-    const y = rnd(-H/2, H/2)
-    const p = genRosetteParams({ strokeW: radius/160 })
-    // dollarRosette(x, y, radius+5, 0, {...p, strokeC: FILL_C})
-    dollarRosette(x, y, radius, radius/2, {...p, strokeC: rnd() < 0.5 ? FILL_C : STROKE_C})
-  })
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -78,6 +78,7 @@ roman numeral present: 5%
 - numotic and prickly borders/rosettes mixed together
 - counterfeit (missing signature)
 - rosette graphic.rotate(0.2)
+- bill printed on top of another bill
 
 ## Serial numbers 10%
 - star note
@@ -155,21 +156,15 @@ https://en.numista.com/catalogue/note203275.html
 - make echo version of the numismatic border/background
 - denominationBorder is probably broken
 - incorporate denomination rosette
+- lrage background and inverted corners broken for DECO
+- portrait/object sizing all fucked up; denomination needs border
+
 - write generic function for displaying a rosette w/ background
   - choose the right rosette style
   - hole or no hole
   - single/double
   - only dark bg
-- generic centerpiece fn
-  - large rosette
-  - portrait
-    - empty
-    - denomination
-    - shape
-    - smily face
-    - CGK
-  - florrette
-  - double florette
+
 
 
 
@@ -243,6 +238,9 @@ https://en.numista.com/catalogue/note203275.html
 
 
 LAYOUT TODOS
+- 1/2 and 2/3 layouts
+- consider removing signature
+
 - keep track of whether denomination has been shown in center
   - need to handlempty case
 - maybe have denomination mirror emblem
