@@ -1,4 +1,4 @@
-function fuckItDoTheLayoutFromScratch() {
+function mainLayout() {
   squigTexture()
   pointTexture()
 
@@ -53,7 +53,7 @@ function fuckItDoTheLayoutFromScratch() {
       120
     )
   } else if (bgSeed < 0.9375) {
-    rnd() < 0.5 ? bg10() : bg11()
+    ROSETTE_STYLE === 'VINTAGE' || rnd() < 0.5 && ROSETTE_STYLE !== 'DECO' ? bg10() : bg11()
   } else {/*no bg*/}
 
 
@@ -198,7 +198,7 @@ function displayBillData(wmCorners=[], showBorder=true) {
   const serialX = 110 * cornerXDirection(serialCorner)
 
   signature(sigX > 0 ? sigX + 85 : sigX, infoComponentsY * cornerYDirection(sigCorner), 10)
-  serialNumber(serialX < 0 ? serialX-65 : serialX, infoComponentsY * cornerYDirection(serialCorner), '99999999')
+  serialNumber(serialX < 0 ? serialX-65 : serialX, infoComponentsY * cornerYDirection(serialCorner))
 }
 
 function displayBillDataSide(wmCorners=[]) {
@@ -206,7 +206,7 @@ function displayBillDataSide(wmCorners=[]) {
   const sigX = 160 * sigXMod
   const serialX = 170 * (sigXMod * -1)
   signature(sigX > 0 ? sigX + 80 : sigX, 0, 10)
-  serialNumber(serialX < 0 ? serialX-65 : serialX, 0, '99999999')
+  serialNumber(serialX < 0 ? serialX-65 : serialX, 0)
 }
 
 
@@ -258,9 +258,10 @@ function emblem(side) {
 
 function singleCenterPiece() {
   const seed = rnd()
-  if (seed < 0.25) singleCenterWithHole()
+
+  if (seed < 0.25 && ROSETTE_STYLE !== 'VINTAGE') singleCenterWithHole()
   else if (seed < 0.5) singleCenterNoHole()
-  else if (seed < 0.75) singleCenterGradient()
+  else if (seed < 0.75 && ROSETTE_STYLE !== 'VINTAGE') singleCenterGradient()
   else doubleCenter()
 }
 
@@ -397,8 +398,7 @@ function stripLayout() {
     stripDenominationThirds(stripSide, true)
     stripDenominationThirds(0, true)
     stripDenominationThirds(stripSide*-1, true)
-    serialNumber(-W/6-25, H/3, '99999999')
-
+    serialNumber(-W/6-25, H/3)
     return
   }
 
@@ -410,6 +410,11 @@ function stripLayout() {
 
   if (mainSeed < 0.5) {
     rosetteWithBackground(W/-6*stripSide,0, 180)
+    if (ROSETTE_STYLE === 'VINTAGE') {
+      rosetteWithBackground(W/-6*stripSide,0, 135)
+      rosetteWithBackground(W/-6*stripSide,0, 90)
+      rosetteWithBackground(W/-6*stripSide,0, 70)
+    }
     if (rnd() < 0.1) drawCGK(mainX, 0, 250)
   } else if (mainSeed < 0.8) {
     randomWatermark(mainX, 0, 100)
@@ -463,12 +468,12 @@ function stripDenominationThirds(lOrR=-1, full=false) {
 
   if (rnd() < 0.333 && !full) {
     drawStripThird(-H/3, lOrR)
-    serialNumber(W/3*lOrR-30, H/3, '99999999')
-    // serialNumber(H/3 + 50, W/3*lOrR, '99999999')
+    serialNumber(W/3*lOrR-30, H/3)
+    // serialNumber(H/3 + 50, W/3*lOrR)
   } else if (rnd() < 0.666 && !full) {
     drawStripThird(H/3, lOrR)
-    // serialNumber(110, 120, '99999999')
-    // serialNumber(50 - H/3, W/3*lOrR, '99999999')
+    // serialNumber(110, 120)
+    // serialNumber(50 - H/3, W/3*lOrR)
 
   } else {
     const num = sample([1,2,3])

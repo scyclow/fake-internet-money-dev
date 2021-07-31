@@ -151,6 +151,7 @@ https://en.numista.com/catalogue/note203275.html
 
 
 # TODO
+- make sure dneomination is always displayed, exspecially in portrait
 - make sure all numerals are shadowed on thirds layout
 - make max rosette stroke weight ~1.25
 - make echo version of the numismatic border/background

@@ -282,8 +282,8 @@ function bg8() {
 
 
 function bg9(corners=[2, 4]) {
-  const p = genParams({ strokeC: STROKE_LIGHT_C, strokeW: 1 })
   const rFn = ROSETTE_STYLE === 'VINTAGE' ? dollarRosette : getRosetteStyleFn()
+  const p = genRosetteParams({ strokeC: STROKE_LIGHT_C, strokeW: 1 })
   corners.forEach(c => rFn(CORNERS[c][0], CORNERS[c][1], W/2, rnd(0, W/4), p))
 }
 
@@ -293,13 +293,12 @@ function bg10() {
     times(12, (i) => {
       borderGraphic.strokeWeight(1 - i/12)
       border7(i*17 - 5, compression)
-      // border7(i*17 - 5, 10-i)
     })
   })
 }
 
 function bg11() {
-  rosetteWithBackground(0,0, W, 0, {strokeC: rnd() < 0.5 ? STROKE_C : FILL_C})
+  rosetteWithBackground(0,0, W, 0)
 }
 
 

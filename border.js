@@ -225,9 +225,10 @@ function border8(padding=-10, sides=true) {
   borderGraphic.strokeWeight(1.1 - compression/12)
   const direction = posOrNeg()
 
+  const extraPadding = ['ECHO', 'DIGITAL'].includes(ROSETTE_STYLE) ? 6 : 0
   border7(padding+2, compression, direction)
-  border7(padding+19, compression, direction)
-  border7(padding+36, compression, direction)
+  border7(padding+19+extraPadding, compression, direction)
+  border7(padding+36+extraPadding*2, compression, direction)
 
   const p = padding+(sides ? 35 : 55)
 

@@ -74,6 +74,7 @@ function setup() {
 
 
 
+
   HUE = int(rnd(0,360))
   STROKE_C = color(HUE, 26, 25)
   STROKE_LIGHT_C = color(HUE, 26, 35)
@@ -111,18 +112,20 @@ function setup() {
 
   // const sample = a => a[int(rnd(0, a.length))]
 
-  // const softColors = [
-  //   color(23, 95, 95),
-  //   color(150, 57, 95),
-  //   color(270, 65, 35),
-  //   color(250, 65, 35),
-  //   color(210, 75, 100),
-  //   color(0, 75, 100),
-  //   color(31, 48, 34),
-  // ]
-  // STROKE_C = sample(softColors)
-  // FILL_C = sample(softColors)
-  // STROKE_C2 = sample(softColors)
+  const softColors = [
+    color(23, 95, 95),
+    color(150, 57, 95),
+    color(270, 65, 35),
+    color(250, 65, 35),
+    color(210, 75, 100),
+    color(0, 75, 100),
+    color(31, 48, 34),
+  ]
+  // if (rnd() < 0.8) {
+  //   STROKE_C = sample(softColors)
+  //   FILL_C = sample(softColors)
+  //   STROKE_C2 = sample(softColors)
+  // }
 }
 
 
@@ -139,10 +142,10 @@ function draw() {
   background(FILL_C)
 
 
-  // if (rnd() < 0.666)
-    fuckItDoTheLayoutFromScratch()
-  // else
-  // stripLayout()
+  if (rnd() < 0.666)
+    mainLayout()
+  else
+  stripLayout()
 
 }
 

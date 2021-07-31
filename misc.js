@@ -35,9 +35,15 @@ function signature(x, y, size) {
   pop()
 }
 
+function genSerialNumber() {
+  let num = ""
+  times(4, _ => num += rnd().toFixed(2).slice(2,4))
+  return num
+}
 
-function serialNumber(x, y, sNumber) {
+function serialNumber(x, y) {
   push()
+  const sNumber = genSerialNumber()
   fill(FILL_C)
   stroke(STROKE_C)
   rect(x, y, 60, 20)
