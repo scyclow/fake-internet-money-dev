@@ -282,9 +282,12 @@ function bg8() {
 
 
 function bg9(corners=[2, 4]) {
+  push()
+
   const rFn = IS_VINTAGE ? dollarRosette : getRosetteStyleFn()
-  const p = genRosetteParams({ strokeC: LIGHTENED_DARK_C, strokeW: 1 })
+  const p = genRosetteParams({ strokeC: HIGHLIGHT ? ACCENT_C : LIGHTENED_DARK_C, strokeW: 1 })
   corners.forEach(c => rFn(CORNERS[c][0], CORNERS[c][1], W/2, rnd(0, W/4), p))
+  pop()
 }
 
 function bg10() {

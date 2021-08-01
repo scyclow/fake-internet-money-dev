@@ -244,24 +244,14 @@ const genVintageRosetteParams = (o) => ({
 })
 
 const genRosetteParams = (o) => ({
-  // TODO one of these can go up to 33 with a smaller max for the other one
-  c1: int(rnd(1, 16)) * posOrNeg(),
-  c2: int(rnd(1, 13)) * posOrNeg(),
-  // TODO can probably bring the min down to ~5
-  r1: rnd(10, 20),
-  r2: rnd(10, 20),
+  c1: int(rnd(1, ROSETTE_ENHANCEMENT ? 25 : 16)) * posOrNeg(),
+  c2: int(rnd(1, ROSETTE_ENHANCEMENT ? 20 : 13)) * posOrNeg(),
+  r1: ROSETTE_ENHANCEMENT ? rnd(4, 10) : rnd(10, 20),
+  r2: ROSETTE_ENHANCEMENT ? rnd(4, 10) : rnd(10, 20),
   points: 70,
   ...o
 })
 
-const genDistortedRosetteParams = (o) => ({
-  c1: int(rnd(1, 16)) * posOrNeg(),
-  c2: int(rnd(1, 13)) * posOrNeg(),
-  // TODO can probably bring the min down to ~5
-  r1: rnd(4, 10),
-  r2: rnd(4, 10),
-  ...o
-})
 
 
 const createRosetteBorder = (x_, y_, c0Points, c1, c2, rad1Adj, rad2Adj) => {

@@ -1,7 +1,4 @@
 function mainLayout() {
-  squigTexture()
-  pointTexture()
-
 
   const centerPieceSeed = rnd()
   if (centerPieceSeed < 0.01)
@@ -24,9 +21,7 @@ function mainLayout() {
 
   const showBorder = [0, 1, 2, 3, 6, 7].includes(CENTER_PIECE) && rnd() < 0.75
   const cornerComponentLocations = showBorder || rnd() < 0.8 ? cornerLocations() : []
-  const sideSpace = [0,1,3,9].includes(CENTER_PIECE)
-
-  // portrait()
+  let sideSpace = [0,1,3,9].includes(CENTER_PIECE)
 
 
   const bgSeed = rnd()
@@ -38,6 +33,7 @@ function mainLayout() {
   } else if (bgSeed < 0.5625) {
     wmCorners = getDoubleWMCorners(cornerComponentLocations)
     bg9(wmCorners)
+    sideSpace = false
   } else if (bgSeed < 0.8125) {
     const wmCorner = getSingleWMCorner(cornerComponentLocations)
     wmCorners = [wmCorner]
@@ -45,7 +41,7 @@ function mainLayout() {
       150 * cornerXDirection(wmCorner),
       60 * cornerYDirection(wmCorner, cornerComponentLocations.length === 4),
       120,
-      LIGHTENED_DARK_C
+      HIGHLIGHT ? ACCENT_C : LIGHTENED_DARK_C
     )
   } else if (bgSeed < 0.9375) {
     IS_VINTAGE || rnd() < 0.5 && !IS_DECO ? bg10() : bg11()
@@ -267,7 +263,7 @@ function emblem(side) {
 
 function singleCenterPiece() {
   const seed = rnd()
-
+console.log(seed)
 
   if (HIGHLIGHT && !IS_VINTAGE) singleCenterGradient()
   else if (seed < 0.375 && !IS_VINTAGE) singleCenterWithHole()
@@ -307,9 +303,9 @@ function bouquet(d, level) {
 
 function singleCenterWithHole() {
   const centerP = genRosetteParams({
-    strokeC: LIGHT_C,
+    strokeC: ROSETTE_STROKE_C,
     innerC: LIGHTENED_DARK_C,
-    outterC: DARK_C,
+    outterC: ROSETTE_FILL_C,
   })
   rosetteWithBackground(0,0,150, 0, centerP)
   rosetteWithBackground(0,0,70, 0, {...centerP, holeR: 60})
@@ -411,8 +407,6 @@ function numberSandwich() {
 
 
 function stripLayout() {
-  squigTexture()
-  pointTexture()
 
   randomBgPattern()
   const stripSide = posOrNeg()

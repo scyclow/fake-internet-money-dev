@@ -12,6 +12,7 @@ let SCALE,
     ROSETTE_STYLE,
     IS_VINTAGE,
     IS_DECO,
+    IS_BULLION,
     HIGHLIGHT,
     SHOW_NUMERALS
 
@@ -39,7 +40,6 @@ let __canvas
 let borderGraphic
 let stripeGraphic
 
-let ellapsed=0
 function setup() {
   const windowRatio = window.innerWidth/window.innerHeight
 
@@ -92,6 +92,8 @@ function setup() {
   else
     ROSETTE_STYLE = 'LINE'
 
+  ROSETTE_ENHANCEMENT = rnd() < 0.0625
+
   HIGHLIGHT = !IS_VINTAGE && rnd() < 0.125
 
   const colorSeed = rnd()
@@ -99,8 +101,9 @@ function setup() {
     colorSeed < 0.875 ? 'FIAT'
     : colorSeed < 0.9375 ? 'CRYPTO'
     : 'BULLION'
+  IS_BULLION = COLOR_SCHEME === 'BULLION'
 
-  // fiat
+  let isSliver
   if (COLOR_SCHEME === 'FIAT') {
     HUE = int(rnd(0,360))
     DARK_C = color(HUE, 26, 25)
@@ -109,7 +112,7 @@ function setup() {
     ACCENT_C = color(hfix(HUE-145), 80, 64)
     BRIGHT_C = color(max(HUE-10, 0), 80, 54)
 
-  // crypto
+
   } else if (COLOR_SCHEME === 'CRYPTO') {
     HUE = int(rnd(0,360))
     const isBlue = HUE < 275 && HUE > 210
@@ -131,8 +134,9 @@ function setup() {
 
       DARK_C = color(40, 26, 20)
       LIGHTENED_DARK_C = color(40, 26, 35)
+      isSliver = true
     } else {
-      LIGHT_C = color(40, 54, 74)
+      LIGHT_C = color(40, 60, 67)
       BRIGHT_C = color(60, 30, 100)
 
       DARK_C = color(203, 10, 25)
@@ -143,9 +147,10 @@ function setup() {
     HIGHLIGHT = true
   }
 
-  const reverseRosetteColors = rnd() < 0.25
-  ROSETTE_FILL_C = IS_VINTAGE || reverseRosetteColors ? LIGHT_C : DARK_C
-  ROSETTE_STROKE_C = IS_VINTAGE || reverseRosetteColors ? DARK_C : LIGHT_C
+  const reverseRosetteColors = rnd() < 0.5
+  const lightC = isSliver ? BRIGHT_C : LIGHT_C
+  ROSETTE_FILL_C = IS_VINTAGE || reverseRosetteColors ? lightC : DARK_C
+  ROSETTE_STROKE_C = IS_VINTAGE || reverseRosetteColors ? DARK_C : lightC
 
 
 
@@ -179,16 +184,13 @@ function setup() {
 
 
 function draw() {
-  ellapsed++
-
   translate(width/2, height/2)
   scale(SCALE)
   noFill()
 
-
-
   stroke(DARK_C)
-  if (COLOR_SCHEME === 'BULLION') {
+
+  if (IS_BULLION) {
     const direction = posOrNeg()
     const diag = rnd(0, 100)
     for (let i = -diag; i <= W+diag; i++) {
@@ -203,6 +205,9 @@ function draw() {
     }
   }
   else background(LIGHT_C)
+
+  if (!IS_BULLION) pointTexture()
+  squigTexture()
 
 
   if (rnd() < 0.8125)
