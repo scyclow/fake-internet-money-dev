@@ -111,23 +111,20 @@ function dollarEchoRosette(x_=0, y_=0, maxRad=200, minRad=100, params={}, bg=fal
   push()
   params.strokeC && stroke(params.strokeC)
   bg && strokeWeight(2)
+  params.strokeW && strokeWeight(params.strokeW)
 
-
-  const c0Points = params.points
-
-  const border = createRosetteBorder(x_, y_, c0Points, params.c1, params.c2, params.r1, params.r2)
-
-  const r = bg ? 1 : 5
+  const border = createRosetteBorder(x_, y_, params.points, params.c1, params.c2, params.r1, params.r2)
+  const r = params.rDiff || (bg ? 1 : 5)
   const m = bg ? int(maxRad/40) : 0
   for (let rad = minRad; rad <= maxRad + m; rad += r) {
-    !bg && strokeWeight(rad/130)
+    !bg && !params.ignoreShrink && strokeWeight(rad*params.strokeW/130)
     params.innerC && params.outterC && stroke(lerpColor(
       params.innerC,
       params.outterC,
       (rad - minRad)/(maxRad - minRad)
     ))
 
-    drawCircle(c0Points, p => {
+    drawCircle(params.points, p => {
       return border(rad, p)
     })
   }

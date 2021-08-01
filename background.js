@@ -254,7 +254,7 @@ function bg6() {
 function bg7() {
   push()
   strokeWeight(1)
-  stroke(BRIGHT_LIGHT_C)
+  stroke(LIGHTENED_DARK_C)
   for (
     let x = -W/2 - H/2;
     x < H/2 + W/2;
@@ -270,7 +270,7 @@ function bg8() {
   push()
   const size = 10
   strokeWeight(0.35)
-  stroke(STROKE_LIGHT_C)
+  stroke(LIGHTENED_DARK_C)
 
   for (let x = -W/2; x < W/2+1; x += size)
   for (let y = -H/2; y < H/2+1; y += size) {
@@ -283,7 +283,7 @@ function bg8() {
 
 function bg9(corners=[2, 4]) {
   const rFn = IS_VINTAGE ? dollarRosette : getRosetteStyleFn()
-  const p = genRosetteParams({ strokeC: STROKE_LIGHT_C, strokeW: 1 })
+  const p = genRosetteParams({ strokeC: LIGHTENED_DARK_C, strokeW: 1 })
   corners.forEach(c => rFn(CORNERS[c][0], CORNERS[c][1], W/2, rnd(0, W/4), p))
 }
 

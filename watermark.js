@@ -2,7 +2,7 @@
 function cgkWatermark(x=150, y=75, base=300) {
   push()
   strokeWeight(2)
-  stroke(STROKE_LIGHT_C)
+  stroke(LIGHTENED_DARK_C)
   drawCGK(x, y, base)
   pop()
 }
@@ -26,11 +26,14 @@ function smilyFace(x, y, radius=200) {
 }
 
 // ~37
-function randomWatermark(x, y, radius) {
+function randomWatermark(x, y, radius, strokeC) {
+  push()
+  strokeC && stroke(strokeC)
   const r = rnd()
   if (r < 0.3333) watermark1(x, y, radius)
   else if (r < 0.85) watermark2(x, y, radius)
   else watermark3(x, y, radius)
+  pop()
 }
 
 

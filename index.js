@@ -3,9 +3,8 @@
 
 let SCALE,
     DARK_C,
-    STROKE_LIGHT_C,
+    LIGHTENED_DARK_C,
     LIGHT_C,
-    BRIGHT_C,
     BRIGHT_LIGHT_C,
     ACCENT_C,
     HUE,
@@ -13,6 +12,7 @@ let SCALE,
     ROSETTE_STYLE,
     IS_VINTAGE,
     IS_DECO,
+    HIGHLIGHT,
     SHOW_NUMERALS
 
 const W = 600
@@ -92,30 +92,64 @@ function setup() {
   else
     ROSETTE_STYLE = 'LINE'
 
+  HIGHLIGHT = !IS_VINTAGE && rnd() < 0.125
+
+  const colorSeed = rnd()
+  COLOR_SCHEME =
+    colorSeed < 0.875 ? 'FIAT'
+    : colorSeed < 0.9375 ? 'CRYPTO'
+    : 'BULLION'
+
+  // fiat
+  if (COLOR_SCHEME === 'FIAT') {
+    HUE = int(rnd(0,360))
+    DARK_C = color(HUE, 26, 25)
+    LIGHT_C = color(hfix(HUE-72), 6, 91)
+    LIGHTENED_DARK_C = color(HUE, 16, 55)
+    ACCENT_C = color(hfix(HUE-145), 80, 64)
+    BRIGHT_C = color(max(HUE-10, 0), 80, 54)
+
+  // crypto
+  } else if (COLOR_SCHEME === 'CRYPTO') {
+    HUE = int(rnd(0,360))
+    const isBlue = HUE < 275 && HUE > 210
+    LIGHT_C = color(hfix(HUE-153), 96, isBlue ? 0 : 20)
+    DARK_C = color(HUE, isBlue ? 80 : 99, isBlue ? 95 : 90)
+    LIGHTENED_DARK_C = color(HUE, 69, 75)
+    ACCENT_C = color(hfix(HUE-254), 52, 78)
+    BRIGHT_C = color(hfix(HUE-15), 99, 65)
+
+  } else {
+    HUE = int(rnd(0,360))
+    DARK_C = color(HUE, 26, 25)
+    LIGHTENED_DARK_C = color(HUE, 26, 35)
+    ACCENT_C = DARK_C
+
+    if (rnd() < 0.5) {
+      LIGHT_C = color(203, 5, 48)
+      BRIGHT_C = color(167, 5, 95)
+
+      DARK_C = color(40, 26, 20)
+      LIGHTENED_DARK_C = color(40, 26, 35)
+    } else {
+      LIGHT_C = color(40, 54, 74)
+      BRIGHT_C = color(60, 30, 100)
+
+      DARK_C = color(203, 10, 25)
+      LIGHTENED_DARK_C = color(203, 10, 40)
+    }
+    ACCENT_C = DARK_C
+
+    HIGHLIGHT = true
+  }
+
+  const reverseRosetteColors = rnd() < 0.25
+  ROSETTE_FILL_C = IS_VINTAGE || reverseRosetteColors ? LIGHT_C : DARK_C
+  ROSETTE_STROKE_C = IS_VINTAGE || reverseRosetteColors ? DARK_C : LIGHT_C
 
 
-  HUE = int(rnd(0,360))
-  DARK_C = color(HUE, 26, 25)
-  LIGHT_C = color(hfix(HUE-72), 6, 91)
-
-  // TODO swap these for non vintage occasionally
-  ROSETTE_FILL_C = IS_VINTAGE ? LIGHT_C : DARK_C
-  ROSETTE_STROKE_C = IS_VINTAGE ? DARK_C : LIGHT_C
-
-
-
-  STROKE_LIGHT_C = color(HUE, 26, 35)
-  DARK_C2 = color(hfix(HUE-132), 6, 91)
-
-  BRIGHT_C = color(hfix(HUE-40), 75, 85)
-  BRIGHT_LIGHT_C = color(hfix(HUE-40), 25, 75)
-  ACCENT_C = color(hfix(HUE-40), 77, 64)
-  GRADIENT_C = color(hfix(HUE-180), 40, 60)
 
   SHOW_NUMERALS = rnd() < 0.2
-
-
-
 
 
 
@@ -154,7 +188,21 @@ function draw() {
 
 
   stroke(DARK_C)
-  background(LIGHT_C)
+  if (COLOR_SCHEME === 'BULLION') {
+    const direction = posOrNeg()
+    const diag = rnd(0, 100)
+    for (let i = -diag; i <= W+diag; i++) {
+      const x = direction === 1 ? i-W/2 : W/2-i
+
+      stroke(lerpColor(
+        LIGHT_C,
+        BRIGHT_C,
+        i/W
+      ))
+      line(x+diag, -H/2, x, H/2)
+    }
+  }
+  else background(LIGHT_C)
 
 
   if (rnd() < 0.8125)

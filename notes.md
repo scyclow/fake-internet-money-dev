@@ -151,21 +151,14 @@ https://en.numista.com/catalogue/note203275.html
 
 
 # TODO
-- be really careful about showing object, numeral in strip layout
+- be really careful about showing object, numeral in strip layout. easy to get repeats
 - make sure dneomination is always displayed, exspecially in portrait
 - make sure all numerals are shadowed on thirds layout
 - make max rosette stroke weight ~1.25
-- make echo version of the numismatic border/background
-- denominationBorder is probably broken
 - incorporate denomination rosette
-- lrage background and inverted corners broken for DECO
 - portrait/object sizing all fucked up; denomination needs border
-
-- write generic function for displaying a rosette w/ background
-  - choose the right rosette style
-  - hole or no hole
-  - single/double
-  - only dark bg
+- sig/serial for strip layout
+- serial number rarities/stars
 
 
 
@@ -174,18 +167,12 @@ https://en.numista.com/catalogue/note203275.html
 
 
 
-
-
-
-- line up corner instances with location of watermark
 
 - certain border types have special corer possabilities
   - ex. missing border + curved corner borders can have plain numbers
   - bars can have light number text
-- swap in different rosette types
-- fix rosette bg -- for use dollarRosette for dollar rosette with higher stroke weight AND FILL
 - only use floral borders with floral rosettes/numismatic
-- move signature around depending on BL corner
+
 - fix number lines
 - parameterize rosettes better (type, bg color, hole, number/numeral/empty/$)
 - reassess bg; maybe swap one out for something chain-y. maybe something that looks like a financial chart
@@ -257,9 +244,7 @@ LAYOUT TODOS
   - includes single large rosette corner WM
   - only shows up in a corner without a corner component
 
-- keep track of space that center piece allows
 - vintage double WM is pretty fucked
-- bg 10/11 fucked for vintage
 - add only-dark rosette
 - address tiedie emlem?
 

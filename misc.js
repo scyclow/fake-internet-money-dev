@@ -1,5 +1,5 @@
 
-function signature(x, y, size) {
+function signature(x, y, size, invert) {
   push()
   noFill()
   strokeWeight(2)
@@ -22,12 +22,12 @@ function signature(x, y, size) {
     y + size/2
   ])
 
-  stroke(LIGHT_C)
+  invert ? stroke(DARK_C) : stroke(LIGHT_C)
   beginShape()
   points.forEach(([x, y]) => curveVertex(x+1, y+1))
   endShape()
 
-  stroke(DARK_C)
+  invert ? stroke(ACCENT_C) : stroke(DARK_C)
   beginShape()
   points.forEach(([x, y]) => curveVertex(x, y))
   endShape()
