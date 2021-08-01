@@ -133,6 +133,9 @@ function displayCorners(locations=[]) {
   const padding = 57
   const radius = 55
 
+  const allHoles = rnd() < 0.125
+  const selectHoles = locations.length === 4 && rnd() < 0.5 ? [sample([1,3]), sample([2,4])] : []
+
   const params = IS_VINTAGE
     ? genVintageRosetteParams({strokeC: ROSETTE_STROKE_C})
     : genRosetteParams({strokeC: ROSETTE_STROKE_C})
@@ -141,7 +144,7 @@ function displayCorners(locations=[]) {
     const [_x, _y] = CORNERS[location]
     const x = _x + (location%2===1 ? padding : -padding)
     const y = _y + (location<3 ? padding : -padding)
-    const holeR = rnd() < 0.5 ? radius*0.75 : 0
+    const holeR = allHoles || selectHoles.includes(location) ? radius*0.75 : 0
 
     rosetteWithBackground(x, y, radius, 0, {...params, holeR})
     drawStr(DENOMINATION, x+1, y+1, 0.35, ROSETTE_FILL_C)
@@ -406,12 +409,13 @@ function stripLayout() {
 
   if (mainSeed < 0.5) {
     rosetteWithBackground(W/-6*stripSide,0, 180)
-    if (IS_VINTAGE) {
+    if (IS_VINTAGE || rnd() < 0.3125) {
       rosetteWithBackground(W/-6*stripSide,0, 135)
       rosetteWithBackground(W/-6*stripSide,0, 90)
-      rosetteWithBackground(W/-6*stripSide,0, 70)
+      IS_VINTAGE && rosetteWithBackground(W/-6*stripSide,0, 70)
     }
-    if (rnd() < 0.1) drawCGK(mainX, 0, 250)
+    if (rnd() < 0.1)
+      drawCGK(mainX, 0, 250)
   } else if (mainSeed < 0.8) {
     randomWatermark(mainX, 0, 100)
     if (rnd() < 0.1) drawCGK(mainX, 0, 250)
