@@ -5,7 +5,9 @@ let SCALE,
     DARK_C,
     LIGHTENED_DARK_C,
     LIGHT_C,
+    LIGHT_GRADIENT_C,
     BRIGHT_LIGHT_C,
+    BRIGHT_DARK_C,
     ACCENT_C,
     LIGHTENED_ACCENT_C,
     HUE,
@@ -15,10 +17,11 @@ let SCALE,
     IS_DECO,
     IS_BULLION,
     HIGHLIGHT,
-    SHOW_NUMERALS
+    SHOW_NUMERALS,
+    LAYOUT
 
-const W = 600
-const H = 400
+const W = 610
+const H = 377
 const W_H_RATIO = W/H
 const GRAPHIC_RESOLUTION = 4
 
@@ -109,10 +112,12 @@ function setup() {
     HUE = int(rnd(0,360))
     DARK_C = color(HUE, 26, 25)
     LIGHT_C = color(hfix(HUE-72), 6, 91)
+    LIGHT_GRADIENT_C = color(hfix(max(HUE-72, 0)), 6, 91)
     LIGHTENED_DARK_C = color(HUE, 16, 55)
     ACCENT_C = color(hfix(HUE-145), 80, 64)
     LIGHT_ACCENT_C = color(hfix(HUE-145), 55, 64, 30)
-    BRIGHT_C = color(max(HUE-10, 0), 80, 54)
+    BRIGHT_LIGHT_C = color(max(HUE-10, 0), 80, 54)
+    BRIGHT_DARK_C = BRIGHT_LIGHT_C
 
 
   } else if (COLOR_SCHEME === 'CRYPTO') {
@@ -123,41 +128,70 @@ function setup() {
     LIGHTENED_DARK_C = color(HUE, 69, 75)
     ACCENT_C = color(hfix(HUE-254), 100, 100)
     LIGHT_ACCENT_C = ACCENT_C
-    BRIGHT_C = color(hfix(HUE-15), 99, 65)
+    BRIGHT_LIGHT_C = color(hfix(HUE-15), 99, 65)
+    BRIGHT_DARK_C = BRIGHT_LIGHT_C
+    LIGHT_GRADIENT_C = LIGHT_C
 
   } else {
     HUE = int(rnd(0,360))
     DARK_C = color(HUE, 26, 25)
 
-
     if (rnd() < 0.5) {
       LIGHT_C = color(203, 5, 48)
-      BRIGHT_C = color(167, 5, 95)
+      BRIGHT_LIGHT_C = color(167, 5, 95)
       DARK_C = color(40, 26, 20)
-      LIGHTENED_DARK_C = color(40, 26, 35)
+      LIGHTENED_DARK_C = color(203, 10, 35)
+      BRIGHT_DARK_C = LIGHTENED_DARK_C
       isSliver = true
 
     } else {
       LIGHT_C = color(40, 60, 67)
-      BRIGHT_C = color(60, 30, 100)
-      DARK_C = color(203, 10, 25)
-      LIGHTENED_DARK_C = color(203, 10, 40)
+      BRIGHT_LIGHT_C = color(60, 30, 100)
+      DARK_C = color(35, 45, 25, 80)
+      LIGHTENED_DARK_C = color(35, 45, 35)
+      BRIGHT_DARK_C = color(203, 10, 25)
+
+      // LIGHT_C = color(40, 60, 67)
+      // BRIGHT_LIGHT_C = color(60, 30, 100)
+      // DARK_C = color(203, 10, 25)
+      // LIGHTENED_DARK_C = color(203, 10, 40)
     }
     ACCENT_C = DARK_C
     LIGHT_ACCENT_C = LIGHTENED_DARK_C
+    LIGHT_GRADIENT_C = LIGHT_C
 
     HIGHLIGHT = true
   }
 
   const reverseRosetteColors = rnd() < 0.5
-  const lightC = isSliver ? BRIGHT_C : LIGHT_C
-  ROSETTE_FILL_C = IS_VINTAGE || reverseRosetteColors ? lightC : DARK_C
-  ROSETTE_STROKE_C = IS_VINTAGE || reverseRosetteColors ? DARK_C : lightC
+  const lightC = isSliver ? BRIGHT_LIGHT_C : LIGHT_GRADIENT_C
+  const darkC = HIGHLIGHT && !IS_DECO && !IS_VINTAGE && !reverseRosetteColors ? BRIGHT_DARK_C : DARK_C
+  ROSETTE_FILL_C = IS_VINTAGE || reverseRosetteColors ? lightC : darkC
+  ROSETTE_STROKE_C = IS_VINTAGE || reverseRosetteColors ? darkC : lightC
 
 
 
   SHOW_NUMERALS = rnd() < 0.2
 
+
+  LAYOUT = rnd() < 0.8125 ? 'MAIN' : 'STRIP'
+
+  if (LAYOUT === 'MAIN') {
+    const centerPieceSeed = rnd()
+    // if (centerPieceSeed < 0.01)
+    //   MAIN_CENTER_PIECE = 0 // no center piece
+    if (centerPieceSeed < 0.6875)
+      MAIN_CENTER_PIECE = 1 // single
+    else if (centerPieceSeed < 0.8125)
+      MAIN_CENTER_PIECE = 2 // bouquet
+    else if (centerPieceSeed < 0.875)
+      MAIN_CENTER_PIECE = 3 // portrait
+    else
+      MAIN_CENTER_PIECE = 4 // rosette sandwich
+
+    // else if (centerPieceSeed < 1)
+    //   MAIN_CENTER_PIECE = 5 // total chaos
+  }
 
 
 
@@ -190,6 +224,7 @@ function draw() {
   scale(SCALE)
   noFill()
 
+
   stroke(DARK_C)
 
   if (IS_BULLION) {
@@ -200,7 +235,7 @@ function draw() {
 
       stroke(lerpColor(
         LIGHT_C,
-        BRIGHT_C,
+        BRIGHT_LIGHT_C,
         i/W
       ))
       line(x+diag, -H/2, x, H/2)
@@ -212,7 +247,7 @@ function draw() {
   squigTexture()
 
 
-  if (rnd() < 0.8125)
+  if (LAYOUT === 'MAIN')
     mainLayout()
   else
   stripLayout()

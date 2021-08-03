@@ -50,6 +50,8 @@ function drawStrAdj(...args) {
   drawStr(...args)
 }
 
+const drawAdjDenomination = (...args) => drawStrAdj(DENOMINATION, ...args)
+
 function drawDenominationWithBorder(x, y, scale_, borderC, centerC) {
   drawStr(DENOMINATION, x+1, y+1, scale_, borderC)
   drawStr(DENOMINATION, x-1, y-1, scale_, borderC)

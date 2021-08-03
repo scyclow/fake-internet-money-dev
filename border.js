@@ -232,7 +232,16 @@ function border7(padding=20, compression=4, d=1) {
 function border8(padding=-10, sides=true) {
   const compression = int(rnd(1, 7))
 
-  borderGraphic.background(ROSETTE_FILL_C)
+  if (HIGHLIGHT) {
+    borderGraphic.push()
+    times(100, i => {
+      borderGraphic.stroke(lerpColor(ROSETTE_STROKE_C, ROSETTE_FILL_C, (i+75)/150))
+      borderGraphic.rectMode(CENTER)
+      borderGraphic.rect(0, 0, W-i, H-i)
+    })
+    borderGraphic.pop()
+  } else borderGraphic.background(ROSETTE_FILL_C)
+
   borderGraphic.stroke(ROSETTE_STROKE_C)
   borderGraphic.strokeWeight(1.1 - compression/12)
   const direction = posOrNeg()

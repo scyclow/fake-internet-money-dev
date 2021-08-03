@@ -139,7 +139,8 @@ function bg3() {
 
   const w = 30
   const h = 15
-  const showCircle = rnd() < 0.5
+
+  const showCircle = HIGHLIGHT || rnd() < 0.5
 
   for (let y = 0, i = 0; y <= H+5; y += h, i++) {
     const y_ = y - H/2
@@ -151,7 +152,11 @@ function bg3() {
         : (x % 2 === 0 ? -h/2 : h/2)
 
       curveVertex(x*w - W/2, y_ + yAdj)
-      showCircle && circle(x*w - W/2, y_ + yAdj, 4)
+      if (showCircle) {
+        fill(BRIGHT_LIGHT_C)
+        circle(x*w - W/2, y_ + yAdj, 4)
+        noFill()
+      }
     }
     endShape()
 
@@ -232,6 +237,7 @@ function bg5() {
 function bg6() {
   push()
   strokeWeight(0.25)
+  HIGHLIGHT && fill(LIGHT_ACCENT_C)
   const size = 10
 
   for (let x = 0; x < W; x += size)
@@ -241,13 +247,13 @@ function bg6() {
     if (rnd() < 0.5) {
       line(x_, y_, x_ + size, y_ + size)
       const c = rnd()
-      if (c < 0.15) circle(x_, y_, 2)
-      else if (c < 0.3) circle(x_ + size, y_ + size, 2)
+      if (c < 0.15) circle(x_, y_, 4)
+      else if (c < 0.3) circle(x_ + size, y_ + size, 4)
     } else {
       line(x_+size*2, y_, x_, y_ + size*2)
       const c = rnd()
-      if (c < 0.15) circle(x_+size*2, y_, 2)
-      else if (c < 0.3) circle(x_, y_ + size*2, 2)
+      if (c < 0.15) circle(x_+size*2, y_, 4)
+      else if (c < 0.3) circle(x_, y_ + size*2, 4)
     }
   }
   pop()

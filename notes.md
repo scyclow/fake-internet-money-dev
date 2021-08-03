@@ -79,6 +79,7 @@ roman numeral present: 5%
 - counterfeit (missing signature)
 - rosette graphic.rotate(0.2)
 - bill printed on top of another bill
+- corners are asymetric
 
 ## Serial numbers 10%
 - star note
@@ -147,10 +148,158 @@ https://en.numista.com/catalogue/note203275.html
 
 
 
+# PROCESS
+  - maybe i should look into getting a studio.
+  - i can't believe that people are paying me to make art. that's so fucking dope. they're paying me to make art that's also an investment vehicle of sorts.
+  - i should really make a cheap, high mint project. unfortunately the turn that FIM si mtaking is towards the more expensive-looking. either way, ISID was a good type fo thsoe projects. high variability ones should be pretty hot right now.
+
+  - i need to build a fucking react web form that takes peoples print orders. can make it really ronamerchy.
+    - WOW! steviep's coooooooool NFTs
+
+- should really start agenerative nft artists discord
+  - factory/guild stuff
+
+
+- it would be crazy if the core banking system goes down. I bet USDC would
+
+- think for any currency to sort of resemble the USD in terms of stability, it fundamentally needs to be inflationary. it needs to match the real economy.
+
+- alie is totally wrong that making a deck. that's not how content is distributed in the cyypto industry. if it's more talky, demoy then i can make youtube videos out of it and posdcasts. it becomes more casually consumable. i guess that's the vibe i want my PR to go in. you casually enjoy the vibe. you're paying for my unemployment in general. you're paying me for the content. i really need to get a monitor to do live sessions
+
+
+- some good sort of performance art would be to have the NFT be the artifact. what sorts of events would go into the creation of the NFT. NFT as an artifact.
+
+- i really want to fucking nail the collectables genre of gen nfts. gen FTs
+
+- i think there's a lot of potential in the FIM style of picking like
+
+
+
+- i think half of The Money should be two tone. maybe even boring two tone
+
+- one quarter should be builion
+  - i can eak out a looooot of diversity by getting the buillion
+
+- i should use ron as the guinnie pig for the cheaper paper. i should ask skink what they'd reccomend for cheaper paper
+
+- reeeeeallly need to book marfa
+
+- also need to look into
+
+
+- misprint is too much space on either side
+- misprint: lathe settings too high
+-
+
+
+Here's a fucking idea:
+  - take the thirds layout and make that more crypto themed.
+  - split the golden ratio into a square and the rest
+  - FIM-esque color model.
+  - on drop: set a time limit (like a week), open edition, and have the
+  - three main styles. every once in a while a component or two jump across styles
+
+  * so
+    , remove objects/WMs from fiat-standard,
+    , remove fiat-looking rosetes from
+
+
+  * three different currency flavors: fiat, crypto, bullion. each bill is a basket of flavor currencies
+
+
+  """
+  Description of Fake Internet Money is just a legal disclaimer:
+
+  THE FOLLOWING IS NOT FINANCIAL ADVICE
+  this is not financial advice, past performance is not indicative of future performance.
+  fake internet money is declaratively not a currency. the numbers
+
+  All code was written by steven pikelny
+  the code is released under a --- license
+  font: ---
+
+
+  DISCLAIMER: Fake Internet Money is not legal tender, and may not be redeemable or exchangable with other parties or markets following its initial offering. The Artist is NOT a licensed or recognized money transmitter in any district, state, or country.
+
+  Furthermore, Fake Internet Money is not a financial security, as The Artist makes no guarantees of adding any further value to the project and owners of The Money have no reasonable expectation of profit. Any marketing statements made by The Artist SHOULD NOT BE TAKEN AS INVESTMENT ADVICE. The secondary markat value of The Money may be highly volatile, and The Artist makes no guarantees as to its stability relative to Ethereum or the US Dollar.
+  """
+
+  Website is jsut a legal disclaimer with a random rosette in the background
+
+
+
+i saw it ina dream website: you can move around a larger canvas
+
+sell messengers and buy octogarden
+
+
+
 
 
 
 # TODO
+- sometimes show accented denomination on other side from emblem
+- number sandwich should be bigger
+- audit denominations inside single/bouquet
+- denomination hard to read on the echo corners
+- signature can use a lot of work. look more into asemic writing
+- if solid border or no border, corner cna jus tbe number
+- bright color on number shadow looks really bad
+- really need to fine tune rosette stroke on highlight
+- need a bg gradient for rosette border bg
+
+
+- consider making width 700 or 650 (golden ratio == 1.618, so w = 647)
+  - maybe consciously make dimensions that of phone
+- maybe make bg9 stroke a little more transparent
+- maybe make by circuits brighter colors on connections
+- need to look at the dot texture. is there a way to make this look a little more organic?
+- crypto color scheme should be a bit brighter
+
+
+- have a bits/bytes style. maybe crypto shoud be a lot more bixelated. that would actually be pretty cool.
+  - how hard would it be to modify the *rosette engine* to draw squares instead of vertex?
+- in general, it probably pays to make the three themes
+
+- color scheme:
+  - crypto should look almost cyber punky
+  - fiat should be very ornate
+  - bullion should have more colors it can create a gradient out of
+
+- would be really cool if the FIM font looked a little bit more digital.
+- would be cool to credit the font. that's a real slyyyy fucking move to draw attention to it.
+- need to spend more time felshing out the description.
+
+- also, a lot more bills where the style is mixed and matched.
+- if bills are wider, reassess ancillary components, serial, signature
+
+
+- CGK with animation for crypto scheme?
+
+- bullion
+  - make rosette colors red or something to simulate jewels encrusted in the bill
+
+- three fake internet currencies:
+  fiat<>paper
+  bulion<>metalic
+  crypto<>digital
+
+  peg the value to one another
+    bullion: 21
+    crypto: 34
+    fiat: 55
+
+
+
+
+
+
+
+
+
+
+
+
 - be really careful about showing object, numeral in strip layout. easy to get repeats
 - make sure dneomination is always displayed, exspecially in portrait
 - make sure all numerals are shadowed on thirds layout
