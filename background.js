@@ -1,15 +1,29 @@
-function randomBgPattern() {
-  const r = rnd()
-  // if (r < 0.125) bg1()
-  if (r < 0.125) chainLinkBg() // chainlink
-  else if (r < 0.25) labrynthBg() // labrynth
-  else if (r < 0.375) pennyPincherBg() // penny pincher
+function drawBgPattern() {
+  switch (BG_PATTERN) {
+    case 0: byteBg(); break
+    case 1: chainLinkBg(); break
+    case 2: labrynthBg(); break
+    case 3: pennyPincherBg(); break
+    case 4: fabricBg(); break
+    case 5: cyclesBg(); break
+    case 6: mainframeBg(); break
+    case 7: arrowBg(); break
+    case 8: denominationTexture(); break
+  }
+}
 
-  else if (r < 0.5) fabricBg() // fabric
-  else if (r < 0.625) cyclesBg()
-  else if (r < 0.75) mainframeBg() // mainframe
-  else if (r < 0.875) arrowBg()
-  else denominationTexture(DENOMINATION)
+function getBG() {
+  const r = rnd()
+
+  if (IS_CRYPTO && rnd() < 0.5) return 0
+  else if (r < 0.125) return 1
+  else if (r < 0.25) return 2
+  else if (r < 0.375) return 3
+  else if (r < 0.5) return 4
+  else if (r < 0.625) return 5
+  else if (r < 0.75) return 6
+  else if (r < 0.875) return 7
+  else return 8
 }
 
 function squigTexture() {
@@ -82,22 +96,7 @@ function denominationTexture(denomination) {
   }
   pop()
 }
-function bg1() {
-  push()
-  stroke(DARK_C)
-  strokeWeight(0.5)
-  const size = 10
 
-  for (let x = -W/2; x < W/2; x += size)
-  for (let y = -H/2; y < H/2; y += size) {
-    if (rnd() < 0.5) {
-      line(x, y, x + size, y + size)
-    } else {
-      line(x+size, y, x + size, y + size)
-    }
-  }
-  pop()
-}
 
 function labrynthBg() {
   push()
@@ -269,6 +268,17 @@ function chainLinkBg() {
   for (let x = -W/2; x < W/2+1; x += size)
   for (let y = -H/2; y < H/2+1; y += size) {
     circle(x, y, size+4)
+  }
+  pop()
+}
+
+function byteBg() {
+  push()
+  for (let x = 0; x < W; x+=5)
+  for (let y = 0; y < H; y+=5) {
+    fill (lerpColor(LIGHT_C, DARK_C, rnd(0.75)))
+    noStroke()
+    rect(W/2-x, H/2-y, 5, 5)
   }
   pop()
 }

@@ -1,19 +1,17 @@
 function mainLayout() {
-  const showBorder = [0, 1, 2, 3, 6, 4].includes(MAIN_CENTER_PIECE) && rnd() < 0.75
-  const cornerComponentLocations = showBorder || rnd() < 0.8 ? cornerLocations() : []
+  const cornerComponentLocations = SHOW_BORDER || rnd() < 0.8 ? cornerLocations() : []
   let sideSpace = [0,1,3,5].includes(MAIN_CENTER_PIECE)
 
-  const bgSeed = rnd()
   let wmCorners = []
   let invertSig = false
 
-  if (showBorder) {
-    randomBgPattern()
-  } else if (bgSeed < 0.5625) {
+  if (BG_TYPE === 'STANDARD') {
+    drawBgPattern()
+  } else if (BG_TYPE === 'WM2') {
     wmCorners = getDoubleWMCorners(cornerComponentLocations)
     rosetteCornerBg(wmCorners)
     sideSpace = false
-  } else if (bgSeed < 0.8125) {
+  } else if (BG_TYPE === 'WM1') {
     const wmCorner = getSingleWMCorner(cornerComponentLocations)
     wmCorners = [wmCorner]
     randomWatermark(
@@ -22,13 +20,13 @@ function mainLayout() {
       120,
       HIGHLIGHT ? LIGHT_ACCENT_C : LIGHTENED_DARK_C
     )
-  } else if (bgSeed < 0.9375) {
+  } else if (BG_TYPE === 'FULL') {
     IS_VINTAGE || rnd() < 0.5 && !IS_DECO ? bg10() : bg11()
     invertSig = true
   } else {/*no bg*/}
 
 
-  showBorder && randomBorder()
+  SHOW_BORDER && randomBorder()
   displayCorners(cornerComponentLocations)
 
   switch (MAIN_CENTER_PIECE) {
@@ -40,7 +38,8 @@ function mainLayout() {
   }
 
 
-  if (sideSpace && rnd() < 0.0625) {
+  // TODO bring up a level
+  if (sideSpace && rnd() < 0.125) {
     const ancillarySide = posOrNeg()
     const secondarySide = rnd()
     rnd() < 0.5 ? emblem(ancillarySide) : sideNumber(ancillarySide)
@@ -53,7 +52,6 @@ function mainLayout() {
     wmCorners.length || cornerComponentLocations.length === 4
       ? wmCorners
       : cornerComponentLocations,
-    showBorder,
     invertSig
   )
 
@@ -141,8 +139,8 @@ function getDoubleWMCorners(existingCorners) {
 }
 
 
-function displayBillData(wmCorners=[], showBorder=true, invertSig=false) {
-  const infoComponentsY = 125 + (showBorder ? 0 : 20)
+function displayBillData(wmCorners=[], invertSig=false) {
+  const infoComponentsY = 125 + (SHOW_BORDER ? 0 : 20)
   const sigCorner = wmCorners.length === 1 ? opposingCorner(wmCorners[0]) : sample(emptyCorners(wmCorners))
 
   const serialCorner = sample(emptyCorners([sigCorner, ...wmCorners]))
@@ -232,8 +230,7 @@ function singleCenterPiece() {
   }
 
   if (allowHole || extraPieces < 2) {
-    drawAdjDenomination(2,2, 1, DARK_C)
-    drawAdjDenomination(0,0, 1, DARK_C, LIGHT_C)
+    drawSnazzyDenomination(0,0,1)
   }
 }
 
@@ -264,9 +261,7 @@ function bouquet() {
   const p4 = genParams(p)
   rosetteWithBackground(0,0,70, 0, {...p4, holeR: DENOMINATION ? 60 : 0})
 
-  drawStr(DENOMINATION, 2,2, 0.65, DARK_C)
-  drawStr(DENOMINATION, 0,0, 0.65, DARK_C, HIGHLIGHT && DARK_C !== ACCENT_C ? ACCENT_C : LIGHT_C)
-
+  drawSnazzyDenomination(0,0,0.65)
 }
 
 function rosetteSandwich() {
@@ -301,10 +296,8 @@ function rosetteSandwich() {
   rosetteWithBackground(-130,0,90, 0, p00)
 
 
-  // drawStrAdj(getDenominationDisplay(), 2,2, 0.65, DARK_C)
-  // drawStrAdj(getDenominationDisplay(), 0,0, 0.65, DARK_C)
-  drawStrAdj(DENOMINATION, 2,2, 0.65, DARK_C)
-  drawStrAdj(DENOMINATION, 0,0, 0.65, DARK_C, LIGHT_C)
+
+  drawSnazzyDenomination(0,0,0.65)
 }
 
 function numberSandwich() {
@@ -328,10 +321,8 @@ function numberSandwich() {
 }
 
 
-
 function stripLayout() {
-
-  randomBgPattern()
+  drawBgPattern()
   const stripSide = posOrNeg()
 
 
@@ -362,7 +353,8 @@ function stripLayout() {
       drawCGK(mainX, 0, 250)
   } else if (mainSeed < 0.8) {
     randomWatermark(mainX, 0, 100)
-    if (rnd() < 0.1) drawCGK(mainX, 0, 250)
+    if (rnd() < 0.1)
+      drawCGK(mainX, 0, 250)
   } else if (mainSeed < 0.95) {
     drawCGK(mainX, 0, 250)
   } else {
@@ -398,15 +390,6 @@ function stripBorder(lOrR=-1) {
   line(W*lOrR/6+1, 20-H/2, W*lOrR/6+1, H/2-20)
 }
 
-
-function sidewaysDenomination(x, y, direction=-1) {
-  push()
-  translate(x, y)
-  rotate(direction*PI/2)
-  drawStrAdj(getDenominationDisplay(), 0,0, 1.1, DARK_C)
-  pop()
-}
-
 function stripDenominationThirds(lOrR=-1, full=false) {
 
   if (rnd() < 0.333 && !full) {
@@ -430,9 +413,7 @@ function drawStripThird(y, lOrR, canBeRosette=false) {
   const seed = rnd()
   const x = W/3*lOrR
   if (seed < 0.85 || !canBeRosette) {
-    const d = getDenominationDisplay()
-    drawStrAdj(d, x+2, y+2, 1.1, DARK_C)
-    drawStrAdj(d, x, y, 1.1, LIGHT_C, HIGHLIGHT ? BRIGHT_DARK_C : DARK_C)
+    drawSnazzyDenomination(x,y, 1.1)
 
   }
   else {

@@ -18,6 +18,9 @@ let SCALE,
     IS_BULLION,
     HIGHLIGHT,
     SHOW_NUMERALS,
+    BG_TYPE,
+    BG_PATTERN,
+    SHOW_BORDER,
     LAYOUT
 
 const W = 610
@@ -102,10 +105,11 @@ function setup() {
 
   const colorSeed = rnd()
   COLOR_SCHEME =
-    colorSeed < 0.875 ? 'FIAT'
+    colorSeed < 0.8125 ? 'FIAT'
     : colorSeed < 0.9375 ? 'CRYPTO'
     : 'BULLION'
   IS_BULLION = COLOR_SCHEME === 'BULLION'
+  IS_CRYPTO = COLOR_SCHEME === 'CRYPTO'
 
   let isSliver
   if (COLOR_SCHEME === 'FIAT') {
@@ -166,7 +170,8 @@ function setup() {
 
   const reverseRosetteColors = rnd() < 0.5
   const lightC = isSliver ? BRIGHT_LIGHT_C : LIGHT_GRADIENT_C
-  const darkC = HIGHLIGHT && !IS_DECO && !IS_VINTAGE && !reverseRosetteColors ? BRIGHT_DARK_C : DARK_C
+  const darkC = HIGHLIGHT && !IS_DECO && !IS_VINTAGE ? BRIGHT_DARK_C : DARK_C
+  // const darkC = HIGHLIGHT && !IS_DECO && !IS_VINTAGE && !reverseRosetteColors ? BRIGHT_DARK_C : DARK_C
   ROSETTE_FILL_C = IS_VINTAGE || reverseRosetteColors ? lightC : darkC
   ROSETTE_STROKE_C = IS_VINTAGE || reverseRosetteColors ? darkC : lightC
 
@@ -194,6 +199,34 @@ function setup() {
     //   MAIN_CENTER_PIECE = 5 // total chaos
   }
 
+
+  const isMain = LAYOUT === 'MAIN'
+  SHOW_BORDER = isMain && [0, 1, 2, 3, 6, 4].includes(MAIN_CENTER_PIECE) && rnd() < 0.75
+
+  const bgSeed = rnd()
+  if (!isMain || SHOW_BORDER) {
+    BG_TYPE = 'STANDARD'
+    BG_PATTERN = getBG()
+  }
+  else if (bgSeed < 0.5625) BG_TYPE = 'WM2'
+  else if (bgSeed < 0.8125) BG_TYPE = 'WM1'
+  else if (bgSeed < 0.9375) BG_TYPE = 'FULL'
+  else BG_TYPE = 'EMPTY'
+
+
+
+
+
+
+  // if (r < 0.125) chainLinkBg() // chainlink
+  // else if (r < 0.25) labrynthBg() // labrynth
+  // else if (r < 0.375) pennyPincherBg() // penny pincher
+
+  // else if (r < 0.5) fabricBg() // fabric
+  // else if (r < 0.625) cyclesBg()
+  // else if (r < 0.75) mainframeBg() // mainframe
+  // else if (r < 0.875) arrowBg()
+  // else denominationTexture(DENOMINATION)
 
 
 
@@ -245,13 +278,13 @@ function draw() {
   else background(LIGHT_C)
 
   if (COLOR_SCHEME === 'FIAT') pointTexture()
-  squigTexture()
+  if (COLOR_SCHEME !== 'CRYPTO') squigTexture()
 
 
   if (LAYOUT === 'MAIN')
     mainLayout()
   else
-  stripLayout()
+    stripLayout()
 
 }
 

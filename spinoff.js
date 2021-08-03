@@ -1015,3 +1015,20 @@ const denominationRosette = denomination => (x_=0, y_=0, maxRad=200, minRad=0, p
   }
   pop()
 }
+
+function bg1() {
+  push()
+  stroke(DARK_C)
+  strokeWeight(0.5)
+  const size = 10
+
+  for (let x = -W/2; x < W/2; x += size)
+  for (let y = -H/2; y < H/2; y += size) {
+    if (rnd() < 0.5) {
+      line(x, y, x + size, y + size)
+    } else {
+      line(x+size, y, x + size, y + size)
+    }
+  }
+  pop()
+}

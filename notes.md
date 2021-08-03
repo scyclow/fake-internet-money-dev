@@ -238,7 +238,18 @@ sell messengers and buy octogarden
 
 
 # TODO
-- audit denominations inside single/bouquet
+- make sure that it's always showing a denomination with portraits, no corners, etc
+- OBJECTS DON'T LOOK GOOD WITH BYTE BACKGROUND
+- for buillion, objects shoudl be scratched out with bright color
+- i don't really like what i did with the double WM colors. should just be normal stroke, transparent
+- need to make it possible for byte bg to show up on fiat
+- serial/sig on strip layout
+- fix sig
+- serial rarities
+- misprint rarities
+- maybe get rid of the full bgs. they're sorta cool, but they don't really work.
+
+
 
 - signature can use a lot of work. look more into asemic writing
 - if solid border or no border, corner can just be number
@@ -251,7 +262,7 @@ sell messengers and buy octogarden
 
 - have a bits/bytes style. maybe crypto shoud be a lot more bixelated. that would actually be pretty cool.
   - how hard would it be to modify the *rosette engine* to draw squares instead of vertex?
-- in general, it probably pays to make the three themes
+
 
 - color scheme:
   - crypto should look almost cyber punky

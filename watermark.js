@@ -34,6 +34,7 @@ function randomWatermark(x, y, radius, strokeC) {
 function watermark1(x=0, y=0, radius=100) {
   const speed0 = 360*3
   const speed1 = speed0/sample([22, 32, 32.5, 33, 34, 64, 65, 66, 66.4])
+
   drawCircle(speed0, p => {
     const angle = (p/speed0) * TWO_PI
     const [x0, y0] = getXYRotation(
@@ -46,7 +47,6 @@ function watermark1(x=0, y=0, radius=100) {
       radius,
       x0, y0
     )
-
   })
 }
 

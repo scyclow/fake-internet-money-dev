@@ -59,3 +59,9 @@ function drawDenominationWithBorder(x, y, scale_, borderC, centerC) {
   drawStr(DENOMINATION, x+1, y-1, scale_, borderC)
   drawStr(DENOMINATION, x, y, scale_, centerC)
 }
+
+function drawSnazzyDenomination(x, y, scale_) {
+  const d = getDenominationDisplay()
+  drawStrAdj(d, x+2, y+2, scale_, DARK_C)
+  drawStrAdj(d, x, y, scale_, LIGHT_C, HIGHLIGHT ? BRIGHT_DARK_C : DARK_C)
+}
