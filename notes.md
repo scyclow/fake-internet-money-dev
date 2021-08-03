@@ -238,21 +238,13 @@ sell messengers and buy octogarden
 
 
 # TODO
-- sometimes show accented denomination on other side from emblem
-- number sandwich should be bigger
 - audit denominations inside single/bouquet
-- denomination hard to read on the echo corners
+
 - signature can use a lot of work. look more into asemic writing
-- if solid border or no border, corner cna jus tbe number
-- bright color on number shadow looks really bad
-- really need to fine tune rosette stroke on highlight
-- need a bg gradient for rosette border bg
+- if solid border or no border, corner can just be number
 
 
-- consider making width 700 or 650 (golden ratio == 1.618, so w = 647)
-  - maybe consciously make dimensions that of phone
-- maybe make bg9 stroke a little more transparent
-- maybe make by circuits brighter colors on connections
+
 - need to look at the dot texture. is there a way to make this look a little more organic?
 - crypto color scheme should be a bit brighter
 

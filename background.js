@@ -1,30 +1,16 @@
 function randomBgPattern() {
   const r = rnd()
   // if (r < 0.125) bg1()
-  if (r < 0.125) bg8() // chainlink
-  else if (r < 0.25) bg2() // labrynth
-  else if (r < 0.375) bg3() // penny pincher
+  if (r < 0.125) chainLinkBg() // chainlink
+  else if (r < 0.25) labrynthBg() // labrynth
+  else if (r < 0.375) pennyPincherBg() // penny pincher
 
-  else if (r < 0.5) bg4() // fabric
-  else if (r < 0.625) bg5()
-  else if (r < 0.75) bg6() // mainframe
-  else if (r < 0.875) bg7()
+  else if (r < 0.5) fabricBg() // fabric
+  else if (r < 0.625) cyclesBg()
+  else if (r < 0.75) mainframeBg() // mainframe
+  else if (r < 0.875) arrowBg()
   else denominationTexture(DENOMINATION)
 }
-
-function randomBorderlessBg() {
-  const r = rnd()
-
-
-  if (r < 0.3333) bg9()
-  else if (r < 0.66666) bg10()
-  else bg11()
-
-  // TODO
-  // large rosette bg that fades into rest of bg
-  //
-}
-
 
 function squigTexture() {
   push()
@@ -113,7 +99,7 @@ function bg1() {
   pop()
 }
 
-function bg2() {
+function labrynthBg() {
   push()
   stroke(DARK_C)
   strokeWeight(0.5)
@@ -131,7 +117,7 @@ function bg2() {
 }
 
 
-function bg3() {
+function pennyPincherBg() {
   push()
   const size = 100
   noFill()
@@ -164,7 +150,7 @@ function bg3() {
   pop()
 }
 
-function bg4() {
+function fabricBg() {
   push()
   const size = 100
   noFill()
@@ -199,7 +185,7 @@ function bg4() {
 }
 
 
-function bg5() {
+function cyclesBg() {
   push()
   const size = 100
   noFill()
@@ -234,7 +220,7 @@ function bg5() {
 //   pop()
 // }
 
-function bg6() {
+function mainframeBg() {
   push()
   strokeWeight(0.25)
   HIGHLIGHT && fill(LIGHT_ACCENT_C)
@@ -259,7 +245,7 @@ function bg6() {
   pop()
 }
 
-function bg7() {
+function arrowBg() {
   push()
   strokeWeight(1)
   stroke(LIGHTENED_DARK_C)
@@ -274,7 +260,7 @@ function bg7() {
   pop()
 }
 
-function bg8() {
+function chainLinkBg() {
   push()
   const size = 10
   strokeWeight(0.35)
@@ -289,7 +275,7 @@ function bg8() {
 
 
 
-function bg9(corners=[2, 4]) {
+function rosetteCornerBg(corners=[2, 4]) {
   push()
 
   const rFn = IS_VINTAGE ? dollarRosette : getRosetteStyleFn()

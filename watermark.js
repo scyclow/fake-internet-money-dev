@@ -113,7 +113,7 @@ function watermark3(x0, y0, c1Radius=100) {
 function drawCGK(x=0, y=0, tBase, params={}) {
   push()
   const c1 = params.c1 || DARK_C
-  const c2 = params.c2 || HIGHLIGHT ? LIGHT_ACCENT_C : LIGHT_C
+  const c2 = params.c2 || HIGHLIGHT ? BRIGHT_LIGHT_C : LIGHT_C
   const PY_EYE = rnd() < 0.4275
   const tCProb = rnd() < 0.5
   const bCProb = rnd() < 0.5

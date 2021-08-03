@@ -11,7 +11,7 @@ function mainLayout() {
     randomBgPattern()
   } else if (bgSeed < 0.5625) {
     wmCorners = getDoubleWMCorners(cornerComponentLocations)
-    bg9(wmCorners)
+    rosetteCornerBg(wmCorners)
     sideSpace = false
   } else if (bgSeed < 0.8125) {
     const wmCorner = getSingleWMCorner(cornerComponentLocations)
@@ -212,10 +212,11 @@ function sideNumber(side) {
   drawDenominationWithBorder(190*side, 20, 0.65, LIGHT_ACCENT_C, LIGHT_ACCENT_C)
 }
 
+
 const getHighlightPColors = () => !IS_VINTAGE ? ({
   strokeC: ROSETTE_STROKE_C,
   innerC: HIGHLIGHT ? ROSETTE_STROKE_C : LIGHTENED_DARK_C,
-  outterC: ROSETTE_FILL_C,
+  outterC: HIGHLIGHT ? ROSETTE_FILL_C : ROSETTE_FILL_C,
 }) : {}
 
 function singleCenterPiece() {

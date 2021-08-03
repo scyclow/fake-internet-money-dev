@@ -163,6 +163,7 @@ function setup() {
     HIGHLIGHT = true
   }
 
+
   const reverseRosetteColors = rnd() < 0.5
   const lightC = isSliver ? BRIGHT_LIGHT_C : LIGHT_GRADIENT_C
   const darkC = HIGHLIGHT && !IS_DECO && !IS_VINTAGE && !reverseRosetteColors ? BRIGHT_DARK_C : DARK_C

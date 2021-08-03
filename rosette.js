@@ -57,7 +57,7 @@ function dollarRosette(x_, y_, maxRad=200, minRad=100, params={}, graphic=window
 
   // border
   for (let off=0; off<6; off++) {
-    graphic.strokeWeight(((params.strokeW || 1) + maxRad/150 - 1) * strokeMod)
+    graphic.strokeWeight(((params.strokeW || 0.7) + maxRad/150 - 1) * strokeMod)
     drawShape(c0Points, p => {
       const [ox, oy] = border(maxRad, p, off/3)
       const [ix, iy] = border(maxRad*0.95, p, off/3)
