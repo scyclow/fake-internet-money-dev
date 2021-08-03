@@ -29,10 +29,12 @@ function randomBorderlessBg() {
 function squigTexture() {
   push()
   noFill()
+
   strokeWeight(rnd(0.1, 0.5))
   const squigs = 60
 
   for (let i=0; i<squigs; i++) {
+    // stroke(rnd() < 0.5 ? DARK_C : ACCENT_C)
     const x = rnd(-W/2, W/2)
     const y = rnd(-H/2, H/2)
 
@@ -71,7 +73,7 @@ function pointTexture() {
   for (let x = -W/2; x < W/2; x += 5)
   for (let y = -H/2; y < H/2; y += 5) {
     strokeWeight(rnd(1,2))
-    stroke(color(HUE, 26, 25, rnd(0,0.4)))
+    stroke(color(HUE, 26, 25, rnd(0,40)))
     point(x + rnd(-5, 5), y + rnd(-5, 5))
   }
   pop()
@@ -285,8 +287,10 @@ function bg9(corners=[2, 4]) {
   push()
 
   const rFn = IS_VINTAGE ? dollarRosette : getRosetteStyleFn()
-  const p = genRosetteParams({ strokeC: HIGHLIGHT ? ACCENT_C : LIGHTENED_DARK_C, strokeW: 1 })
-  corners.forEach(c => rFn(CORNERS[c][0], CORNERS[c][1], W/2, rnd(0, W/4), p))
+  const p = genRosetteParams({ strokeC: HIGHLIGHT ? LIGHT_ACCENT_C : LIGHTENED_DARK_C, strokeW: 1 })
+  const r = rnd(0, W/4)
+  corners.forEach(c => rFn(CORNERS[c][0], CORNERS[c][1], W/2, r, {...p, strokeC: DARK_C, strokeW: 2}))
+  corners.forEach(c => rFn(CORNERS[c][0], CORNERS[c][1], W/2, r, p))
   pop()
 }
 

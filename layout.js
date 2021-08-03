@@ -3,15 +3,12 @@ function mainLayout() {
   const centerPieceSeed = rnd()
   if (centerPieceSeed < 0.01)
     CENTER_PIECE = 0 // no center piece
-  else if (centerPieceSeed < 0.625)
+  else if (centerPieceSeed < 0.6875)
     CENTER_PIECE = 1 // single
-  else if (centerPieceSeed < 0.75)
-    CENTER_PIECE = 2 // bouquet
   else if (centerPieceSeed < 0.8125)
+    CENTER_PIECE = 2 // bouquet
+  else if (centerPieceSeed < 0.875)
     CENTER_PIECE = 3 // portrait
-
-  else if (centerPieceSeed < 0.9375)
-    CENTER_PIECE = 6 // number sandwich
   else
     CENTER_PIECE = 7 // rosette sandwich
 
@@ -41,7 +38,7 @@ function mainLayout() {
       150 * cornerXDirection(wmCorner),
       60 * cornerYDirection(wmCorner, cornerComponentLocations.length === 4),
       120,
-      HIGHLIGHT ? ACCENT_C : LIGHTENED_DARK_C
+      HIGHLIGHT ? LIGHT_ACCENT_C : LIGHTENED_DARK_C
     )
   } else if (bgSeed < 0.9375) {
     IS_VINTAGE || rnd() < 0.5 && !IS_DECO ? bg10() : bg11()
@@ -57,12 +54,18 @@ function mainLayout() {
     case 1: singleCenterPiece(); break
     case 2: bouquet(DENOMINATION, sample([1,2,3])); break
     case 3: portrait(); break
-    case 6: numberSandwich(); break
     case 7: rosetteSandwich(); break
   }
 
 
-  if (sideSpace && rnd() < 0.0625) emblem(posOrNeg())
+  if (sideSpace && rnd() < 0.0625) {
+    const ancillarySide = posOrNeg()
+    const secondarySide = rnd()
+    rnd() < 0.5 ? emblem(ancillarySide) : sideNumber(ancillarySide)
+    secondarySide < 0.25
+      ? emblem(ancillarySide*-1)
+      : secondarySide < 0.5 ? sideNumber(ancillarySide*-1) : null
+  }
 
   displayBillData(
     wmCorners.length || cornerComponentLocations.length === 4
@@ -150,11 +153,7 @@ function displayCorners(locations=[]) {
     const holeR = allHoles || selectHoles.includes(location) ? radius*0.75 : 0
 
     rosetteWithBackground(x, y, radius, 0, {...params, holeR})
-    drawStr(DENOMINATION, x+1, y+1, 0.35, ROSETTE_FILL_C)
-    drawStr(DENOMINATION, x-1, y-1, 0.35, ROSETTE_FILL_C)
-    drawStr(DENOMINATION, x-1, y+1, 0.35, ROSETTE_FILL_C)
-    drawStr(DENOMINATION, x+1, y-1, 0.35, ROSETTE_FILL_C)
-    drawStr(DENOMINATION, x, y, 0.35, ROSETTE_STROKE_C)
+    drawDenominationWithBorder(x, y, 0.35, ROSETTE_FILL_C, ROSETTE_STROKE_C)
   })
 }
 
@@ -255,20 +254,19 @@ function emblem(side) {
 
 
   dollarEchoRosette(200*side,20, 40, 0, p)
+}
 
-  if (rnd() < 0.2) {
-    dollarEchoRosette(-200*side,20, 40, 0, p)
-  }
+function sideNumber(side) {
+  drawDenominationWithBorder(190*side, 20, 0.65, LIGHT_ACCENT_C, LIGHT_ACCENT_C)
 }
 
 function singleCenterPiece() {
   const seed = rnd()
-console.log(seed)
 
   if (HIGHLIGHT && !IS_VINTAGE) singleCenterGradient()
   else if (seed < 0.375 && !IS_VINTAGE) singleCenterWithHole()
   else if (seed < 0.75) singleCenterNoHole()
-  else doubleCenter()
+  else multiCenter()
 }
 
 function bouquet(d, level) {
@@ -293,10 +291,9 @@ function bouquet(d, level) {
 
   const p4 = genParams()
   rosetteWithBackground(0,0,70, 0, {...p4, holeR: d ? 60 : 0})
-
   if (d) {
     drawStr(DENOMINATION, 2,2, 0.65, DARK_C)
-    drawStr(DENOMINATION, 0,0, 0.65, DARK_C, LIGHT_C)
+    drawStr(DENOMINATION, 0,0, 0.65, DARK_C, HIGHLIGHT && DARK_C !== ACCENT_C ? ACCENT_C : LIGHT_C)
   }
 }
 
@@ -335,14 +332,18 @@ function singleCenterGradient() {
 }
 
 
-function doubleCenter() {
+function multiCenter() {
   const p = getHighlightP()
+  const triple = rnd() < 0.25
   rosetteWithBackground(0,0,150, 0, p)
-  rosetteWithBackground(0,0,110, 60, 0, p)
+  rosetteWithBackground(0,0,110, 0, 0, p)
+  triple && rosetteWithBackground(0,0,70, 0, 0, p)
 
 
-  drawStr(DENOMINATION, 2,2, 0.65, DARK_C)
-  drawStr(DENOMINATION, 0,0, 0.65, DARK_C, LIGHT_C)
+  if (!triple) {
+    drawStr(DENOMINATION, 2,2, 0.65, DARK_C)
+    drawStr(DENOMINATION, 0,0, 0.65, DARK_C, LIGHT_C)
+  }
 }
 
 
@@ -387,21 +388,21 @@ function rosetteSandwich() {
 function numberSandwich() {
   const p = getHighlightP()
   const p00 = genParams(p)
-  rosetteWithBackground(0,0,90, 0, p00)
+  rosetteWithBackground(0,0,120, 0, p00)
 
   const p1 = genParams(p)
-  rosetteWithBackground(0,0,70, 0, p1)
+  rosetteWithBackground(0,0,90, 0, p1)
 
   const p2 = genParams(p)
-  rosetteWithBackground(0,0,45, 0, p2)
+  rosetteWithBackground(0,0,60, 0, p2)
 
 
   // drawStrAdj(getDenominationDisplay(), 2,2, 0.65, DARK_C)
   // drawStrAdj(getDenominationDisplay(), 0,0, 0.65, DARK_C)
-  drawStrAdj(DENOMINATION, -132,2, 0.65, DARK_C)
-  drawStrAdj(DENOMINATION, 132,2, 0.65, DARK_C)
-  drawStrAdj(DENOMINATION, -130,0, 0.65, DARK_C, LIGHT_C)
-  drawStrAdj(DENOMINATION, 130,0, 0.65, DARK_C, LIGHT_C)
+  drawStrAdj(DENOMINATION, -142,2, 0.65, DARK_C)
+  drawStrAdj(DENOMINATION, 142,2, 0.65, DARK_C)
+  drawStrAdj(DENOMINATION, -140,0, 0.65, DARK_C, LIGHT_C)
+  drawStrAdj(DENOMINATION, 140,0, 0.65, DARK_C, LIGHT_C)
 }
 
 
@@ -506,7 +507,11 @@ function stripDenominationThirds(lOrR=-1, full=false) {
 function drawStripThird(y, lOrR, canBeRosette=false) {
   const seed = rnd()
   const x = W/3*lOrR
-  if (seed < 0.85 || !canBeRosette) drawStrAdj(getDenominationDisplay(), x, y, 1.1, DARK_C)
+  if (seed < 0.85 || !canBeRosette) {
+    const d = getDenominationDisplay()
+    drawStrAdj(d, x+2, y+2, 1.1, DARK_C)
+    drawStrAdj(d, x, y, 1.1, HIGHLIGHT ? ACCENT_C : LIGHT_C, DARK_C)
+  }
   else {
     const p = getHighlightP()
     rosetteWithBackground(x, y, 55, 0, p)

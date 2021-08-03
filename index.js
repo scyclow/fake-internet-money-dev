@@ -7,6 +7,7 @@ let SCALE,
     LIGHT_C,
     BRIGHT_LIGHT_C,
     ACCENT_C,
+    LIGHTENED_ACCENT_C,
     HUE,
     DENOMINATION,
     ROSETTE_STYLE,
@@ -61,7 +62,7 @@ function setup() {
 
 
   noLoop()
-  colorMode(HSB, 360, 100, 100)
+  colorMode(HSB, 360, 100, 100, 100)
 
 
 
@@ -110,6 +111,7 @@ function setup() {
     LIGHT_C = color(hfix(HUE-72), 6, 91)
     LIGHTENED_DARK_C = color(HUE, 16, 55)
     ACCENT_C = color(hfix(HUE-145), 80, 64)
+    LIGHT_ACCENT_C = color(hfix(HUE-145), 55, 64, 30)
     BRIGHT_C = color(max(HUE-10, 0), 80, 54)
 
 
@@ -119,30 +121,30 @@ function setup() {
     LIGHT_C = color(hfix(HUE-153), 96, isBlue ? 0 : 20)
     DARK_C = color(HUE, isBlue ? 80 : 99, isBlue ? 95 : 90)
     LIGHTENED_DARK_C = color(HUE, 69, 75)
-    ACCENT_C = color(hfix(HUE-254), 52, 78)
+    ACCENT_C = color(hfix(HUE-254), 100, 100)
+    LIGHT_ACCENT_C = ACCENT_C
     BRIGHT_C = color(hfix(HUE-15), 99, 65)
 
   } else {
     HUE = int(rnd(0,360))
     DARK_C = color(HUE, 26, 25)
-    LIGHTENED_DARK_C = color(HUE, 26, 35)
-    ACCENT_C = DARK_C
+
 
     if (rnd() < 0.5) {
       LIGHT_C = color(203, 5, 48)
       BRIGHT_C = color(167, 5, 95)
-
       DARK_C = color(40, 26, 20)
       LIGHTENED_DARK_C = color(40, 26, 35)
       isSliver = true
+
     } else {
       LIGHT_C = color(40, 60, 67)
       BRIGHT_C = color(60, 30, 100)
-
       DARK_C = color(203, 10, 25)
       LIGHTENED_DARK_C = color(203, 10, 40)
     }
     ACCENT_C = DARK_C
+    LIGHT_ACCENT_C = LIGHTENED_DARK_C
 
     HIGHLIGHT = true
   }
@@ -206,7 +208,7 @@ function draw() {
   }
   else background(LIGHT_C)
 
-  if (!IS_BULLION) pointTexture()
+  if (COLOR_SCHEME === 'FIAT') pointTexture()
   squigTexture()
 
 

@@ -49,3 +49,11 @@ function drawStrAdj(...args) {
   if (args[0] === '100') args[3] = args[3] * 0.65
   drawStr(...args)
 }
+
+function drawDenominationWithBorder(x, y, scale_, borderC, centerC) {
+  drawStr(DENOMINATION, x+1, y+1, scale_, borderC)
+  drawStr(DENOMINATION, x-1, y-1, scale_, borderC)
+  drawStr(DENOMINATION, x-1, y+1, scale_, borderC)
+  drawStr(DENOMINATION, x+1, y-1, scale_, borderC)
+  drawStr(DENOMINATION, x, y, scale_, centerC)
+}
