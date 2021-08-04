@@ -160,13 +160,41 @@ function displayBillData(wmCorners=[], invertSig=false) {
   )
 }
 
-function displayBillDataSide(wmCorners=[]) {
-  const sigXMod = (wmCorners.includes(1) || wmCorners.includes(3) ? 1 : -1)
-  const sigX = 160 * sigXMod
-  const serialX = 170 * (sigXMod * -1)
-  signature(sigX > 0 ? sigX + 80 : sigX, 0, 10, invertSig)
-  serialNumber(serialX < 0 ? serialX-65 : serialX, 0)
+function displayBillDataStrip(stripSide, forceSide=false) {
+  push()
+  if (forceSide || rnd() < 0.25) {
+    rotate(TWO_PI*0.75* stripSide)
+    serialNumber(
+      (-W/6-25),
+      (-W/3) - 80
+    )
+    signature(
+      (W/6+35),
+      (-W/3) - 80,
+      10,
+    )
+  } else {
+    const l = stripSide > 0
+    serialNumber(
+      (W*5/12+(l ? 30 : -35))*-stripSide,
+      H/3 + 15
+    )
+    signature(
+      l ? 70 : -5,
+      H/3 + 20,
+      10,
+    )
+  }
+  pop()
 }
+
+// function displayBillDataSide(wmCorners=[]) {
+//   const sigXMod = (wmCorners.includes(1) || wmCorners.includes(3) ? 1 : -1)
+//   const sigX = 160 * sigXMod
+//   const serialX = 170 * (sigXMod * -1)
+//   signature(sigX > 0 ? sigX + 80 : sigX, 0, 10, invertSig)
+//   serialNumber(serialX < 0 ? serialX-65 : serialX, 0)
+// }
 
 
 function portrait() {
@@ -329,16 +357,17 @@ function numberSandwich() {
 }
 
 
+
 function stripLayout() {
   drawBgPattern()
-  const stripSide = posOrNeg()
+  const stripSide = -1//posOrNeg()
 
-
-  if (rnd() < 0.1) {
+  if (rnd() < .1) {
     stripDenominationThirds(stripSide, true)
     stripDenominationThirds(0, true)
     stripDenominationThirds(stripSide*-1, true)
-    serialNumber(-W/6-25, H/3)
+
+    displayBillDataStrip(stripSide, true)
     return
   }
 
@@ -348,7 +377,7 @@ function stripLayout() {
   const mainSeed = rnd()
   const mainX = W/-6*stripSide
 
-  if (mainSeed < 0.5) {
+  if (mainSeed < 0.65) {
     const p = getHighlightPColors()
 
     rosetteWithBackground(W/-6*stripSide,0, 180, 0, p)
@@ -359,37 +388,24 @@ function stripLayout() {
     }
     if (rnd() < 0.1)
       drawCGK(mainX, 0, 245)
-  } else if (mainSeed < 0.8) {
+  } else if (mainSeed < 0.82) {
     randomWatermark(mainX, 0, 100)
     if (rnd() < 0.1)
       drawCGK(mainX, 0, 245)
-  } else if (mainSeed < 0.95) {
+  } else if (mainSeed < 0.97) {
     drawCGK(mainX, 0, 245)
+  } else if (mainSeed < 0.99) {
+    drawSnazzyDenomination(mainX, 0, 3)
+
   } else {
-    drawStrAdj(getDenominationDisplay(), mainX, 0, 3, DARK_C)
+    smilyFace(W/-6*stripSide,0, 300)
   }
-  // smilyFace(W/-6*stripSide,0, 250)
 
 
   rnd() < 0.5 && cornerThing(-1*stripSide, 1)
   rnd() < 0.5 && cornerThing(-1*stripSide, -1)
 
-  // stripDenominationThirds(0)
-  // strip
-    // left/right
-    // border
-    // top
-      // denomination
-      // denomination rotated
-    // bottom
-  // bottom strip
-    // pattern
-    // denomination
-    // serial number
-  // rest
-    // lower strip
-    // watermark
-    //
+  displayBillDataStrip(stripSide)
 }
 
 
@@ -402,12 +418,9 @@ function stripDenominationThirds(lOrR=-1, full=false) {
 
   if (rnd() < 0.333 && !full) {
     drawStripThird(-H/3, lOrR)
-    serialNumber(W/3*lOrR-30, H/3)
-    // serialNumber(H/3 + 50, W/3*lOrR)
+
   } else if (rnd() < 0.666 && !full) {
     drawStripThird(H/3, lOrR)
-    // serialNumber(110, 120)
-    // serialNumber(50 - H/3, W/3*lOrR)
 
   } else {
     const num = sample([1,2,3])
