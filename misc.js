@@ -19,27 +19,18 @@ function signature(x, y, charSize, invert) {
 
   times(chars, letter => {
     const up = rnd() < 0.75
-    if (up) {
-      const x1 = x0 + charSize*rnd(1-xVar, 1+xVar)/2
-      const y1 = y0 + (rnd() < 0.85 ? charSize*rnd(0, 0.3) : charSize*rnd(1, 1.5))
+    const x1 = x0 + charSize*(1+xVar*(up ? -7 : 7))/2
+    const y1 = y0 + (up
+      ? rnd() < 0.85 ? charSize*rnd(0, 0.3) : charSize*rnd(1, 1.5)
+      : -1*(rnd() < 0.5 ? charSize*rnd(0, 0.3) : charSize*rnd(1, 1.5))
+    )
 
-      const x2 = x0 + charSize*rnd(1-xVar, 1+xVar)
-      const y2 = y0 + charSize*rnd(-0.1, 0.1)
-      points.push([x1, y1])
-      points.push([x2, y2])
-      x0 = x2
-      y0 = y2
-    } else {
-      const x1 = x0 + charSize*rnd(1-xVar*2, 0)/2
-      const y1 = y0 - (rnd() < 0.5 ? charSize*rnd(0, 0.3) : charSize*rnd(1, 1.5))
-
-      const x2 = x0 + charSize*rnd(1-xVar, 1+xVar)
-      const y2 = y0 + charSize*rnd(-0.1, 0.1)
-      points.push([x1, y1])
-      points.push([x2, y2])
-      x0 = x2
-      y0 = y2
-    }
+    const x2 = x0 + charSize*rnd(1-xVar, 1+xVar)
+    const y2 = y0 + charSize*rnd(-0.1, 0.1)
+    points.push([x1, y1])
+    points.push([x2, y2])
+    x0 = x2
+    y0 = y2
   })
 
   points.push([x0 + rnd(charSize), y0 + rnd(charSize)])
