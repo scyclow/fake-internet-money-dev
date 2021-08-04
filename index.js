@@ -151,7 +151,7 @@ function setup() {
     } else {
       LIGHT_C = color(40, 60, 67)
       BRIGHT_LIGHT_C = color(60, 30, 100)
-      DARK_C = color(35, 45, 25, 80)
+      DARK_C = color(35, 45, 30)
       LIGHTENED_DARK_C = color(35, 45, 35)
       BRIGHT_DARK_C = color(203, 10, 25)
 

@@ -350,13 +350,13 @@ function stripLayout() {
       IS_VINTAGE && rosetteWithBackground(W/-6*stripSide,0, 70)
     }
     if (rnd() < 0.1)
-      drawCGK(mainX, 0, 250)
+      drawCGK(mainX, 0, 245)
   } else if (mainSeed < 0.8) {
     randomWatermark(mainX, 0, 100)
     if (rnd() < 0.1)
-      drawCGK(mainX, 0, 250)
+      drawCGK(mainX, 0, 245)
   } else if (mainSeed < 0.95) {
-    drawCGK(mainX, 0, 250)
+    drawCGK(mainX, 0, 245)
   } else {
     drawStrAdj(getDenominationDisplay(), mainX, 0, 3, DARK_C)
   }

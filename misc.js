@@ -2,13 +2,16 @@
 function signature(x, y, size, invert) {
   push()
   noFill()
-  strokeWeight(2)
+  strokeWeight(1.5)
   const pointsN = int(15)
   const w = size * pointsN
   const startX = x - w/2
   const startY = y - size/2
 
   const points = [[startX - rnd(size), startY - rnd(size)]]
+
+
+
   for (let p = 0; p < pointsN; p++) {
     const xadj = (p*size + rnd(-size, size))/2
     const yadj = 2*rnd(size)

@@ -67,7 +67,6 @@ roman numeral present: 5%
 ## Misprints 10%
 - lathe malfunctions
 - low ink
-- missing pigmentation
 - mirrored
 - off center
 - too much ink
@@ -160,7 +159,7 @@ https://en.numista.com/catalogue/note203275.html
   - factory/guild stuff
 
 
-- it would be crazy if the core banking system goes down. I bet USDC would
+- it would be crazy if the core banking system goes down. I bet USDC would become the USD stand in
 
 - think for any currency to sort of resemble the USD in terms of stability, it fundamentally needs to be inflationary. it needs to match the real economy.
 
@@ -238,97 +237,76 @@ sell messengers and buy octogarden
 
 
 # TODO
+
+## MUST DO
+- misprint rarities
+- serial/sig on strip layout
 - make sure that it's always showing a denomination with portraits, no corners, etc
 - OBJECTS DON'T LOOK GOOD WITH BYTE BACKGROUND
-- for buillion, objects shoudl be scratched out with bright color
 - i don't really like what i did with the double WM colors. should just be normal stroke, transparent
 - need to make it possible for byte bg to show up on fiat
-- serial/sig on strip layout
-- fix sig
-- serial rarities
-- misprint rarities
-- maybe get rid of the full bgs. they're sorta cool, but they don't really work.
+- be really careful about showing object, numeral in strip layout. easy to get repeats
+- portrait/object sizing all fucked up; denomination needs border
+- no empt bg for crypto
+- big fucking number as centerpiece
 
 
-
+## SHOULD DO
+- fix the fucking numerals bug
 - signature can use a lot of work. look more into asemic writing
-- if solid border or no border, corner can just be number
+- for buillion, objects shoudl be scratched out with bright color
+- serial rarities
+- make rosette sandwhich intensity variable
+- more rosettes that have no number in the middle
 
-
-
+## MAYBE DO
+- holographic
 - need to look at the dot texture. is there a way to make this look a little more organic?
-- crypto color scheme should be a bit brighter
-
-
+- if solid border or no border, corner can just be number
+- maybe get rid of the full bgs. they're sorta cool, but they don't really work.
 - have a bits/bytes style. maybe crypto shoud be a lot more bixelated. that would actually be pretty cool.
   - how hard would it be to modify the *rosette engine* to draw squares instead of vertex?
+- add more possabilities to bullion
+- incorporate denomination rosette
+- add only-dark rosette
 
 
-- color scheme:
-  - crypto should look almost cyber punky
-  - fiat should be very ornate
-  - bullion should have more colors it can create a gradient out of
 
-- would be really cool if the FIM font looked a little bit more digital.
+
+
+
+
+
+
+
+## unstructured todos
 - would be cool to credit the font. that's a real slyyyy fucking move to draw attention to it.
 - need to spend more time felshing out the description.
-
 - also, a lot more bills where the style is mixed and matched.
 - if bills are wider, reassess ancillary components, serial, signature
-
-
 - CGK with animation for crypto scheme?
-
 - bullion
   - make rosette colors red or something to simulate jewels encrusted in the bill
-
 - three fake internet currencies:
   fiat<>paper
   bulion<>metalic
   crypto<>digital
-
   peg the value to one another
     bullion: 21
     crypto: 34
     fiat: 55
-
-
-
-
-
-
-
-
-
-
-
-
-- be really careful about showing object, numeral in strip layout. easy to get repeats
 - make sure dneomination is always displayed, exspecially in portrait
 - make sure all numerals are shadowed on thirds layout
-- make max rosette stroke weight ~1.25
-- incorporate denomination rosette
-- portrait/object sizing all fucked up; denomination needs border
-- sig/serial for strip layout
-- serial number rarities/stars
-
-
-
-
-
-
-
-
-
 - certain border types have special corer possabilities
   - ex. missing border + curved corner borders can have plain numbers
   - bars can have light number text
-- only use floral borders with floral rosettes/numismatic
+- vintage double WM is pretty fucked
 
-- fix number lines
-- parameterize rosettes better (type, bg color, hole, number/numeral/empty/$)
-- reassess bg; maybe swap one out for something chain-y. maybe something that looks like a financial chart
-- add some sort of numisotic stripe
+
+
+
+
+
 
 
 
@@ -379,15 +357,6 @@ sell messengers and buy octogarden
 
 
 LAYOUT TODOS
-- 1/2 and 2/3 layouts
-- consider removing signature
-
-- keep track of whether denomination has been shown in center
-  - need to handlempty case
-- maybe have denomination mirror emblem
-- bouquet does not show denomination
-- have border patterns respect line/echo/checkered rosette patterns
-- number sandwich bigger?
 - random watermark function that
   - includes cgk
   - includes $
@@ -396,11 +365,6 @@ LAYOUT TODOS
   - includes single large rosette corner WM
   - only shows up in a corner without a corner component
 
-- vintage double WM is pretty fucked
-- add only-dark rosette
-- address tiedie emlem?
-
-"I probably don't need to do the explicit tree mechanism. i can probably get away with keeping track of where everything is going as i go "
 
 
 
