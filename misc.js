@@ -1,34 +1,54 @@
 
-function signature(x, y, size, invert) {
+function signature(x, y, charSize, invert) {
   push()
   noFill()
   strokeWeight(1.5)
-  const pointsN = int(15)
-  const w = size * pointsN
-  const startX = x - w/2
-  const startY = y - size/2
+  const chars = 8
+  const xVar = 0.1
+  const yVar = 0.75
+  const xstart = x - charSize*chars
+  const ystart = y + charSize/2
+  let x0 = xstart
+  let y0 = ystart
 
-  const points = [[startX - rnd(size), startY - rnd(size)]]
+  const points = [
+    [x0 - rnd(charSize), y0 - rnd(charSize)],
+    [x0, y0]
+  ]
 
 
+  times(chars, letter => {
+    const up = rnd() < 0.75
+    if (up) {
+      const x1 = x0 + charSize*rnd(1-xVar, 1+xVar)/2
+      const y1 = y0 + (rnd() < 0.85 ? charSize*rnd(0, 0.3) : charSize*rnd(1, 1.5))
 
-  for (let p = 0; p < pointsN; p++) {
-    const xadj = (p*size + rnd(-size, size))/2
-    const yadj = 2*rnd(size)
-    points.push([
-      startX + xadj,
-      startY + yadj
-    ])
-  }
-  points.push([
-    x + w/2,
-    y + size/2
-  ])
+      const x2 = x0 + charSize*rnd(1-xVar, 1+xVar)
+      const y2 = y0 + charSize*rnd(-0.1, 0.1)
+      points.push([x1, y1])
+      points.push([x2, y2])
+      x0 = x2
+      y0 = y2
+    } else {
+      const x1 = x0 + charSize*rnd(1-xVar*2, 0)/2
+      const y1 = y0 - (rnd() < 0.5 ? charSize*rnd(0, 0.3) : charSize*rnd(1, 1.5))
+
+      const x2 = x0 + charSize*rnd(1-xVar, 1+xVar)
+      const y2 = y0 + charSize*rnd(-0.1, 0.1)
+      points.push([x1, y1])
+      points.push([x2, y2])
+      x0 = x2
+      y0 = y2
+    }
+  })
+
+  points.push([x0 + rnd(charSize), y0 + rnd(charSize)])
 
   invert ? stroke(DARK_C) : stroke(LIGHT_C)
   beginShape()
   points.forEach(([x, y]) => curveVertex(x+1, y+1))
   endShape()
+
 
   invert ? stroke(ACCENT_C) : stroke(DARK_C)
   beginShape()

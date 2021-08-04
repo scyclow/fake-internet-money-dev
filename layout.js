@@ -140,16 +140,24 @@ function getDoubleWMCorners(existingCorners) {
 
 
 function displayBillData(wmCorners=[], invertSig=false) {
-  const infoComponentsY = 125 + (SHOW_BORDER ? 0 : 20)
+  const infoComponentsY = 115 + (SHOW_BORDER ? 0 : 30)
   const sigCorner = wmCorners.length === 1 ? opposingCorner(wmCorners[0]) : sample(emptyCorners(wmCorners))
 
   const serialCorner = sample(emptyCorners([sigCorner, ...wmCorners]))
 
-  const sigX = 100 * cornerXDirection(sigCorner)
+  const sigX = (SHOW_BORDER ? 110 : 100) * cornerXDirection(sigCorner)
   const serialX = 110 * cornerXDirection(serialCorner)
 
-  signature(sigX > 0 ? sigX + 85 : sigX, infoComponentsY * cornerYDirection(sigCorner), 10, invertSig)
-  serialNumber(serialX < 0 ? serialX-65 : serialX, infoComponentsY * cornerYDirection(serialCorner))
+  signature(
+    sigX > 0 ? sigX + 85 : sigX,
+    infoComponentsY * cornerYDirection(sigCorner),
+    10,
+    invertSig
+  )
+  serialNumber(
+    serialX < 0 ? serialX-65 : serialX,
+    infoComponentsY * cornerYDirection(serialCorner)
+  )
 }
 
 function displayBillDataSide(wmCorners=[]) {
