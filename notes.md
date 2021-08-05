@@ -239,21 +239,19 @@ sell messengers and buy octogarden
 # TODO
 
 ## MUST DO
+- with higher aspect ratio, can probably space out serial and sig a bit more
 - misprint rarities
-- serial/sig on strip layout
 - make sure that it's always showing a denomination with portraits, no corners, etc
 - OBJECTS DON'T LOOK GOOD WITH BYTE BACKGROUND
-- i don't really like what i did with the double WM colors. should just be normal stroke, transparent
+- i don't really like what i did with the double WM colors. should just be normal stroke, transparent. although, it looks good for ribbed rosettes
 - need to make it possible for byte bg to show up on fiat
 - be really careful about showing object, numeral in strip layout. easy to get repeats
 - portrait/object sizing all fucked up; denomination needs border
-- no empt bg for crypto
-- big fucking number as centerpiece
+- can i get rid of drawCircle in favor of drawShape?
 
 
 ## SHOULD DO
 - fix the fucking numerals bug
-- signature can use a lot of work. look more into asemic writing
 - for buillion, objects shoudl be scratched out with bright color
 - serial rarities
 - make rosette sandwhich intensity variable

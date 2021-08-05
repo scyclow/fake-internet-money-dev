@@ -114,10 +114,10 @@ function drawCGK(x=0, y=0, tBase, params={}) {
   push()
   const c1 = params.c1 || DARK_C
   const c2 = params.c2 || HIGHLIGHT ? BRIGHT_LIGHT_C : LIGHT_C
-  const PY_EYE = rnd() < 0.4275
-  const tCProb = rnd() < 0.5
-  const bCProb = rnd() < 0.5
-  const eIProb = rnd() < 0.5
+  const PY_EYE = prb(0.4275)
+  const tCProb = prb(0.5)
+  const bCProb = prb(0.5)
+  const eIProb = prb(0.5)
   const pt = rnd()
 
   const PY_TOP_CIRCLE = !PY_EYE && tCProb // 30%
@@ -125,13 +125,13 @@ function drawCGK(x=0, y=0, tBase, params={}) {
   const PY_EYE_INVERSE = !PY_EYE && !PY_TOP_CIRCLE && !PY_BOTTOM_CIRCLE && eIProb // 16%
   const PY_TRIANGLE = pt < 0.85
   const PY_TRIANGLE_INVERSE = pt > 0.85 && pt < 0.95
-  const PY_PUPIL = rnd() < 0.9
+  const PY_PUPIL = prb(0.9)
 
-  const PYRAMID_1 = rnd() < 0.65
-  const PYRAMID_2 = rnd() < 0.65
-  const PYRAMID_3 = rnd() < 0.65
-  const PYRAMID_4 = rnd() < 0.65
-  const PYRAMID_5 = rnd() < 0.65 || !(PYRAMID_1 || PYRAMID_2 || PYRAMID_3 || PYRAMID_4)
+  const PYRAMID_1 = prb(0.65)
+  const PYRAMID_2 = prb(0.65)
+  const PYRAMID_3 = prb(0.65)
+  const PYRAMID_4 = prb(0.65)
+  const PYRAMID_5 = prb(0.65) || !(PYRAMID_1 || PYRAMID_2 || PYRAMID_3 || PYRAMID_4)
 
 
   const flipColor = (

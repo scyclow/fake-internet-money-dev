@@ -1,5 +1,5 @@
 function mainLayout() {
-  const cornerComponentLocations = SHOW_BORDER || rnd() < 0.8 ? cornerLocations() : []
+  const cornerComponentLocations = SHOW_CORNERS ? cornerLocations() : []
   let sideSpace = [0,1,3,5].includes(MAIN_CENTER_PIECE)
 
   let wmCorners = []
@@ -21,7 +21,7 @@ function mainLayout() {
       HIGHLIGHT ? LIGHT_ACCENT_C : LIGHTENED_DARK_C
     )
   } else if (BG_TYPE === 'FULL') {
-    IS_VINTAGE || rnd() < 0.5 && !IS_DECO ? bg10() : bg11()
+    IS_VINTAGE || prb(0.5) && !IS_DECO ? bg10() : bg11()
     invertSig = true
   } else {/*no bg*/}
 
@@ -39,10 +39,10 @@ function mainLayout() {
 
 
   // TODO bring up a level
-  if (sideSpace && rnd() < 0.125) {
+  if (sideSpace && prb(0.125)) {
     const ancillarySide = posOrNeg()
     const secondarySide = rnd()
-    rnd() < 0.5 ? emblem(ancillarySide) : sideNumber(ancillarySide)
+    prb(0.5) ? emblem(ancillarySide) : sideNumber(ancillarySide)
     secondarySide < 0.25
       ? emblem(ancillarySide*-1)
       : secondarySide < 0.5 ? sideNumber(ancillarySide*-1) : null
@@ -55,6 +55,25 @@ function mainLayout() {
     invertSig
   )
 
+}
+
+function getMainCenterPiece() {
+  if (LAYOUT === 'MAIN') {
+    const centerPieceSeed = rnd()
+    if (centerPieceSeed < 0.6875)
+      return 1 // single
+    else if (centerPieceSeed < 0.8125)
+      return 2 // bouquet
+    else if (centerPieceSeed < 0.9375)
+      return 3 // portrait
+    else
+      return 4 // rosette sandwich
+
+    // if (centerPieceSeed < 0.01)
+    //   return 0 // no center piece
+    // else if (centerPieceSeed < 1)
+    //   return 5 // total chaos
+  }
 }
 
 
@@ -91,8 +110,8 @@ function displayCorners(locations=[]) {
   const padding = 57
   const radius = 55
 
-  const allHoles = rnd() < 0.125
-  const selectHoles = locations.length === 4 && rnd() < 0.5 ? [sample([1,3]), sample([2,4])] : []
+  const allHoles = prb(0.125)
+  const selectHoles = locations.length === 4 && prb(0.5) ? [sample([1,3]), sample([2,4])] : []
 
   const params = genParams(getHighlightPColors())
 
@@ -145,8 +164,8 @@ function displayBillData(wmCorners=[], invertSig=false) {
 
   const serialCorner = sample(emptyCorners([sigCorner, ...wmCorners]))
 
-  const sigX = (SHOW_BORDER ? 110 : 100) * cornerXDirection(sigCorner)
-  const serialX = 110 * cornerXDirection(serialCorner)
+  const sigX = (SHOW_BORDER ? 130 : 120) * cornerXDirection(sigCorner)
+  const serialX = 130 * cornerXDirection(serialCorner)
 
   signature(
     sigX > 0 ? sigX + 85 : sigX,
@@ -162,7 +181,7 @@ function displayBillData(wmCorners=[], invertSig=false) {
 
 function displayBillDataStrip(stripSide, forceSide=false) {
   push()
-  if (forceSide || rnd() < 0.25) {
+  if (forceSide || prb(0.25)) {
     rotate(TWO_PI*0.75* stripSide)
     serialNumber(
       (-W/6-25),
@@ -213,13 +232,14 @@ function portrait() {
 
   const pSeed = rnd()
 
-  if (pSeed < 0.75) {
+  if (!SHOW_CORNERS && BG_PATTERN !== 8 || pSeed < 0.1) {
+    drawSnazzyDenomination(0,0,2.5)
+
+  } else if (pSeed < 0.85) {
     push()
     stroke(ROSETTE_STROKE_C)
     randomWatermark(0,0, IS_VINTAGE ? 30 : 50)
     pop()
-  } else if (pSeed < 0.85) {
-    drawStrAdj('$', 0, 0, 3, ROSETTE_STROKE_C)
   } else if (pSeed < 0.95) {
     drawCGK(0, 0, 200)
   } else {
@@ -239,11 +259,11 @@ function emblem(side) {
   })
 
 
-  dollarEchoRosette(200*side,20, 40, 0, p)
+  dollarEchoRosette(210*side,20, 40, 0, p)
 }
 
 function sideNumber(side) {
-  drawDenominationWithBorder(190*side, 20, 0.65, LIGHT_ACCENT_C, LIGHT_ACCENT_C)
+  drawDenominationWithBorder(205*side, 20, 0.65, LIGHT_ACCENT_C, LIGHT_ACCENT_C)
 }
 
 
@@ -254,8 +274,8 @@ const getHighlightPColors = () => !IS_VINTAGE ? ({
 }) : {}
 
 function singleCenterPiece() {
-  const allowHole = !IS_VINTAGE && rnd() < 0.5 // TODO lower maybe?
-  const extraPieces = rnd() < 0.25 ? sample([1, 2]) : 0
+  const allowHole = !IS_VINTAGE && prb(0.5) // TODO lower maybe?
+  const extraPieces = prb(0.25) ? sample([1, 2]) : 0
   const p = getHighlightPColors()
 
   rosetteWithBackground(0,0,150, 0, p)
@@ -265,7 +285,7 @@ function singleCenterPiece() {
     extraPieces > 1 && rosetteWithBackground(0,0,70, 0, 0, p)
   }
 
-  if (allowHole || extraPieces < 2) {
+  if (allowHole || extraPieces < 2 || prb(0.9375)) {
     drawSnazzyDenomination(0,0,1)
   }
 }
@@ -362,7 +382,7 @@ function stripLayout() {
   drawBgPattern()
   const stripSide = -1//posOrNeg()
 
-  if (rnd() < .1) {
+  if (prb(.1)) {
     stripDenominationThirds(stripSide, true)
     stripDenominationThirds(0, true)
     stripDenominationThirds(stripSide*-1, true)
@@ -371,7 +391,7 @@ function stripLayout() {
     return
   }
 
-  rnd() < 0.5 && stripBorder(stripSide)
+  prb(0.5) && stripBorder(stripSide)
   stripDenominationThirds(stripSide)
 
   const mainSeed = rnd()
@@ -381,16 +401,16 @@ function stripLayout() {
     const p = getHighlightPColors()
 
     rosetteWithBackground(W/-6*stripSide,0, 180, 0, p)
-    if (IS_VINTAGE || rnd() < 0.3125) {
+    if (IS_VINTAGE || prb(0.3125)) {
       rosetteWithBackground(W/-6*stripSide,0, 135, 0, p)
       rosetteWithBackground(W/-6*stripSide,0, 90, 0, p)
       IS_VINTAGE && rosetteWithBackground(W/-6*stripSide,0, 70)
     }
-    if (rnd() < 0.1)
+    if (prb(0.1))
       drawCGK(mainX, 0, 245)
   } else if (mainSeed < 0.82) {
     randomWatermark(mainX, 0, 100)
-    if (rnd() < 0.1)
+    if (prb(0.1))
       drawCGK(mainX, 0, 245)
   } else if (mainSeed < 0.97) {
     drawCGK(mainX, 0, 245)
@@ -402,24 +422,27 @@ function stripLayout() {
   }
 
 
-  rnd() < 0.5 && cornerThing(-1*stripSide, 1)
-  rnd() < 0.5 && cornerThing(-1*stripSide, -1)
+  prb(0.5) && cornerThing(-1*stripSide, 1)
+  prb(0.5) && cornerThing(-1*stripSide, -1)
 
   displayBillDataStrip(stripSide)
 }
 
 
 function stripBorder(lOrR=-1) {
+  push();
+  (HIGHLIGHT || IS_CRYPTO) && stroke(BRIGHT_DARK_C)
   line(W*lOrR/6-1, 20-H/2, W*lOrR/6-1, H/2-20)
   line(W*lOrR/6+1, 20-H/2, W*lOrR/6+1, H/2-20)
+  pop()
 }
 
 function stripDenominationThirds(lOrR=-1, full=false) {
 
-  if (rnd() < 0.333 && !full) {
+  if (prb(0.333) && !full) {
     drawStripThird(-H/3, lOrR)
 
-  } else if (rnd() < 0.666 && !full) {
+  } else if (prb(0.666) && !full) {
     drawStripThird(H/3, lOrR)
 
   } else {

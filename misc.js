@@ -18,11 +18,11 @@ function signature(x, y, charSize, invert) {
 
 
   times(chars, letter => {
-    const up = rnd() < 0.75
+    const up = prb(0.75)
     const x1 = x0 + charSize*(1+xVar*(up ? -7 : 7))/2
     const y1 = y0 + (up
-      ? rnd() < 0.85 ? charSize*rnd(0, 0.3) : charSize*rnd(1, 1.5)
-      : -1*(rnd() < 0.5 ? charSize*rnd(0, 0.3) : charSize*rnd(1, 1.5))
+      ? prb(0.85) ? charSize*rnd(0, 0.3) : charSize*rnd(1, 1.5)
+      : -1*(prb(0.5) ? charSize*rnd(0, 0.3) : charSize*rnd(1, 1.5))
     )
 
     const x2 = x0 + charSize*rnd(1-xVar, 1+xVar)
@@ -60,9 +60,13 @@ function serialNumber(x, y) {
   const sNumber = genSerialNumber()
   fill(LIGHT_C)
   stroke(DARK_C)
-  rect(x, y, 60, 20)
-  // drawStr('99999999', 141,131, 0.125, DARK_C)
+  rect(x, y, STAR_NOTE ? 72 : 60, 20)
   drawStr(sNumber, x+30,y+10, 0.125, DARK_C, ACCENT_C)
+  if (STAR_NOTE) {
+    fill(ACCENT_C)
+    stroke(ACCENT_C)
+    drawShape(10, i =>  getXYRotation(i*TWO_PI/10, i % 2 === 0 ? 2.5 : 6, x+63, y+ 10))
+  }
   pop()
 }
 

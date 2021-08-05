@@ -19,7 +19,7 @@ function randomBorder() {
       const padding = 8 + params.radius
 
       border5(padding, params)
-      rnd() < 0.25 && border5(padding, genBorder5Params({ degAdj: degAdj * -1 }))
+      prb(0.25) && border5(padding, genBorder5Params({ degAdj: degAdj * -1 }))
     }
 
     else if (borderSeed < 0.55) {
@@ -27,7 +27,7 @@ function randomBorder() {
     }
 
     else if (borderSeed < 0.8) {
-      border8(-10, rnd() < 0.7)
+      border8(-10, prb(0.7))
     }
 
 

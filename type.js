@@ -35,7 +35,10 @@ function drawStr(str, x, y, s, stroke_, fill_) {
   const center = floor(str.length/2)
   for (let c=0; c<str.length; c++) {
     const offCenter = c - center
-    const xOffset = 50*s
+    const xOffset = 50*s * (
+      str === 'XX' ? 1.4 :
+      1
+    )
     const letterOffset = (offsets[str]||0)*s
 
 
@@ -45,7 +48,8 @@ function drawStr(str, x, y, s, stroke_, fill_) {
 }
 
 function drawStrAdj(...args) {
-  if (['10', '20', '50', 'II', 'XX'].includes(args[0])) args[3] = args[3] * 0.75
+  if (['10', '20', '50', 'II'].includes(args[0])) args[3] = args[3] * 0.75
+  if (args[0] === 'XX') args[3] = args[3] * 0.65
   if (args[0] === '100') args[3] = args[3] * 0.65
   drawStr(...args)
 }
@@ -63,5 +67,8 @@ function drawDenominationWithBorder(x, y, scale_, borderC, centerC) {
 function drawSnazzyDenomination(x, y, scale_) {
   const d = getDenominationDisplay()
   drawStrAdj(d, x+2, y+2, scale_, DARK_C)
-  drawStrAdj(d, x, y, scale_, LIGHT_C, HIGHLIGHT ? BRIGHT_DARK_C : DARK_C)
+  drawStrAdj(d, x, y, scale_,
+    IS_BULLION ? DARK_C : LIGHT_C,
+    IS_BULLION ? LIGHT_C : HIGHLIGHT ? BRIGHT_DARK_C : DARK_C
+  )
 }

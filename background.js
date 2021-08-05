@@ -15,7 +15,7 @@ function drawBgPattern() {
 function getBG() {
   const r = rnd()
 
-  if (IS_CRYPTO && rnd() < 0.5) return 0
+  if (prb(IS_CRYPTO ? 0.125 : 0.01)) return 0
   else if (r < 0.125) return 1
   else if (r < 0.25) return 2
   else if (r < 0.375) return 3
@@ -34,7 +34,7 @@ function squigTexture() {
   const squigs = 60
 
   for (let i=0; i<squigs; i++) {
-    // stroke(rnd() < 0.5 ? DARK_C : ACCENT_C)
+    // stroke(prb(0.5) ? DARK_C : ACCENT_C)
     const x = rnd(-W/2, W/2)
     const y = rnd(-H/2, H/2)
 
@@ -80,19 +80,18 @@ function pointTexture() {
 }
 
 
-function denominationTexture(denomination) {
-
+function denominationTexture() {
   push()
   strokeWeight(1)
   for (let x = -W/2; x < W/2; x += 20)
   for (let y = -H/2; y < H/2; y += 20) {
     const s = rnd(0.01, 0.15)
 
-    const straight = rnd() < 0.3
+    const straight = prb(0.3)
     const xOffset = straight ? 0 : rnd(-10, 10)
     const yOffset = straight ? 0 : rnd(-10, 10)
 
-    drawStr(denomination, x + xOffset, y + yOffset, s, DARK_C)
+    drawStr(getDenominationDisplay(), x + xOffset, y + yOffset, s, DARK_C)
   }
   pop()
 }
@@ -106,7 +105,7 @@ function labrynthBg() {
 
   for (let x = -W/2; x < W/2; x += size)
   for (let y = -H/2; y < H/2; y += size) {
-    if (rnd() < 0.5) {
+    if (prb(0.5)) {
       line(x, y, x + size, y + size)
     } else {
       line(x+size, y, x, y + size)
@@ -125,7 +124,7 @@ function pennyPincherBg() {
   const w = 30
   const h = 15
 
-  const showCircle = HIGHLIGHT || rnd() < 0.5
+  const showCircle = HIGHLIGHT || prb(0.5)
 
   for (let y = 0, i = 0; y <= H+5; y += h, i++) {
     const y_ = y - H/2
@@ -221,15 +220,17 @@ function cyclesBg() {
 
 function mainframeBg() {
   push()
-  strokeWeight(0.25)
+  strokeWeight(0.35)
   HIGHLIGHT && fill(LIGHT_ACCENT_C)
+  stroke(LIGHTENED_DARK_C)
+
   const size = 10
 
   for (let x = 0; x < W; x += size)
   for (let y = 0; y < H; y += size) {
     const x_ = x - W/2
     const y_ = y - H/2
-    if (rnd() < 0.5) {
+    if (prb(0.5)) {
       line(x_, y_, x_ + size, y_ + size)
       const c = rnd()
       if (c < 0.15) circle(x_, y_, 4)
@@ -274,11 +275,12 @@ function chainLinkBg() {
 
 function byteBg() {
   push()
-  for (let x = 0; x < W; x+=5)
-  for (let y = 0; y < H; y+=5) {
+  const px = int(rnd(2, 5))
+  for (let x = 0; x < W; x+=px)
+  for (let y = 0; y < H; y+=px) {
     fill (lerpColor(LIGHT_C, DARK_C, rnd(0.75)))
     noStroke()
-    rect(W/2-x, H/2-y, 5, 5)
+    rect(W/2-x-px, H/2-y-px, px, px)
   }
   pop()
 }

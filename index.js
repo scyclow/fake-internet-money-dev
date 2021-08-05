@@ -21,10 +21,13 @@ let SCALE,
     BG_TYPE,
     BG_PATTERN,
     SHOW_BORDER,
+    SHOW_CORNERS,
+    STAR_NOTE,
+    MISPRINT_INK_RUN,
     LAYOUT
 
-const W = 610
-const H = 377
+const W = 700
+const H = 400
 const W_H_RATIO = W/H
 const GRAPHIC_RESOLUTION = 4
 
@@ -99,13 +102,14 @@ function setup() {
   else
     ROSETTE_STYLE = 'LINE'
 
-  ROSETTE_ENHANCEMENT = rnd() < 0.0625
+  ROSETTE_ENHANCEMENT = prb(0.0625)
 
-  HIGHLIGHT = !IS_VINTAGE && rnd() < 0.125
+  HIGHLIGHT = !IS_VINTAGE && prb(0.125)
 
   const colorSeed = rnd()
+
   COLOR_SCHEME =
-    colorSeed < 0.8125 ? 'FIAT'
+    colorSeed < 0.75 ? 'FIAT'
     : colorSeed < 0.9375 ? 'CRYPTO'
     : 'BULLION'
   IS_BULLION = COLOR_SCHEME === 'BULLION'
@@ -123,16 +127,19 @@ function setup() {
     BRIGHT_LIGHT_C = color(max(HUE-10, 0), 80, 54)
     BRIGHT_DARK_C = BRIGHT_LIGHT_C
 
+    MISPRINT_INK_RUN = prb(0.02)
+
 
   } else if (COLOR_SCHEME === 'CRYPTO') {
     HUE = int(rnd(0,360))
     const isBlue = HUE < 275 && HUE > 210
-    LIGHT_C = color(hfix(HUE-153), 96, isBlue ? 0 : 20)
+    LIGHT_C = color(hfix(HUE-133), 96, isBlue ? 0 : 15)
     DARK_C = color(HUE, isBlue ? 80 : 99, isBlue ? 95 : 90)
     LIGHTENED_DARK_C = color(HUE, 69, 75)
     ACCENT_C = color(hfix(HUE-254), 100, 100)
     LIGHT_ACCENT_C = ACCENT_C
-    BRIGHT_LIGHT_C = color(hfix(HUE-15), 99, 65)
+    // BRIGHT_LIGHT_C = color(hfix(HUE-15), 99, 65)
+    BRIGHT_LIGHT_C = ACCENT_C
     BRIGHT_DARK_C = BRIGHT_LIGHT_C
     LIGHT_GRADIENT_C = LIGHT_C
 
@@ -140,7 +147,7 @@ function setup() {
     HUE = int(rnd(0,360))
     DARK_C = color(HUE, 26, 25)
 
-    if (rnd() < 0.5) {
+    if (prb(0.5)) {
       LIGHT_C = color(203, 5, 48)
       BRIGHT_LIGHT_C = color(167, 5, 95)
       DARK_C = color(40, 26, 20)
@@ -168,7 +175,7 @@ function setup() {
   }
 
 
-  const reverseRosetteColors = rnd() < 0.5
+  const reverseRosetteColors = prb(0.5)
   const lightC = isSliver ? BRIGHT_LIGHT_C : LIGHT_GRADIENT_C
   const darkC = HIGHLIGHT && !IS_DECO && !IS_VINTAGE ? BRIGHT_DARK_C : DARK_C
   // const darkC = HIGHLIGHT && !IS_DECO && !IS_VINTAGE && !reverseRosetteColors ? BRIGHT_DARK_C : DARK_C
@@ -177,31 +184,17 @@ function setup() {
 
 
 
-  SHOW_NUMERALS = rnd() < 0.2
+  SHOW_NUMERALS = prb(0.2)
 
 
-  LAYOUT = rnd() < 0.8125 ? 'MAIN' : 'STRIP'
+  LAYOUT = prb(0.8125) ? 'MAIN' : 'STRIP'
 
-  if (LAYOUT === 'MAIN') {
-    const centerPieceSeed = rnd()
-    // if (centerPieceSeed < 0.01)
-    //   MAIN_CENTER_PIECE = 0 // no center piece
-    if (centerPieceSeed < 0.6875)
-      MAIN_CENTER_PIECE = 1 // single
-    else if (centerPieceSeed < 0.8125)
-      MAIN_CENTER_PIECE = 2 // bouquet
-    else if (centerPieceSeed < 0.875)
-      MAIN_CENTER_PIECE = 3 // portrait
-    else
-      MAIN_CENTER_PIECE = 4 // rosette sandwich
-
-    // else if (centerPieceSeed < 1)
-    //   MAIN_CENTER_PIECE = 5 // total chaos
-  }
+  MAIN_CENTER_PIECE = getMainCenterPiece()
 
 
   const isMain = LAYOUT === 'MAIN'
-  SHOW_BORDER = isMain && [0, 1, 2, 3, 6, 4].includes(MAIN_CENTER_PIECE) && rnd() < 0.75
+  SHOW_BORDER = isMain && [0, 1, 2, 3, 6, 4].includes(MAIN_CENTER_PIECE) && prb(0.75)
+  SHOW_CORNERS = isMain && ((SHOW_BORDER && prb(0.95)) || prb(0.8))
 
   const bgSeed = rnd()
   if (!isMain || SHOW_BORDER) {
@@ -210,46 +203,11 @@ function setup() {
   }
   else if (bgSeed < 0.5625) BG_TYPE = 'WM2'
   else if (bgSeed < 0.8125) BG_TYPE = 'WM1'
-  else if (bgSeed < 0.9375) BG_TYPE = 'FULL'
+  else if (bgSeed < 0.9375 || IS_CRYPTO) BG_TYPE = 'FULL'
   else BG_TYPE = 'EMPTY'
 
 
-
-
-
-
-  // if (r < 0.125) chainLinkBg() // chainlink
-  // else if (r < 0.25) labrynthBg() // labrynth
-  // else if (r < 0.375) pennyPincherBg() // penny pincher
-
-  // else if (r < 0.5) fabricBg() // fabric
-  // else if (r < 0.625) cyclesBg()
-  // else if (r < 0.75) mainframeBg() // mainframe
-  // else if (r < 0.875) arrowBg()
-  // else denominationTexture(DENOMINATION)
-
-
-
-  // DARK_C = '#65aaba'
-  // LIGHT_C = '#cc5b95'
-  // DARK_C2 = '#4145a7'
-
-  // const sample = a => a[int(rnd(0, a.length))]
-
-  // const softColors = [
-  //   color(23, 95, 95),
-  //   color(150, 57, 95),
-  //   color(270, 65, 35),
-  //   color(250, 65, 35),
-  //   color(210, 75, 100),
-  //   color(0, 75, 100),
-  //   color(31, 48, 34),
-  // ]
-  // if (rnd() < 0.8) {
-  //   DARK_C = sample(softColors)
-  //   LIGHT_C = sample(softColors)
-  //   DARK_C2 = sample(softColors)
-  // }
+  STAR_NOTE = prb(0.02)
 }
 
 
@@ -261,24 +219,8 @@ function draw() {
 
   stroke(DARK_C)
 
-  if (IS_BULLION) {
-    const direction = posOrNeg()
-    const diag = rnd(0, 100)
-    for (let i = -diag; i <= W+diag; i++) {
-      const x = direction === 1 ? i-W/2 : W/2-i
 
-      stroke(lerpColor(
-        LIGHT_C,
-        BRIGHT_LIGHT_C,
-        i/W
-      ))
-      line(x+diag, -H/2, x, H/2)
-    }
-  }
-  else background(LIGHT_C)
-
-  if (COLOR_SCHEME === 'FIAT') pointTexture()
-  if (COLOR_SCHEME !== 'CRYPTO') squigTexture()
+  drawTexture()
 
 
   if (LAYOUT === 'MAIN')
@@ -286,6 +228,27 @@ function draw() {
   else
     stripLayout()
 
+}
+
+function drawTexture() {
+  push()
+  const direction = posOrNeg()
+  const diag = rnd(0, 100)
+  if (!IS_BULLION) strokeWeight(2)
+  for (let i = -diag; i <= W+diag; i++) {
+    const x = direction === 1 ? i-W/2 : W/2-i
+
+    stroke(lerpColor(
+      LIGHT_C,
+      MISPRINT_INK_RUN || IS_BULLION || HIGHLIGHT ? BRIGHT_LIGHT_C : DARK_C,
+      MISPRINT_INK_RUN || IS_BULLION || (IS_CRYPTO&&HIGHLIGHT) ? i/W : i/(W*5)
+    ))
+    line(x+diag, -H/2, x, H/2)
+  }
+
+  if (COLOR_SCHEME === 'FIAT') pointTexture()
+  if (COLOR_SCHEME !== 'CRYPTO') squigTexture()
+  pop()
 }
 
 
