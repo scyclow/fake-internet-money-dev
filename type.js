@@ -54,14 +54,15 @@ function drawStrAdj(...args) {
   drawStr(...args)
 }
 
-const drawAdjDenomination = (...args) => drawStrAdj(DENOMINATION, ...args)
+const drawAdjDenomination = (...args) => drawStrAdj(getDenominationDisplay(), ...args)
 
 function drawDenominationWithBorder(x, y, scale_, borderC, centerC) {
-  drawStr(DENOMINATION, x+1, y+1, scale_, borderC)
-  drawStr(DENOMINATION, x-1, y-1, scale_, borderC)
-  drawStr(DENOMINATION, x-1, y+1, scale_, borderC)
-  drawStr(DENOMINATION, x+1, y-1, scale_, borderC)
-  drawStr(DENOMINATION, x, y, scale_, centerC)
+  const d = getDenominationDisplay()
+  drawStr(d, x+1, y+1, scale_, borderC)
+  drawStr(d, x-1, y-1, scale_, borderC)
+  drawStr(d, x-1, y+1, scale_, borderC)
+  drawStr(d, x+1, y-1, scale_, borderC)
+  drawStr(d, x, y, scale_, centerC)
 }
 
 function drawSnazzyDenomination(x, y, scale_) {

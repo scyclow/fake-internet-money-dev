@@ -244,10 +244,10 @@ const genVintageRosetteParams = (o) => ({
 })
 
 const genRosetteParams = (o) => ({
-  c1: int(rnd(1, ROSETTE_ENHANCEMENT ? 25 : 16)) * posOrNeg(),
-  c2: int(rnd(1, ROSETTE_ENHANCEMENT ? 20 : 13)) * posOrNeg(),
-  r1: ROSETTE_ENHANCEMENT ? rnd(4, 10) : rnd(10, 20),
-  r2: ROSETTE_ENHANCEMENT ? rnd(4, 10) : rnd(10, 20),
+  c1: int(rnd(1, MISPRINT_ROSETTE_PARAMS_EXCEEDED ? 25 : 16)) * posOrNeg(),
+  c2: int(rnd(1, MISPRINT_ROSETTE_PARAMS_EXCEEDED ? 20 : 13)) * posOrNeg(),
+  r1: MISPRINT_ROSETTE_PARAMS_EXCEEDED ? rnd(4, 10) : rnd(10, 20),
+  r2: MISPRINT_ROSETTE_PARAMS_EXCEEDED ? rnd(4, 10) : rnd(10, 20),
   points: 70,
   ...o
 })

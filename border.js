@@ -10,12 +10,8 @@ function randomBorder() {
   drawBorderGraphic(() => {
     if (borderSeed < vintageBorderProb) {
       const vintageBorderSeed = rnd()
-      const degAdj = vintageBorderSeed < 0.6 ? 2 * posOrNeg()
-        : vintageBorderSeed < 0.8 ? 1
-        : 3 * posOrNeg()
-
+      const degAdj = posOrNeg() * (vintageBorderSeed < 0.75 ? 2 : 3)
       const params = genBorder5Params({ degAdj })
-
       const padding = 8 + params.radius
 
       border5(padding, params)
@@ -95,13 +91,13 @@ const getXYBorder = (p, points, padding) => {
 function drawBorderGraphic(borderFn) {
   push()
   scale(1/GRAPHIC_RESOLUTION)
-  borderGraphic.scale(GRAPHIC_RESOLUTION)
+  __borderGraphic.scale(GRAPHIC_RESOLUTION)
 
-  borderGraphic.translate(W/2, H/2)
-  borderGraphic.noFill()
-  borderGraphic.stroke(DARK_C)
+  __borderGraphic.translate(W/2, H/2)
+  __borderGraphic.noFill()
+  __borderGraphic.stroke(DARK_C)
   borderFn()
-  image(borderGraphic,-W * GRAPHIC_RESOLUTION / 2,-H * GRAPHIC_RESOLUTION / 2)
+  image(__borderGraphic,-W * GRAPHIC_RESOLUTION / 2,-H * GRAPHIC_RESOLUTION / 2)
   pop()
 }
 
@@ -112,13 +108,13 @@ function border1(padding=10, points=100) {
       const [ix, iy] = getXYBorder(p + off, points, padding+20)
 
       return p % 2 === 0 ? [ix, iy] : [ox, oy]
-    }, borderGraphic)
+    }, __borderGraphic)
   }
 }
 
 
 function border2(padding=10, cRad=3) {
-  borderGraphic.strokeWeight(1)
+  __borderGraphic.strokeWeight(1)
   const adjW = W - 2*padding
   const adjH = H - 2*padding
   const adjPrm = (adjW + adjH) * 2
@@ -126,36 +122,33 @@ function border2(padding=10, cRad=3) {
 
   times(points, p => {
     const [x,y] = getXYBorder(p, points, padding+cRad)
-    borderGraphic.circle(x, y, cRad*2)
+    __borderGraphic.circle(x, y, cRad*2)
   })
-  drawShape(points, p => getXYBorder(p, points, padding), borderGraphic)
-  drawShape(points, p => getXYBorder(p, points, padding+(cRad*2)), borderGraphic)
+  drawShape(points, p => getXYBorder(p, points, padding), __borderGraphic)
+  drawShape(points, p => getXYBorder(p, points, padding+(cRad*2)), __borderGraphic)
 }
 
 
 function genBorder5Params(o) {
   const radius = rnd(15, 31)
-  const degAdj = (o.degAdj || int(rnd(1, 5)))
   const offsetAmt = (
-    abs(degAdj) === 1 ? rnd(15, 51) :
-    abs(degAdj) === 2 ? rnd(3, 26) :
-                        rnd(1, 13)
+    abs(o.degAdj) === 2 ? rnd(3, 26) : rnd(1, 13)
   )
 
   return {
     radius,
-    degAdj,
+    degAdj: o.degAdj,
     offsetAmt,
   }
 }
 
-function border5(padding=20, params={}) {
+function border5(padding, params) {
   // TODO MISPRINT: change this number
   const points = 60
 
-  const radius = params.radius || 20 // 15-30
-  const degAdj = params.degAdj || -3 //1,2,3,4,-1,-2,-3,-4
-  const offsetAmt = 1/(params.offsetAmt || 5) //3 - 25
+  const radius = params.radius // 15-30
+  const degAdj = params.degAdj //1,2,3,4,-1,-2,-3,-4
+  const offsetAmt = 1/params.offsetAmt //3 - 25
 
   for (let off=0; off<2; off+=offsetAmt) {
     drawShape(points+1, p => {
@@ -165,7 +158,7 @@ function border5(padding=20, params={}) {
         radius,
         ox, oy
       )
-    }, borderGraphic)
+    }, __borderGraphic)
   }
 }
 
@@ -194,8 +187,8 @@ function border7(padding=20, compression=4, d=1) {
   const points = compression*50
 
   if (IS_DECO) {
-    borderGraphic.fill(ROSETTE_FILL_C)
-    borderGraphic.stroke(ROSETTE_STROKE_C)
+    __borderGraphic.fill(ROSETTE_FILL_C)
+    __borderGraphic.stroke(ROSETTE_STROKE_C)
   }
 
   if (['NUMISMATIC', 'VINTAGE', 'DECO'].includes(ROSETTE_STYLE))
@@ -205,25 +198,25 @@ function border7(padding=20, compression=4, d=1) {
       const [ix, iy] = getCurvedXYBorder(p + off, points, padding+22, d)
 
       return p % 2 === 0 ? [ix, iy] : [ox, oy]
-    }, borderGraphic)
+    }, __borderGraphic)
   }
 
   if (['ECHO', 'DIGITAL'].includes(ROSETTE_STYLE))
   for (let off=0; off<25; off+=5) {
-    drawShape(points, p => getCurvedXYBorder(p, points, padding+off), borderGraphic, d)
+    drawShape(points, p => getCurvedXYBorder(p, points, padding+off), __borderGraphic, d)
   }
 
   if (['LINE', 'DIGITAL'].includes(ROSETTE_STYLE))
   for (let p=0; p < points; p += 0.2) {
     const [ox, oy] = getCurvedXYBorder(p, points, padding, d)
     const [ix, iy] = getCurvedXYBorder(p, points, padding+22, d)
-    borderGraphic.line(ox, oy, ix, iy)
+    __borderGraphic.line(ox, oy, ix, iy)
   }
 
   if (IS_DECO) {
-    borderGraphic.erase()
-    drawShape(points, p => getCurvedXYBorder(p, points, padding+20, d), borderGraphic)
-    borderGraphic.noErase()
+    __borderGraphic.erase()
+    drawShape(points, p => getCurvedXYBorder(p, points, padding+20, d), __borderGraphic)
+    __borderGraphic.noErase()
   }
 
 }
@@ -233,17 +226,17 @@ function border8(padding=-10, sides=true) {
   const compression = int(rnd(1, 7))
 
   if (HIGHLIGHT) {
-    borderGraphic.push()
+    __borderGraphic.push()
     times(100, i => {
-      borderGraphic.stroke(lerpColor(ROSETTE_STROKE_C, ROSETTE_FILL_C, (i+75)/150))
-      borderGraphic.rectMode(CENTER)
-      borderGraphic.rect(0, 0, W-i, H-i)
+      __borderGraphic.stroke(lerpColor(ROSETTE_STROKE_C, ROSETTE_FILL_C, (i+75)/150))
+      __borderGraphic.rectMode(CENTER)
+      __borderGraphic.rect(0, 0, W-i, H-i)
     })
-    borderGraphic.pop()
-  } else borderGraphic.background(ROSETTE_FILL_C)
+    __borderGraphic.pop()
+  } else __borderGraphic.background(ROSETTE_FILL_C)
 
-  borderGraphic.stroke(ROSETTE_STROKE_C)
-  borderGraphic.strokeWeight(1.1 - compression/12)
+  __borderGraphic.stroke(ROSETTE_STROKE_C)
+  __borderGraphic.strokeWeight(1.1 - compression/12)
   const direction = posOrNeg()
 
   const extraPadding = ['ECHO', 'DIGITAL'].includes(ROSETTE_STYLE) ? 6 : 0
@@ -253,22 +246,22 @@ function border8(padding=-10, sides=true) {
 
   const p = padding+(sides ? 35 : 55)
 
-  borderGraphic.stroke(DARK_C)
-  borderGraphic.erase()
-  borderGraphic.fill(0)
+  __borderGraphic.stroke(DARK_C)
+  __borderGraphic.erase()
+  __borderGraphic.fill(0)
   sides
-    ? borderGraphic.rect(p-W/2, p-H/2, W-2*p, H-2*p)
-    : borderGraphic.rect(-W/2, p-H/2, W, H-2*p)
+    ? __borderGraphic.rect(p-W/2, p-H/2, W-2*p, H-2*p)
+    : __borderGraphic.rect(-W/2, p-H/2, W, H-2*p)
 
 
-  borderGraphic.noErase()
-  borderGraphic.noFill()
+  __borderGraphic.noErase()
+  __borderGraphic.noFill()
 
   if (sides) {
-    borderGraphic.rect(p-W/2, p-H/2, W-2*p, H-2*p)
+    __borderGraphic.rect(p-W/2, p-H/2, W-2*p, H-2*p)
     border2(p + 5)
   } else {
-    borderGraphic.rect(-W/2, p-H/2, W, H-2*p)
+    __borderGraphic.rect(-W/2, p-H/2, W, H-2*p)
   }
 }
 
@@ -302,21 +295,21 @@ function solidBorder5(weight=60) {
   const lines = int(rnd(4, 11))
 
 
-  borderGraphic.stroke(DARK_C)
+  __borderGraphic.stroke(DARK_C)
   for (let i = 0; i < lines; i++) {
-    if (i % 2 !== 0 || i === lines-1) borderGraphic.erase()
-    borderGraphic.fill(DARK_C)
-    borderGraphic.strokeWeight(weight -(i* weightAdj))
-    borderGraphic.line(left, top, right, top)
-    borderGraphic.line(right, top, right, bottom)
-    borderGraphic.line(right, bottom, left, bottom)
-    borderGraphic.line(left, bottom, left, top)
+    if (i % 2 !== 0 || i === lines-1) __borderGraphic.erase()
+    __borderGraphic.fill(DARK_C)
+    __borderGraphic.strokeWeight(weight -(i* weightAdj))
+    __borderGraphic.line(left, top, right, top)
+    __borderGraphic.line(right, top, right, bottom)
+    __borderGraphic.line(right, bottom, left, bottom)
+    __borderGraphic.line(left, bottom, left, top)
 
-    borderGraphic.circle(left+rad, top+rad, rad)
-    borderGraphic.circle(left+rad, bottom-rad, rad)
-    borderGraphic.circle(right-rad, top+rad, rad)
-    borderGraphic.circle(right-rad, bottom-rad, rad)
-    if (i % 2 !== 0 || i === lines-1) borderGraphic.noErase()
+    __borderGraphic.circle(left+rad, top+rad, rad)
+    __borderGraphic.circle(left+rad, bottom-rad, rad)
+    __borderGraphic.circle(right-rad, top+rad, rad)
+    __borderGraphic.circle(right-rad, bottom-rad, rad)
+    if (i % 2 !== 0 || i === lines-1) __borderGraphic.noErase()
   }
 
 }

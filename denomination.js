@@ -8,14 +8,13 @@ const NUMERALS = {
   '100': 'C',
 }
 
-let __denominationDisplayed = false
-let __numeralDisplayed = false
+
 function getDenominationDisplay() {
   const seed = rnd()
 
   if (!DENOMINATION || __denominationDisplayed && seed < 0.1) {
     return '$'
-  } else if (SHOW_NUMERALS && !__numeralDisplayed || seed < 0.5) {
+  } else if (SHOW_NUMERALS && (!__numeralDisplayed || seed < 0.5)) {
     __numeralDisplayed = true
     return NUMERALS[DENOMINATION]
   } else {

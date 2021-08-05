@@ -132,7 +132,7 @@ function watermark6(x0, y0, radius) {
 
 
 function border_outtake_1(padding=20) {
-  borderGraphic.strokeWeight(0.5)
+  __borderGraphic.strokeWeight(0.5)
   const points = W/6+3
 
   for (let off=0; off<2; off+=0.3333) {
@@ -141,12 +141,12 @@ function border_outtake_1(padding=20) {
       const [ix, iy] = getXYBorder(p + off, points, padding+20)
 
       return p % 4 === 0 ? [ix, iy] : [ox, oy]
-    }, borderGraphic)
+    }, __borderGraphic)
   }
 }
 
 function border_outtake_2(padding=20) {
-  borderGraphic.strokeWeight(0.5)
+  __borderGraphic.strokeWeight(0.5)
   const points = W/6
 
   for (let off=0; off<2; off+=0.3333) {
@@ -155,7 +155,7 @@ function border_outtake_2(padding=20) {
       const [ix, iy] = getXYBorder(p - off, points, padding+20)
 
       return p % 2 === 0 ? [ix, iy] : [ox, oy]
-    }, borderGraphic)
+    }, __borderGraphic)
   }
 }
 
@@ -175,7 +175,7 @@ function border_outtake_3(padding=20, params={}) {
         radius,
         ox, oy
       )
-    }, borderGraphic)
+    }, __borderGraphic)
   }
 }
 
@@ -394,7 +394,7 @@ function sideEmblemDollar() {
   bg7()
   // oversaturaedRosette()
   // middleRosette(80)
-  // drawBorderGraphic(() => {
+  // draw__borderGraphic(() => {
   // //   trancendentalMoneyBg()
   //   border8()
   // // //   border2(10)
@@ -839,49 +839,49 @@ function solidBorder3(weight=60) {
   const rad = weight/2
 
   push()
-  borderGraphic.strokeWeight(weight)
-  borderGraphic.stroke(DARK_C)
-  borderGraphic.line(left, top, right, top)
-  borderGraphic.line(right, top, right, bottom)
-  borderGraphic.line(right, bottom, left, bottom)
-  borderGraphic.line(left, bottom, left, top)
+  __borderGraphic.strokeWeight(weight)
+  __borderGraphic.stroke(DARK_C)
+  __borderGraphic.line(left, top, right, top)
+  __borderGraphic.line(right, top, right, bottom)
+  __borderGraphic.line(right, bottom, left, bottom)
+  __borderGraphic.line(left, bottom, left, top)
 
-  borderGraphic.circle(left+rad, top+rad, rad)
-  borderGraphic.circle(left+rad, bottom-rad, rad)
-  borderGraphic.circle(right-rad, top+rad, rad)
-  borderGraphic.circle(right-rad, bottom-rad, rad)
+  __borderGraphic.circle(left+rad, top+rad, rad)
+  __borderGraphic.circle(left+rad, bottom-rad, rad)
+  __borderGraphic.circle(right-rad, top+rad, rad)
+  __borderGraphic.circle(right-rad, bottom-rad, rad)
 
   // cool ->
 
 
-  borderGraphic.erase()
-  borderGraphic.strokeWeight(weight/5)
-  borderGraphic.line(
+  __borderGraphic.erase()
+  __borderGraphic.strokeWeight(weight/5)
+  __borderGraphic.line(
     left + weight + rad, top+weight/4,
     right - weight - rad, top+weight/4
   )
 
-  borderGraphic.line(
+  __borderGraphic.line(
     left + weight + rad, bottom-weight/4,
     right - weight - rad, bottom-weight/4
   )
 
-  borderGraphic.line(
+  __borderGraphic.line(
     left + weight/4, bottom - weight - rad,
     left + weight/4, top + weight + rad
   )
 
-  borderGraphic.line(
+  __borderGraphic.line(
     right - weight/4, bottom - weight - rad,
     right - weight/4, top + weight + rad
   )
 
-  borderGraphic.noFill()
-  borderGraphic.circle(left+rad, top+rad, rad)
-  borderGraphic.circle(left+rad, bottom-rad, rad)
-  borderGraphic.circle(right-rad, top+rad, rad)
-  borderGraphic.circle(right-rad, bottom-rad, rad)
-  borderGraphic.noErase()
+  __borderGraphic.noFill()
+  __borderGraphic.circle(left+rad, top+rad, rad)
+  __borderGraphic.circle(left+rad, bottom-rad, rad)
+  __borderGraphic.circle(right-rad, top+rad, rad)
+  __borderGraphic.circle(right-rad, bottom-rad, rad)
+  __borderGraphic.noErase()
 
   pop()
 }
@@ -945,7 +945,7 @@ function solidBorder4(weight=60) {
 
 function border7Multiple() {
   times(5, (i) => {
-    borderGraphic.strokeWeight(1 - i/13)
+    __borderGraphic.strokeWeight(1 - i/13)
     border7(i*17 - 5)
   })
 }
@@ -953,7 +953,7 @@ function border7Multiple() {
 
 function trancendentalMoneyBg() {
   times(12, (i) => {
-    borderGraphic.strokeWeight(1 - i/13)
+    __borderGraphic.strokeWeight(1 - i/13)
     border7(i*17 - 3)
   })
 }

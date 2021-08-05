@@ -23,9 +23,13 @@ function randomWatermark(x, y, radius, strokeC) {
   push()
   strokeC && stroke(strokeC)
   const r = rnd()
-  if (r < 0.3333) watermark1(x, y, radius)
-  else if (r < 0.85) watermark2(x, y, radius)
-  else watermark3(x, y, radius)
+
+  if (r < 0.3333)
+    watermark1(x, y, radius)
+  else if (r < 0.85)
+    watermark2(x, y, radius)
+  else
+    watermark3(x, y, radius*2)
   pop()
 }
 
@@ -88,10 +92,12 @@ function watermark3(x0, y0, c1Radius=100) {
     [720, -4, 2],
     [720, -6, 2],
     [720, -3, 3],
+
     // [720, -15, 5], // cool, but doesn't really fit here
     // [50, -9, 10]
   ])
 
+console.log(params)
   const c1DegPerTick = TWO_PI/params[0]
 
   const c2Radius = c1Radius * 0.4
@@ -110,19 +116,15 @@ function watermark3(x0, y0, c1Radius=100) {
 
 // 24 - 96
 /// CGK
-function drawCGK(x=0, y=0, tBase, params={}) {
+function drawCGK(x=0, y=0, tBase, strokeC=DARK_C) {
   push()
-  const c1 = params.c1 || DARK_C
-  const c2 = params.c2 || HIGHLIGHT ? BRIGHT_LIGHT_C : LIGHT_C
+  const c2 = HIGHLIGHT ? BRIGHT_LIGHT_C : LIGHT_C
   const PY_EYE = prb(0.4275)
-  const tCProb = prb(0.5)
-  const bCProb = prb(0.5)
-  const eIProb = prb(0.5)
   const pt = rnd()
 
-  const PY_TOP_CIRCLE = !PY_EYE && tCProb // 30%
-  const PY_BOTTOM_CIRCLE = !PY_EYE && bCProb // 30%
-  const PY_EYE_INVERSE = !PY_EYE && !PY_TOP_CIRCLE && !PY_BOTTOM_CIRCLE && eIProb // 16%
+  const PY_TOP_CIRCLE = !PY_EYE && prb(0.5) // 30%
+  const PY_BOTTOM_CIRCLE = !PY_EYE && prb(0.5) // 30%
+  const PY_EYE_INVERSE = !PY_EYE && !PY_TOP_CIRCLE && !PY_BOTTOM_CIRCLE && prb(0.5) // 16%
   const PY_TRIANGLE = pt < 0.85
   const PY_TRIANGLE_INVERSE = pt > 0.85 && pt < 0.95
   const PY_PUPIL = prb(0.9)
@@ -142,44 +144,44 @@ function drawCGK(x=0, y=0, tBase, params={}) {
 
   const strokeW = 5*tBase/250
   const pyParams = {
-    topCircle: PY_TOP_CIRCLE,
-    bottomCircle: PY_BOTTOM_CIRCLE,
-    eye: PY_EYE,
-    inverseEye: PY_EYE_INVERSE,
-    triangle: PY_TRIANGLE,
-    invertedTriangle: PY_TRIANGLE_INVERSE,
-    pupil: PY_PUPIL
+    tC: PY_TOP_CIRCLE,
+    bC: PY_BOTTOM_CIRCLE,
+    e: PY_EYE,
+    iE: PY_EYE_INVERSE,
+    t: PY_TRIANGLE,
+    iT: PY_TRIANGLE_INVERSE,
+    p: PY_PUPIL
   }
-  if (PYRAMID_1) drawPyramid(x, y, tBase, c1, strokeW*9, pyParams)
-  if (PYRAMID_2) drawPyramid(x, y, tBase, !flipColor ? c2 : c1, strokeW*7, pyParams)
-  if (PYRAMID_3) drawPyramid(x, y, tBase, c1, strokeW*5, pyParams)
-  if (PYRAMID_4) drawPyramid(x, y, tBase, !flipColor ? c2 : c1, strokeW*3, pyParams)
-  if (PYRAMID_5) drawPyramid(x, y, tBase, c1, strokeW, pyParams)
+  if (PYRAMID_1) drawPyramid(x, y, tBase, strokeC, strokeW*9, pyParams)
+  if (PYRAMID_2) drawPyramid(x, y, tBase, !flipColor ? c2 : strokeC, strokeW*7, pyParams)
+  if (PYRAMID_3) drawPyramid(x, y, tBase, strokeC, strokeW*5, pyParams)
+  if (PYRAMID_4) drawPyramid(x, y, tBase, !flipColor ? c2 : strokeC, strokeW*3, pyParams)
+  if (PYRAMID_5) drawPyramid(x, y, tBase, strokeC, strokeW, pyParams)
   pop()
 }
 
 
 
-function drawPyramid(x, y, tBase, strokeC, strokeW = 45, {
-  topCircle = false,
-  bottomCircle = false,
-  eye = false,
-  inverseEye = false,
-  triangle = false,
-  invertedTriangle = false,
-  pupil = false
-} = {}) {
+function drawPyramid(x, y, tBase, strokeC, strokeW, {
+  tC = false,
+  bC = false,
+  e = false,
+  iE = false,
+  t = false,
+  iT = false,
+  p = false
+}) {
   noFill()
   strokeWeight(strokeW)
   stroke(strokeC)
 
-  if (triangle) drawTriangle(x, y, tBase, 1)
-  if (invertedTriangle) drawTriangle(x, y, tBase, -1)
-  if (eye) drawEye(x, y, tBase, 130)
-  if (inverseEye) drawEye(x, y, tBase, 230)
-  if (pupil) point(x, y, 0)
-  if (topCircle) drawEyeCircle(x, y, tBase, 1)
-  if (bottomCircle) drawEyeCircle(x, y, tBase, 0)
+  if (t) drawTriangle(x, y, tBase, 1)
+  if (iT) drawTriangle(x, y, tBase, -1)
+  if (e) drawEye(x, y, tBase, 130)
+  if (iE) drawEye(x, y, tBase, 230)
+  if (p) point(x, y, 0)
+  if (tC) drawEyeCircle(x, y, tBase, 1)
+  if (bC) drawEyeCircle(x, y, tBase, 0)
 }
 
 function drawEyeCircle(x, y, tBase, position = 1) {
@@ -193,12 +195,11 @@ function drawEyeCircle(x, y, tBase, position = 1) {
 function triStats(tBase) {
   const tHeight = sin(radians(60)) * tBase
   const heightOfCenter = (tan(radians(30)) * tBase) / 2
-  const centerW = tan(radians(30)) * (tHeight - heightOfCenter) * 2
 
   return {
     tHeight,
     heightOfCenter,
-    centerW,
+    centerW: tan(radians(30)) * (tHeight - heightOfCenter) * 2,
   }
 }
 

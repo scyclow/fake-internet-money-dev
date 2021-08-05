@@ -91,7 +91,7 @@ function denominationTexture() {
     const xOffset = straight ? 0 : rnd(-10, 10)
     const yOffset = straight ? 0 : rnd(-10, 10)
 
-    drawStr(getDenominationDisplay(), x + xOffset, y + yOffset, s, DARK_C)
+    drawStr(getDenominationDisplay(), x + xOffset+10, y + yOffset+10, s, DARK_C)
   }
   pop()
 }
@@ -298,17 +298,18 @@ function rosetteCornerBg(corners=[2, 4]) {
   pop()
 }
 
-function bg10() {
-  const compression = int(rnd(1, 11))
-  drawBorderGraphic(() => {
-    times(12, (i) => {
-      borderGraphic.strokeWeight(1 - i/12)
-      border7(i*17 - 5, compression)
-    })
-  })
-}
+// function bg10() {
+//   const compression = int(rnd(1, 11))
+//   drawBorderGraphic(() => {
+//     times(12, (i) => {
+//       __borderGraphic.strokeWeight(1 - i/12)
+//       border7(i*17 - 5, compression)
+//     })
+//   })
+// }
 
 function bg11() {
+  console.log('bbbb')
   rosetteWithBackground(0,0, W, 0)
 }
 

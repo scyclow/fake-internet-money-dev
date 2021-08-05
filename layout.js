@@ -7,21 +7,21 @@ function mainLayout() {
 
   if (BG_TYPE === 'STANDARD') {
     drawBgPattern()
-  } else if (BG_TYPE === 'WM2') {
+  } else if (BG_TYPE === 'WM2') { // =~ 76
     wmCorners = getDoubleWMCorners(cornerComponentLocations)
     rosetteCornerBg(wmCorners)
     sideSpace = false
-  } else if (BG_TYPE === 'WM1') {
+  } else if (BG_TYPE === 'WM1') { // =~ 63
     const wmCorner = getSingleWMCorner(cornerComponentLocations)
     wmCorners = [wmCorner]
-    randomWatermark(
-      150 * cornerXDirection(wmCorner),
-      60 * cornerYDirection(wmCorner, cornerComponentLocations.length === 4),
-      120,
-      HIGHLIGHT ? LIGHT_ACCENT_C : LIGHTENED_DARK_C
-    )
+    const x = 175 * cornerXDirection(wmCorner)
+    const y = 80 * cornerYDirection(wmCorner, cornerComponentLocations.length === 4)
+    const strokeC = HIGHLIGHT ? LIGHT_ACCENT_C : LIGHTENED_DARK_C
+    prb(0.5)
+      ? randomWatermark(x, y, 120, strokeC)
+      : drawCGK(x, y, 245, strokeC)
   } else if (BG_TYPE === 'FULL') {
-    IS_VINTAGE || prb(0.5) && !IS_DECO ? bg10() : bg11()
+    bg11()
     invertSig = true
   } else {/*no bg*/}
 
@@ -164,8 +164,8 @@ function displayBillData(wmCorners=[], invertSig=false) {
 
   const serialCorner = sample(emptyCorners([sigCorner, ...wmCorners]))
 
-  const sigX = (SHOW_BORDER ? 130 : 120) * cornerXDirection(sigCorner)
-  const serialX = 130 * cornerXDirection(serialCorner)
+  const sigX = (SHOW_BORDER ? 150 : 120) * cornerXDirection(sigCorner)
+  const serialX = 150 * cornerXDirection(serialCorner)
 
   signature(
     sigX > 0 ? sigX + 85 : sigX,
@@ -232,18 +232,15 @@ function portrait() {
 
   const pSeed = rnd()
 
-  if (!SHOW_CORNERS && BG_PATTERN !== 8 || pSeed < 0.1) {
+  if (NO_NATURAL_DENOMINATION || pSeed < 0.1) {
     drawSnazzyDenomination(0,0,2.5)
 
-  } else if (pSeed < 0.85) {
-    push()
-    stroke(ROSETTE_STROKE_C)
-    randomWatermark(0,0, IS_VINTAGE ? 30 : 50)
-    pop()
-  } else if (pSeed < 0.95) {
-    drawCGK(0, 0, 200)
-  } else {
-    smilyFace(0,0, 250)
+  } else if (pSeed < 0.80) {
+    randomWatermark(0,0, IS_VINTAGE ? 30 : 50, ROSETTE_STROKE_C)
+  } else if (pSeed < 0.90) {
+    drawCGK(0, 0, 200) // 0.8125 * .125 * 0.1 *0.825 =~ 8
+  } else if (pSeed < 0.95){
+    smilyFace(0,0, 250) // 0.8125 * .125 * 0.05 *0.825 =~ 4
   }
 }
 
@@ -285,7 +282,7 @@ function singleCenterPiece() {
     extraPieces > 1 && rosetteWithBackground(0,0,70, 0, 0, p)
   }
 
-  if (allowHole || extraPieces < 2 || prb(0.9375)) {
+  if (NO_NATURAL_DENOMINATION || allowHole || extraPieces < 2 || prb(0.9375)) {
     drawSnazzyDenomination(0,0,1)
   }
 }
@@ -380,7 +377,7 @@ function numberSandwich() {
 
 function stripLayout() {
   drawBgPattern()
-  const stripSide = -1//posOrNeg()
+  const stripSide = posOrNeg()
 
   if (prb(.1)) {
     stripDenominationThirds(stripSide, true)
@@ -407,18 +404,18 @@ function stripLayout() {
       IS_VINTAGE && rosetteWithBackground(W/-6*stripSide,0, 70)
     }
     if (prb(0.1))
-      drawCGK(mainX, 0, 245)
+      drawCGK(mainX, 0, 245) // .1875 * .9 * .65 *.1 =~ 11
   } else if (mainSeed < 0.82) {
     randomWatermark(mainX, 0, 100)
     if (prb(0.1))
-      drawCGK(mainX, 0, 245)
+      drawCGK(mainX, 0, 245) // .1875 * .9 * .17 *.1 =~ 3
   } else if (mainSeed < 0.97) {
-    drawCGK(mainX, 0, 245)
+    drawCGK(mainX, 0, 245) // .1875 * .9 * .15 =~ 25
   } else if (mainSeed < 0.99) {
     drawSnazzyDenomination(mainX, 0, 3)
 
   } else {
-    smilyFace(W/-6*stripSide,0, 300)
+    smilyFace(W/-6*stripSide,0, 300) // .1875 * .9 * .01 =~ 1 or 2
   }
 
 
@@ -431,19 +428,18 @@ function stripLayout() {
 
 function stripBorder(lOrR=-1) {
   push();
-  (HIGHLIGHT || IS_CRYPTO) && stroke(BRIGHT_DARK_C)
+  HIGHLIGHT && stroke(BRIGHT_DARK_C)
   line(W*lOrR/6-1, 20-H/2, W*lOrR/6-1, H/2-20)
   line(W*lOrR/6+1, 20-H/2, W*lOrR/6+1, H/2-20)
   pop()
 }
 
 function stripDenominationThirds(lOrR=-1, full=false) {
-
-  if (prb(0.333) && !full) {
-    drawStripThird(-H/3, lOrR)
-
-  } else if (prb(0.666) && !full) {
-    drawStripThird(H/3, lOrR)
+  if (prb(0.5) && !full) {
+    drawStripThird(
+      H/3 * (prb(0.5) ? 1 : -1),
+      lOrR,
+    )
 
   } else {
     const num = sample([1,2,3])
@@ -457,7 +453,7 @@ function drawStripThird(y, lOrR, canBeRosette=false) {
   const seed = rnd()
   const x = W/3*lOrR
   if (seed < 0.85 || !canBeRosette) {
-    drawSnazzyDenomination(x,y, 1.1)
+    drawSnazzyDenomination(x, y, 1.1)
 
   }
   else {
@@ -478,31 +474,6 @@ function cornerThing(lOrR=1, tOrB=1) {
   line(x-15*lOrR, y+25*tOrB, x-15*lOrR, y+45*tOrB)
   pop()
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

@@ -1,7 +1,5 @@
 
-
-
-let SCALE,
+ let SCALE,
     DARK_C,
     LIGHTENED_DARK_C,
     LIGHT_C,
@@ -23,7 +21,9 @@ let SCALE,
     SHOW_BORDER,
     SHOW_CORNERS,
     STAR_NOTE,
+    NO_NATURAL_DENOMINATION,
     MISPRINT_INK_RUN,
+
     LAYOUT
 
 const W = 700
@@ -45,10 +45,10 @@ const CORNERS = {
 
 
 
-
-let __canvas
-let borderGraphic
-let stripeGraphic
+let __canvas,
+    __borderGraphic,
+    __denominationDisplayed = false,
+    __numeralDisplayed = false
 
 function setup() {
   const windowRatio = window.innerWidth/window.innerHeight
@@ -66,15 +66,14 @@ function setup() {
     SCALE = window.innerWidth/W
   }
 
-  borderGraphic = createGraphics(W*GRAPHIC_RESOLUTION,H*GRAPHIC_RESOLUTION)
-  stripeGraphic = createGraphics(W/4,H*GRAPHIC_RESOLUTION)
+  __borderGraphic = createGraphics(W*GRAPHIC_RESOLUTION,H*GRAPHIC_RESOLUTION)
 
 
   noLoop()
   colorMode(HSB, 360, 100, 100, 100)
 
 
-
+  // DENOMINATION
   const denominationSeed = rnd()
   if (denominationSeed < 1/2) DENOMINATION = '1'
   else if (denominationSeed < 3/4) DENOMINATION = '5'
@@ -84,6 +83,18 @@ function setup() {
   else if (denominationSeed < 63/64) DENOMINATION = '100'
   else if (denominationSeed < 127/128) DENOMINATION = '2'
 
+  SHOW_NUMERALS = prb(0.2)
+
+
+  // LAYOUT
+  LAYOUT = prb(0.8125) ? 'MAIN' : 'STRIP'
+  MAIN_CENTER_PIECE = getMainCenterPiece()
+  const isMain = LAYOUT === 'MAIN'
+  SHOW_BORDER = isMain && prb(0.75)
+  SHOW_CORNERS = isMain && ((SHOW_BORDER && prb(0.95)) || prb(0.8))
+
+
+  // ROSETTE
   const rosetteStyleSeed = rnd()
   if (rosetteStyleSeed < 0.0625){
     ROSETTE_STYLE = 'DECO'
@@ -102,10 +113,10 @@ function setup() {
   else
     ROSETTE_STYLE = 'LINE'
 
-  ROSETTE_ENHANCEMENT = prb(0.0625)
+  MISPRINT_ROSETTE_PARAMS_EXCEEDED = prb(0.0625)
 
-  HIGHLIGHT = !IS_VINTAGE && prb(0.125)
 
+  // COLORS
   const colorSeed = rnd()
 
   COLOR_SCHEME =
@@ -138,7 +149,6 @@ function setup() {
     LIGHTENED_DARK_C = color(HUE, 69, 75)
     ACCENT_C = color(hfix(HUE-254), 100, 100)
     LIGHT_ACCENT_C = ACCENT_C
-    // BRIGHT_LIGHT_C = color(hfix(HUE-15), 99, 65)
     BRIGHT_LIGHT_C = ACCENT_C
     BRIGHT_DARK_C = BRIGHT_LIGHT_C
     LIGHT_GRADIENT_C = LIGHT_C
@@ -161,11 +171,6 @@ function setup() {
       DARK_C = color(35, 45, 30)
       LIGHTENED_DARK_C = color(35, 45, 35)
       BRIGHT_DARK_C = color(203, 10, 25)
-
-      // LIGHT_C = color(40, 60, 67)
-      // BRIGHT_LIGHT_C = color(60, 30, 100)
-      // DARK_C = color(203, 10, 25)
-      // LIGHTENED_DARK_C = color(203, 10, 40)
     }
     ACCENT_C = DARK_C
     LIGHT_ACCENT_C = LIGHTENED_DARK_C
@@ -178,36 +183,33 @@ function setup() {
   const reverseRosetteColors = prb(0.5)
   const lightC = isSliver ? BRIGHT_LIGHT_C : LIGHT_GRADIENT_C
   const darkC = HIGHLIGHT && !IS_DECO && !IS_VINTAGE ? BRIGHT_DARK_C : DARK_C
-  // const darkC = HIGHLIGHT && !IS_DECO && !IS_VINTAGE && !reverseRosetteColors ? BRIGHT_DARK_C : DARK_C
   ROSETTE_FILL_C = IS_VINTAGE || reverseRosetteColors ? lightC : darkC
   ROSETTE_STROKE_C = IS_VINTAGE || reverseRosetteColors ? darkC : lightC
 
+  HIGHLIGHT = !IS_VINTAGE && prb(0.125)
 
 
-  SHOW_NUMERALS = prb(0.2)
 
 
-  LAYOUT = prb(0.8125) ? 'MAIN' : 'STRIP'
 
-  MAIN_CENTER_PIECE = getMainCenterPiece()
-
-
-  const isMain = LAYOUT === 'MAIN'
-  SHOW_BORDER = isMain && [0, 1, 2, 3, 6, 4].includes(MAIN_CENTER_PIECE) && prb(0.75)
-  SHOW_CORNERS = isMain && ((SHOW_BORDER && prb(0.95)) || prb(0.8))
+  // BACKGROUND
 
   const bgSeed = rnd()
-  if (!isMain || SHOW_BORDER) {
+  if (!isMain || SHOW_BORDER || bgSeed < 0.125) {
     BG_TYPE = 'STANDARD'
     BG_PATTERN = getBG()
   }
-  else if (bgSeed < 0.5625) BG_TYPE = 'WM2'
-  else if (bgSeed < 0.8125) BG_TYPE = 'WM1'
-  else if (bgSeed < 0.9375 || IS_CRYPTO) BG_TYPE = 'FULL'
+  else if (bgSeed < 0.5) BG_TYPE = 'WM2' // 0.8125 * 0.25 * 0.375 =~ 76
+  else if (bgSeed < 0.8125) BG_TYPE = 'WM1' // 0.8125 * 0.25 * 0.3125 =~ 63
+  else if (IS_VINTAGE || IS_DECO) BG_TYPE = prb(0.5) ? 'WM1' : 'WM2'
+  else if (bgSeed < 0.9375 || IS_CRYPTO) {
+    BG_TYPE = 'FULL' // 0.8125 * 0.25 * (0.175) * 0.75 =~ 27
+  }
   else BG_TYPE = 'EMPTY'
 
-
+  NO_NATURAL_DENOMINATION = !SHOW_CORNERS && BG_PATTERN !== 8
   STAR_NOTE = prb(0.02)
+
 }
 
 
@@ -215,13 +217,8 @@ function draw() {
   translate(width/2, height/2)
   scale(SCALE)
   noFill()
-
-
   stroke(DARK_C)
-
-
   drawTexture()
-
 
   if (LAYOUT === 'MAIN')
     mainLayout()

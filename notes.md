@@ -64,7 +64,7 @@ roman numeral present: 5%
 
 
 
-## Misprints 10%
+## Misprints ~0.5% each
 - lathe malfunctions
 - low ink
 - mirrored
@@ -85,7 +85,7 @@ roman numeral present: 5%
 - standard
 - radar note
 - binary note
-- solid (every number the same)
+- solid (every number the same) (maybe every 100 can be a solid)
 - ladder (every digit higher than same)
 - repeated (first half same as second half)
 - low serial number
@@ -207,20 +207,14 @@ Here's a fucking idea:
 
 
   """
-  Description of Fake Internet Money is just a legal disclaimer:
 
-  THE FOLLOWING IS NOT FINANCIAL ADVICE
-  this is not financial advice, past performance is not indicative of future performance.
-  fake internet money is declaratively not a currency. the numbers
+  DISCLAIMER: Fake Internet Money is not legal tender, and may not be redeemable or exchangable with other parties or markets following its initial offering. The Artist is NOT a licensed or registered money transmitter in any district, state, or country.
 
-  All code was written by steven pikelny
-  the code is released under a --- license
-  font: ---
+  Furthermore, Fake Internet Money is not a financial security. The Artist makes no guarantees of adding any further value to the project and owners of The Money have no reasonable expectation of profit. Any marketing statements made by The Artist SHOULD NOT BE TAKEN AS INVESTMENT ADVICE. The secondary market value of The Money may be highly volatile, and The Artist makes no guarantees as to its stability relative to Ethereum or the US Dollar.
 
+  The Money code is licensed under a Creative Commons Attribution-NonCommercial 4.0 License, and is provided without warrenty of any kind. In no event shall The Artist be held liable for any damages arising from the code or resulting tokens.
 
-  DISCLAIMER: Fake Internet Money is not legal tender, and may not be redeemable or exchangable with other parties or markets following its initial offering. The Artist is NOT a licensed or recognized money transmitter in any district, state, or country.
-
-  Furthermore, Fake Internet Money is not a financial security, as The Artist makes no guarantees of adding any further value to the project and owners of The Money have no reasonable expectation of profit. Any marketing statements made by The Artist SHOULD NOT BE TAKEN AS INVESTMENT ADVICE. The secondary markat value of The Money may be highly volatile, and The Artist makes no guarantees as to its stability relative to Ethereum or the US Dollar.
+  The typeface is derived from Shippori Mincho B1, which is licensed under a SIL Open Font License.
   """
 
   Website is jsut a legal disclaimer with a random rosette in the background
@@ -239,34 +233,35 @@ sell messengers and buy octogarden
 # TODO
 
 ## MUST DO
-- with higher aspect ratio, can probably space out serial and sig a bit more
+- really need to sit down and figure out the population design. maybe write a script to get an estimate
 - misprint rarities
-- make sure that it's always showing a denomination with portraits, no corners, etc
 - OBJECTS DON'T LOOK GOOD WITH BYTE BACKGROUND
+- fix the fucking numerals bug
+
+
+
 - i don't really like what i did with the double WM colors. should just be normal stroke, transparent. although, it looks good for ribbed rosettes
-- need to make it possible for byte bg to show up on fiat
+
 - be really careful about showing object, numeral in strip layout. easy to get repeats
-- portrait/object sizing all fucked up; denomination needs border
-- can i get rid of drawCircle in favor of drawShape?
+- maybe nix the infinity bg pattern?
 
 
 ## SHOULD DO
-- fix the fucking numerals bug
 - for buillion, objects shoudl be scratched out with bright color
 - serial rarities
-- make rosette sandwhich intensity variable
-- more rosettes that have no number in the middle
+- portrait/object sizing all fucked up
 
 ## MAYBE DO
 - holographic
 - need to look at the dot texture. is there a way to make this look a little more organic?
 - if solid border or no border, corner can just be number
 - maybe get rid of the full bgs. they're sorta cool, but they don't really work.
-- have a bits/bytes style. maybe crypto shoud be a lot more bixelated. that would actually be pretty cool.
+- have a bits/bytes style. maybe crypto shoud be a lot more pixelated. that would actually be pretty cool.
   - how hard would it be to modify the *rosette engine* to draw squares instead of vertex?
 - add more possabilities to bullion
 - incorporate denomination rosette
 - add only-dark rosette
+- can i get rid of drawCircle in favor of drawShape?
 
 
 
