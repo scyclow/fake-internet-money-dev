@@ -52,7 +52,7 @@ function setup() {
 
     points[letter] = path.commands.map(cmd => {
       count[cmd.type] ? count[cmd.type]++ : count[cmd.type] = 1
-      if (cmd.type === 'M') return [mthRnd(cmd.x), mthRnd(cmd.y)]
+      if (cmd.type === 'M') return ['M',mthRnd(cmd.x), mthRnd(cmd.y)]
       if (cmd.type === 'Z') return [mthRnd(path.commands[0].x), mthRnd(path.commands[0].y)]
       if (cmd.type === 'Q') return [mthRnd(cmd.x), mthRnd(cmd.y), mthRnd(cmd.x1), mthRnd(cmd.y1)]
       return [mthRnd(cmd.x), mthRnd(cmd.y)]
