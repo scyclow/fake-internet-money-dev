@@ -11,19 +11,19 @@ function randomBorder() {
     if (borderSeed < vintageBorderProb) {
       const vintageBorderSeed = rnd()
       const degAdj = posOrNeg() * (vintageBorderSeed < 0.75 ? 2 : 3)
-      const params = genBorder5Params({ degAdj })
+      const params = vintageBorderParams({ degAdj })
       const padding = 8 + params.radius
 
-      border5(padding, params)
-      prb(0.25) && border5(padding, genBorder5Params({ degAdj: degAdj * -1 }))
+      vintageBorder(padding, params)
+      prb(0.25) && vintageBorder(padding, vintageBorderParams({ degAdj: degAdj * -1 }))
     }
 
     else if (borderSeed < 0.55) {
-      solidBorder5()
+      curveCornerBorders(60)
     }
 
     else if (borderSeed < 0.8) {
-      border8(-10, prb(0.7))
+      darkRosetteBorder(-10, prb(0.7))
     }
 
 
@@ -32,7 +32,7 @@ function randomBorder() {
     }
 
     else if (borderSeed < 0.9) {
-      border2(20)
+      dottedBorder(20)
     }
 
     else {
@@ -101,7 +101,7 @@ function drawBorderGraphic(borderFn) {
   pop()
 }
 
-function border1(padding=10, points=100) {
+function border1(padding, points) {
   for (let off=0; off<2; off+=0.5) {
     drawShape(points, p => {
       const [ox, oy] = getXYBorder(p + off, points, padding)
@@ -113,8 +113,9 @@ function border1(padding=10, points=100) {
 }
 
 
-function border2(padding=10, cRad=3) {
+function dottedBorder(padding=10) {
   __borderGraphic.strokeWeight(1)
+  const cRad = 3
   const adjW = W - 2*padding
   const adjH = H - 2*padding
   const adjPrm = (adjW + adjH) * 2
@@ -129,7 +130,7 @@ function border2(padding=10, cRad=3) {
 }
 
 
-function genBorder5Params(o) {
+function vintageBorderParams(o) {
   const radius = rnd(15, 31)
   const offsetAmt = (
     abs(o.degAdj) === 2 ? rnd(3, 26) : rnd(1, 13)
@@ -142,9 +143,9 @@ function genBorder5Params(o) {
   }
 }
 
-function border5(padding, params) {
+function vintageBorder(padding, params) {
   // TODO MISPRINT: change this number
-  const points = 60
+  const points = W/10
 
   const radius = params.radius // 15-30
   const degAdj = params.degAdj //1,2,3,4,-1,-2,-3,-4
@@ -222,7 +223,7 @@ function border7(padding=20, compression=4, d=1) {
 }
 
 
-function border8(padding=-10, sides=true) {
+function darkRosetteBorder(padding=-10, sides=true) {
   const compression = int(rnd(1, 7))
 
   if (HIGHLIGHT) {
@@ -259,7 +260,7 @@ function border8(padding=-10, sides=true) {
 
   if (sides) {
     __borderGraphic.rect(p-W/2, p-H/2, W-2*p, H-2*p)
-    border2(p + 5)
+    dottedBorder(p + 5)
   } else {
     __borderGraphic.rect(-W/2, p-H/2, W, H-2*p)
   }
@@ -269,7 +270,6 @@ function border8(padding=-10, sides=true) {
 
 
 function denominationBorder(padding=10) {
-
   const adjW = W - 2*padding
   const adjH = H - 2*padding
   const adjPrm = (adjW + adjH) * 2
@@ -284,7 +284,7 @@ function denominationBorder(padding=10) {
 
 
 
-function solidBorder5(weight=60) {
+function curveCornerBorders(weight) {
   const top = -H/2
   const bottom = H/2
   const left = -W/2

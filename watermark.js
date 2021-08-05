@@ -97,7 +97,7 @@ function watermark3(x0, y0, c1Radius=100) {
     // [50, -9, 10]
   ])
 
-console.log(params)
+
   const c1DegPerTick = TWO_PI/params[0]
 
   const c2Radius = c1Radius * 0.4
@@ -126,7 +126,7 @@ function drawCGK(x=0, y=0, tBase, strokeC=DARK_C) {
   const PY_BOTTOM_CIRCLE = !PY_EYE && prb(0.5) // 30%
   const PY_EYE_INVERSE = !PY_EYE && !PY_TOP_CIRCLE && !PY_BOTTOM_CIRCLE && prb(0.5) // 16%
   const PY_TRIANGLE = pt < 0.85
-  const PY_TRIANGLE_INVERSE = pt > 0.85 && pt < 0.95
+  const PY_TRIANGLE_INVERSE = pt >= 0.85
   const PY_PUPIL = prb(0.9)
 
   const PYRAMID_1 = prb(0.65)

@@ -233,7 +233,7 @@ sell messengers and buy octogarden
 # TODO
 
 ## MUST DO
-- really need to sit down and figure out the population design. maybe write a script to get an estimate
+
 - misprint rarities
 - OBJECTS DON'T LOOK GOOD WITH BYTE BACKGROUND
 - fix the fucking numerals bug
@@ -243,7 +243,6 @@ sell messengers and buy octogarden
 - i don't really like what i did with the double WM colors. should just be normal stroke, transparent. although, it looks good for ribbed rosettes
 
 - be really careful about showing object, numeral in strip layout. easy to get repeats
-- maybe nix the infinity bg pattern?
 
 
 ## SHOULD DO

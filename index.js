@@ -21,6 +21,9 @@
     SHOW_BORDER,
     SHOW_CORNERS,
     STAR_NOTE,
+    SHOW_EMBLEM1,
+    SHOW_EMBLEM2,
+    EMBLEM_NUMBER,
     NO_NATURAL_DENOMINATION,
     MISPRINT_INK_RUN,
 
@@ -71,8 +74,24 @@ function setup() {
 
   noLoop()
   colorMode(HSB, 360, 100, 100, 100)
+  setProps()
+}
 
 
+function draw() {
+  translate(width/2, height/2)
+  scale(SCALE)
+  noFill()
+  stroke(DARK_C)
+  drawTexture()
+
+  if (LAYOUT === 'MAIN')
+    mainLayout()
+  else
+    stripLayout()
+}
+
+function setProps() {
   // DENOMINATION
   const denominationSeed = rnd()
   if (denominationSeed < 1/2) DENOMINATION = '1'
@@ -195,7 +214,7 @@ function setup() {
   // BACKGROUND
 
   const bgSeed = rnd()
-  if (!isMain || SHOW_BORDER || bgSeed < 0.125) {
+  if (!isMain || SHOW_BORDER || bgSeed < 0.125) { // (0.8125 * 0.75) + (0.03125) =~ 640
     BG_TYPE = 'STANDARD'
     BG_PATTERN = getBG()
   }
@@ -207,24 +226,11 @@ function setup() {
   }
   else BG_TYPE = 'EMPTY'
 
-  NO_NATURAL_DENOMINATION = !SHOW_CORNERS && BG_PATTERN !== 8
+  SHOW_EMBLEM1 = [0,1,3,5].includes(MAIN_CENTER_PIECE) && BG_TYPE !== 'WM2' && prb(0.125) //
+  SHOW_EMBLEM2 = SHOW_EMBLEM1 && prb(0.25)
+  EMBLEM_NUMBER = SHOW_EMBLEM1 && prb(0.5)
+  NO_NATURAL_DENOMINATION = !SHOW_CORNERS && (BG_PATTERN !== 8) && !EMBLEM_NUMBER
   STAR_NOTE = prb(0.02)
-
-}
-
-
-function draw() {
-  translate(width/2, height/2)
-  scale(SCALE)
-  noFill()
-  stroke(DARK_C)
-  drawTexture()
-
-  if (LAYOUT === 'MAIN')
-    mainLayout()
-  else
-    stripLayout()
-
 }
 
 function drawTexture() {

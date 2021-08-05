@@ -1,6 +1,5 @@
 function mainLayout() {
   const cornerComponentLocations = SHOW_CORNERS ? cornerLocations() : []
-  let sideSpace = [0,1,3,5].includes(MAIN_CENTER_PIECE)
 
   let wmCorners = []
   let invertSig = false
@@ -10,7 +9,6 @@ function mainLayout() {
   } else if (BG_TYPE === 'WM2') { // =~ 76
     wmCorners = getDoubleWMCorners(cornerComponentLocations)
     rosetteCornerBg(wmCorners)
-    sideSpace = false
   } else if (BG_TYPE === 'WM1') { // =~ 63
     const wmCorner = getSingleWMCorner(cornerComponentLocations)
     wmCorners = [wmCorner]
@@ -38,14 +36,13 @@ function mainLayout() {
   }
 
 
-  // TODO bring up a level
-  if (sideSpace && prb(0.125)) {
+  if (SHOW_EMBLEM1) {
     const ancillarySide = posOrNeg()
-    const secondarySide = rnd()
-    prb(0.5) ? emblem(ancillarySide) : sideNumber(ancillarySide)
-    secondarySide < 0.25
+
+    EMBLEM_NUMBER ? sideNumber(ancillarySide) : emblem(ancillarySide)
+    SHOW_EMBLEM2
       ? emblem(ancillarySide*-1)
-      : secondarySide < 0.5 ? sideNumber(ancillarySide*-1) : null
+      : sideNumber(ancillarySide*-1)
   }
 
   displayBillData(
@@ -89,18 +86,10 @@ function cornerLocations() {
     return [2, 3]
   } else if (cornerPatternSeed < 0.825) {
     return [1, 2]
-  } else if (cornerPatternSeed < 0.9) {
+  } else if (cornerPatternSeed < 0.9375) {
     return [3, 4]
-  } else if (cornerPatternSeed < 0.92) {
-    return [1]
-  } else if (cornerPatternSeed < 0.94) {
-    return [2]
-  } else if (cornerPatternSeed < 0.96) {
-    return [3]
-  }  else if (cornerPatternSeed < 0.98) {
-    return [4]
   } else {
-    return []
+    return [int(rnd(1,5))]
   }
 }
 
@@ -231,7 +220,6 @@ function portrait() {
   rosetteWithBackground(0,0, IS_VINTAGE ? 170 : 155, 0, params)
 
   const pSeed = rnd()
-
   if (NO_NATURAL_DENOMINATION || pSeed < 0.1) {
     drawSnazzyDenomination(0,0,2.5)
 
