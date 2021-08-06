@@ -259,11 +259,6 @@ sell messengers and buy octogarden
 
 
 
-- serial rarities
-- i don't really like what i did with the double WM colors. should just be normal stroke, transparent. although, it looks good for ribbed rosettes
-
-
-
 
 ## SHOULD DO
 - for buillion, objects shoudl be scratched out with bright color

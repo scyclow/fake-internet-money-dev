@@ -31,10 +31,14 @@ function squigTexture() {
   noFill()
 
   strokeWeight(rnd(0.1, 0.5))
-  const squigs = 60
+  const squigs = 40
 
   for (let i=0; i<squigs; i++) {
-    // stroke(prb(0.5) ? DARK_C : ACCENT_C)
+    stroke(
+      IS_BULLION
+      ? BRIGHT_LIGHT_C
+      : prb(0.75) ? DARK_C : ACCENT_C
+    )
     const x = rnd(-W/2, W/2)
     const y = rnd(-H/2, H/2)
 
@@ -289,11 +293,9 @@ function byteBg() {
 
 function rosetteCornerBg(corners=[2, 4]) {
   push()
-
   const rFn = IS_VINTAGE ? dollarRosette : getRosetteStyleFn()
-  const p = genRosetteParams({ strokeC: HIGHLIGHT ? LIGHT_ACCENT_C : LIGHTENED_DARK_C, strokeW: 1 })
+  const p = genRosetteParams({ strokeC: DARK_C, strokeW: 0.35 })
   const r = rnd(0, W/4)
-  corners.forEach(c => rFn(CORNERS[c][0], CORNERS[c][1], W/2, r, {...p, strokeC: DARK_C, strokeW: 2}))
   corners.forEach(c => rFn(CORNERS[c][0], CORNERS[c][1], W/2, r, p))
   pop()
 }

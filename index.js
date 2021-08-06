@@ -243,6 +243,7 @@ function setProps() {
     serialSeed < 0.035 ? 6 : ''
 
   STAR_NOTE = prb(0.02)
+
 }
 
 function drawTexture() {
@@ -260,10 +261,10 @@ function drawTexture() {
     ))
     line(x+diag, -H/2, x, H/2)
   }
+  pop()
 
   if (COLOR_SCHEME === 'FIAT') pointTexture()
   if (COLOR_SCHEME !== 'CRYPTO') squigTexture()
-  pop()
 }
 
 

@@ -15,7 +15,7 @@ function mainLayout() {
     const x = 175 * cornerXDirection(wmCorner)
     const y = 80 * cornerYDirection(wmCorner, cornerComponentLocations.length === 4)
     const strokeC = HIGHLIGHT ? LIGHT_ACCENT_C : LIGHTENED_DARK_C
-    prb(0.5)
+    prb(0.8)
       ? randomWatermark(x, y, strokeC)
       : drawCGK(x+15, y, 245, strokeC)
   } else if (BG_TYPE === 'FULL') {
@@ -392,7 +392,7 @@ function stripLayout() {
     }
     if (prb(0.1))
       drawCGK(mainX, 0, 245) // .1875 * .9 * .65 *.1 =~ 11
-  } else if (mainSeed < 0.82) {
+  } else if (mainSeed < 0.9) {
     randomWatermark(mainX, 0)
     if (prb(0.1) || BG_PATTERN === 0)
       drawCGK(mainX, 0, 245) // .1875 * .9 * .17 *.1 =~ 3
