@@ -145,7 +145,7 @@ function vintageBorderParams(o) {
 
 function vintageBorder(padding, params) {
   // TODO MISPRINT: change this number
-  const points = W/10
+  const points = 66
 
   const radius = params.radius // 15-30
   const degAdj = params.degAdj //1,2,3,4,-1,-2,-3,-4

@@ -21,6 +21,7 @@ function drawCircle (points, getXY) {
   beginShape()
   curveVertex(...getXY(-1))
   for (let p = 0; p <= points + 1; p++) {
+    MISPRINT_LATHE_MALFUNCTION && rotate(0.1)
     curveVertex(...getXY(p))
   }
   endShape()
@@ -37,7 +38,10 @@ const drawShape = (points, getXY, graphic=window) => {
 
   graphic.beginShape()
   graphic.curveVertex(...getXY(-1))
-  times(points+2, p => graphic.curveVertex(...getXY(p)))
+  times(points+2, p => {
+    MISPRINT_LATHE_MALFUNCTION && graphic.rotate(0.1)
+    graphic.curveVertex(...getXY(p))
+  })
   graphic.endShape()
 }
 

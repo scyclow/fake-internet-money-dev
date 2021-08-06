@@ -26,6 +26,9 @@
     EMBLEM_NUMBER,
     NO_NATURAL_DENOMINATION,
     MISPRINT_INK_RUN,
+    MISPRINT_ROSETTE_PARAMS_EXCEEDED,
+    MISPRINT_LATHE_MALFUNCTION,
+    MISPRINT_HETERO_ROSETTES,
     COOL_SERIAL_NUM,
     LAYOUT
 
@@ -78,18 +81,7 @@ function setup() {
 }
 
 
-function draw() {
-  translate(width/2, height/2)
-  scale(SCALE)
-  noFill()
-  stroke(DARK_C)
-  drawTexture()
 
-  if (LAYOUT === 'MAIN')
-    mainLayout()
-  else
-    stripLayout()
-}
 
 function setProps() {
   // DENOMINATION
@@ -199,7 +191,7 @@ function setProps() {
   }
 
 
-  const reverseRosetteColors = prb(0.5)
+  const reverseRosetteColors = prb(0.5) || IS_BULLION
   const lightC = isSliver ? BRIGHT_LIGHT_C : LIGHT_GRADIENT_C
   const darkC = HIGHLIGHT && !IS_DECO && !IS_VINTAGE ? BRIGHT_DARK_C : DARK_C
   ROSETTE_FILL_C = IS_VINTAGE || reverseRosetteColors ? lightC : darkC
@@ -244,6 +236,13 @@ function setProps() {
 
   STAR_NOTE = prb(0.02)
 
+
+  // MISPRINTS
+
+  // i want like 20 or 30 of these things
+  MISPRINT_LATHE_MALFUNCTION=prb(0.025)
+  MISPRINT_HETERO_ROSETTES=prb(0.010)
+
 }
 
 function drawTexture() {
@@ -267,9 +266,39 @@ function drawTexture() {
   if (COLOR_SCHEME !== 'CRYPTO') squigTexture()
 }
 
+function draw() {
+  translate(width/2, height/2)
+  scale(SCALE)
+  noFill()
+  stroke(DARK_C)
+  drawTexture()
+
+  if (LAYOUT === 'MAIN')
+    mainLayout()
+  else
+    stripLayout()
+}
 
 function keyPressed() {
   if (keyCode === 83) {
     saveCanvas(__canvas, 'FIM-' + Date.now(), 'jpg');
   }
+}
+
+
+
+//MISPRINTS
+
+function rotate() {
+  rotate(rnd(0.2, 0.5)*posOrNeg())
+}
+
+function obstruction() {
+  fill(LIGHT_C)
+  strokeWeight(0)
+  beginShape()
+  vertex(rnd(-W/2, W/2), -H/2)
+  vertex(rnd(-W/2, W/2), H/2)
+  vertex(rnd(-W/2, W/2), -H/2)
+  endShape()
 }

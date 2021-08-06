@@ -6,8 +6,6 @@ function rosetteWithBackground(x, y, r, r2=0, params={}) {
     : genRosetteParams(params)
 
 
-
-
   if (p.innerC) dollarRosetteBg(x,y, r, r2, p)
   else {
     const bgFn =
@@ -29,6 +27,7 @@ function rosetteWithBackground(x, y, r, r2=0, params={}) {
 }
 
 const getRosetteStyleFn = () =>
+  MISPRINT_HETERO_ROSETTES ? sample([dollarRosette, dollarEchoRosette, dollarCheckeredRosette, dollarLineRosette, vintageRosette, ]) :
   ['NUMISMATIC', 'DECO'].includes(ROSETTE_STYLE) ? dollarRosette :
   ROSETTE_STYLE === 'ECHO'? dollarEchoRosette :
   ROSETTE_STYLE === 'DIGITAL' ? dollarCheckeredRosette :
@@ -73,7 +72,6 @@ function dollarRosette(x_, y_, maxRad=200, minRad=100, params={}, graphic=window
   while (bottomRad >= minRad && i < 20) {
     graphic.strokeWeight((params.strokeW || 1) + topRad/150 - 1)
     // awesome misprint
-    // graphic.rotate(0.2)
     for (let off=0; off<6; off++) {
       drawShape(c0Points, p => {
         const [ox, oy] = border(topRad, p, off/3)
