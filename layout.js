@@ -36,14 +36,9 @@ function mainLayout() {
   }
 
 
-  if (SHOW_EMBLEM1) {
-    const ancillarySide = posOrNeg()
-
-    EMBLEM_NUMBER ? sideNumber(ancillarySide) : emblem(ancillarySide)
-    SHOW_EMBLEM2
-      ? emblem(ancillarySide*-1)
-      : sideNumber(ancillarySide*-1)
-  }
+  const ancillarySide = posOrNeg()
+  if (SHOW_EMBLEM1) EMBLEM_NUMBER ? sideNumber(ancillarySide) : emblem(ancillarySide)
+  if (SHOW_EMBLEM2) prb(0.5) ? emblem(ancillarySide*-1) : sideNumber(ancillarySide*-1)
 
   displayBillData(
     wmCorners.length || cornerComponentLocations.length === 4
@@ -54,21 +49,20 @@ function mainLayout() {
 
 }
 
-function getMainCenterPiece() {
+function getMainCenterPiece(seed) {
   if (LAYOUT === 'MAIN') {
-    const centerPieceSeed = rnd()
-    if (centerPieceSeed < 0.6875)
+    if (seed < 0.6875)
       return 1 // single
-    else if (centerPieceSeed < 0.8125)
+    else if (seed < 0.8125)
       return 2 // bouquet
-    else if (centerPieceSeed < 0.9375)
+    else if (seed < 0.9375)
       return 3 // portrait
     else
       return 4 // rosette sandwich
 
-    // if (centerPieceSeed < 0.01)
+    // if (seed < 0.01)
     //   return 0 // no center piece
-    // else if (centerPieceSeed < 1)
+    // else if (seed < 1)
     //   return 5 // total chaos
   }
 }
@@ -361,19 +355,17 @@ function numberSandwich() {
 }
 
 
+function gridLayout() {
+  drawBgPattern()
+  stripDenominationThirds(1, true)
+  stripDenominationThirds(0, true)
+  stripDenominationThirds(-1, true)
+  displayBillDataStrip(posOrNeg(), true)
+}
 
 function stripLayout() {
   drawBgPattern()
   const stripSide = posOrNeg()
-
-  if (prb(.1)) {
-    stripDenominationThirds(stripSide, true)
-    stripDenominationThirds(0, true)
-    stripDenominationThirds(stripSide*-1, true)
-
-    displayBillDataStrip(stripSide, true)
-    return
-  }
 
   prb(0.5) && stripBorder(stripSide)
   stripDenominationThirds(stripSide)
@@ -381,7 +373,7 @@ function stripLayout() {
   const mainSeed = rnd()
   const mainX = W/-6*stripSide
 
-  if (mainSeed < 0.65 || FORCE_SHOW_ROSETTE) {
+  if (mainSeed < 0.65) {
     const p = getHighlightPColors()
 
     rosetteWithBackground(W/-6*stripSide,0, 180, 0, p)
@@ -437,15 +429,15 @@ function stripDenominationThirds(lOrR=-1, full=false) {
 }
 
 function drawStripThird(y, lOrR, canBeRosette=false) {
-  const seed = rnd()
   const x = W/3*lOrR
-  if (seed < 0.85 || !canBeRosette) {
-    drawSnazzyDenomination(x, y, 1.1)
+  const forceRosette = FORCE_SHOW_ROSETTE && !y && !lOrR
 
-  }
-  else {
+  if (forceRosette || prb(0.15) && canBeRosette) {
     const p = getHighlightPColors()
     rosetteWithBackground(x, y, 55, 0, p)
+  } else {
+    drawSnazzyDenomination(x, y, 1.1)
+
   }
 }
 

@@ -1,4 +1,5 @@
-let __randomSeed = parseInt(tokenData.hash.slice(0, 16), 16)
+let __randomSeed = parseInt(tokenData.hash.slice(50, 66), 16)
+
 function rnd(mn, mx) {
   __randomSeed ^= __randomSeed << 13
   __randomSeed ^= __randomSeed >> 17
@@ -7,6 +8,11 @@ function rnd(mn, mx) {
   if (mx != null) return mn + out * (mx - mn)
   else if (mn != null) return out * mn
   else return out
+}
+
+function hshrnd(h) {
+  const str = tokenData.hash.slice(2 + h*2, 4 + h*2)
+  return parseInt(str, 16) / 255
 }
 
 const prb = x => rnd() < x

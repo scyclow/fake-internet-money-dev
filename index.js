@@ -91,7 +91,7 @@ function setup() {
 
 function setProps() {
   // DENOMINATION
-  const denominationSeed = rnd()
+  const denominationSeed = hshrnd(0)
   if (denominationSeed < 1/2) DENOMINATION = '1'
   else if (denominationSeed < 3/4) DENOMINATION = '5'
   else if (denominationSeed < 7/8) DENOMINATION = '10'
@@ -102,39 +102,8 @@ function setProps() {
 
   SHOW_NUMERALS = prb(0.2)
 
-
-  // LAYOUT
-  LAYOUT = prb(0.8125) ? 'MAIN' : 'STRIP'
-  const isMain = LAYOUT === 'MAIN'
-  MAIN_CENTER_PIECE = getMainCenterPiece()
-  SHOW_BORDER = isMain && prb(0.75)
-  SHOW_CORNERS = isMain && ((SHOW_BORDER && prb(0.95)) || prb(0.8))
-
-
-  // ROSETTE
-  const rosetteStyleSeed = rnd()
-  if (rosetteStyleSeed < 0.0625){
-    ROSETTE_STYLE = 'DECO'
-    IS_DECO = true
-  }
-  else if (rosetteStyleSeed < 0.625)
-    ROSETTE_STYLE = 'NUMISMATIC'
-  else if (rosetteStyleSeed < 0.8125) {
-    ROSETTE_STYLE = 'VINTAGE'
-    IS_VINTAGE = true
-  }
-  else if (rosetteStyleSeed < 0.875)
-    ROSETTE_STYLE = 'ECHO'
-  else if (rosetteStyleSeed < 0.9375)
-    ROSETTE_STYLE = 'DIGITAL'
-  else
-    ROSETTE_STYLE = 'LINE'
-
-  MISPRINT_ROSETTE_PARAMS_EXCEEDED = prb(0.0625)
-
-
   // COLORS
-  const colorSeed = rnd()
+  const colorSeed = hshrnd(1)
 
   COLOR_SCHEME =
     colorSeed < 0.75 ? 'FIAT'
@@ -174,7 +143,7 @@ function setProps() {
     HUE = int(rnd(0,360))
     DARK_C = color(HUE, 26, 25)
 
-    if (prb(0.5)) {
+    if (colorSeed < 0.984375) {
       LIGHT_C = color(203, 5, 48)
       BRIGHT_LIGHT_C = color(167, 5, 95)
       DARK_C = color(40, 26, 20)
@@ -196,6 +165,40 @@ function setProps() {
     HIGHLIGHT = true
   }
 
+  // LAYOUT
+  LAYOUT =
+    hshrnd(2) < 0.8125 ? 'MAIN' :
+    hshrnd(2) < 0.95 ? 'STRIP' :
+    'GRID'
+
+  const isMain = LAYOUT === 'MAIN'
+  MAIN_CENTER_PIECE = getMainCenterPiece(hshrnd(3))
+  SHOW_BORDER = isMain && hshrnd(4)
+  SHOW_CORNERS = isMain && ((SHOW_BORDER && prb(0.95)) || prb(0.8))
+
+  // ROSETTE
+  const rosetteStyleSeed = hshrnd(5)
+  if (rosetteStyleSeed < 0.0625){
+    ROSETTE_STYLE = 'DECO'
+    IS_DECO = true
+  }
+  else if (rosetteStyleSeed < 0.625)
+    ROSETTE_STYLE = 'NUMISMATIC'
+  else if (rosetteStyleSeed < 0.8125) {
+    ROSETTE_STYLE = 'VINTAGE'
+    IS_VINTAGE = true
+  }
+  else if (rosetteStyleSeed < 0.875)
+    ROSETTE_STYLE = 'ECHO'
+  else if (rosetteStyleSeed < 0.9375)
+    ROSETTE_STYLE = 'DIGITAL'
+  else
+    ROSETTE_STYLE = 'LINE'
+
+  MISPRINT_ROSETTE_PARAMS_EXCEEDED = prb(0.0625)
+
+
+
 
   const reverseRosetteColors = prb(0.5) || IS_BULLION
   const lightC = isSliver ? BRIGHT_LIGHT_C : LIGHT_GRADIENT_C
@@ -208,10 +211,9 @@ function setProps() {
 
 
 
-
   // BACKGROUND
 
-  const bgSeed = rnd()
+  const bgSeed = hshrnd(6)
   if (!isMain || SHOW_BORDER || bgSeed < 0.125) { // (0.8125 * 0.75) + (0.03125) =~ 640
     BG_TYPE = 'STANDARD'
     BG_PATTERN = getBG()
@@ -224,8 +226,9 @@ function setProps() {
   }
   else BG_TYPE = 'EMPTY'
 
-  SHOW_EMBLEM1 = [0,1,3,5].includes(MAIN_CENTER_PIECE) && BG_TYPE !== 'WM2' && prb(0.125) //
-  SHOW_EMBLEM2 = SHOW_EMBLEM1 && prb(0.25)
+  SHOW_EMBLEM1 = [0,1,3,5].includes(MAIN_CENTER_PIECE) && BG_TYPE !== 'WM2' && hshrnd(7) < 0.125 //
+  SHOW_EMBLEM2 = hshrnd(7) < 0.03125
+
   EMBLEM_NUMBER = SHOW_EMBLEM1 && prb(0.5)
   NO_NATURAL_DENOMINATION = !SHOW_CORNERS && (BG_PATTERN !== 8) && !EMBLEM_NUMBER
 
@@ -239,7 +242,7 @@ function setProps() {
     serialSeed < 0.025 ? 4 :
     serialSeed < 0.03 ? 5 :
     serialSeed < 0.035 ? 6 : ''
-  STAR_NOTE = prb(0.02)
+  STAR_NOTE = hshrnd(8) < 0.02
 
   MISPRINT_LATHE_MALFUNCTION = prb(0.015)
   MISPRINT_HETERO_ROSETTES = prb(0.01)
@@ -287,13 +290,15 @@ function draw() {
 
   if (LAYOUT === 'MAIN')
     mainLayout()
-  else
+  else if (LAYOUT === 'STRIP')
     stripLayout()
+  else
+    gridLayout()
 
   MISPRINT_PRINTING_OBSTRUCTED && obstruction()
   MISPRINT_LOW_INK && lowInk()
 
-  console.log('$'+DENOMINATION)
+  console.log('$'+(DENOMINATION||0))
 }
 
 function keyPressed() {

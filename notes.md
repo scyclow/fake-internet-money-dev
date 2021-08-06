@@ -6,6 +6,7 @@ Three intentions:
     - This rosette pattern was originally created by a geometric lathe, which works similar to a spirograph. This started in the 1800s, making the designs on paper currency an early form of generative art.
     - The reasons behind this design dovetail nicely with NFTs and crypto: the design was an early way to prove authenticity and show provenance.
     - Also, money is a super collectable item with a ton of variability
+    - Also, it seems like the generative art NFT genre tends to lean towards either collectables or abstraction, and i thought this was a cool chance to put both of them together}}
 
   Conceptual
     - Really what I'm trying to do is to bring into focus the financialization of art, particularly NFT-based art. And similar to some of the themes I explored with religion with CGK, really honing in on what gives these tokens value. Because I think it's a philosophical quesiton that everyone grapples with to some extent when they first get into NFTs -- and it's an important thing to grapple with -- but i feel like in the current market environment
@@ -243,7 +244,7 @@ Here's a fucking idea:
 
 i saw it ina dream website: you can move around a larger canvas
 
-sell messengers and buy octogarden
+
 
 
 
@@ -314,6 +315,32 @@ Pull out major features into hash
 - vintage double WM is pretty fucked
 
 
+
+
+
+
+GROUPING
+
+index 3447
+layout 5899
+rosette 2890
+
+(12236) -- (10752)
+
+background 3131
+misc 1403
+watermark 2411
+border 3730
+denomination 1269
+util 705
+
+(12649) -- (20859)
+
+
+
+type 12679
+
+(12679) -- (33549)
 
 
 
