@@ -309,7 +309,6 @@ function rosetteCornerBg(corners=[2, 4]) {
 // }
 
 function bg11() {
-  console.log('bbbb')
   rosetteWithBackground(0,0, W, 0)
 }
 

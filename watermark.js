@@ -19,17 +19,18 @@ function smilyFace(x, y, radius=200) {
 }
 
 // ~37
-function randomWatermark(x, y, radius, strokeC) {
+function randomWatermark(x, y, strokeC, scale_=1) {
   push()
+  scale(scale_)
   strokeC && stroke(strokeC)
   const r = rnd()
 
   if (r < 0.3333)
-    watermark1(x, y, radius)
+    watermark1(x, y)
   else if (r < 0.85)
-    watermark2(x, y, radius)
+    watermark2(x, y)
   else
-    watermark3(x, y, radius*2)
+    watermark3(x, y)
   pop()
 }
 
@@ -92,9 +93,8 @@ function watermark3(x0, y0, c1Radius=100) {
     [720, -4, 2],
     [720, -6, 2],
     [720, -3, 3],
-
-    // [720, -15, 5], // cool, but doesn't really fit here
-    // [50, -9, 10]
+    [720, -15, 5],
+    [50, -9, 10]
   ])
 
 

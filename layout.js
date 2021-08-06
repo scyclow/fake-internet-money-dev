@@ -16,8 +16,8 @@ function mainLayout() {
     const y = 80 * cornerYDirection(wmCorner, cornerComponentLocations.length === 4)
     const strokeC = HIGHLIGHT ? LIGHT_ACCENT_C : LIGHTENED_DARK_C
     prb(0.5)
-      ? randomWatermark(x, y, 120, strokeC)
-      : drawCGK(x, y, 245, strokeC)
+      ? randomWatermark(x, y, strokeC)
+      : drawCGK(x+15, y, 245, strokeC)
   } else if (BG_TYPE === 'FULL') {
     bg11()
     invertSig = true
@@ -109,7 +109,6 @@ function displayCorners(locations=[]) {
     const x = _x + (location%2===1 ? padding : -padding)
     const y = _y + (location<3 ? padding : -padding)
     const holeR = allHoles || selectHoles.includes(location) ? radius*0.75 : 0
-    console.log(params)
 
     rosetteWithBackground(x, y, radius, 0, {...params, holeR})
     drawDenominationWithBorder(x, y, 0.35, ROSETTE_FILL_C, ROSETTE_STROKE_C)
@@ -221,13 +220,13 @@ function portrait() {
 
   const pSeed = rnd()
   if (NO_NATURAL_DENOMINATION || pSeed < 0.1) {
-    drawSnazzyDenomination(0,0,2.5)
+    drawSnazzyDenomination(0,0,2.3)
 
   } else if (pSeed < 0.80) {
-    randomWatermark(0,0, IS_VINTAGE ? 30 : 50, ROSETTE_STROKE_C)
-  } else if (pSeed < 0.90) {
+    randomWatermark(0,0, ROSETTE_STROKE_C, IS_VINTAGE ? 0.5 : 0.7)
+  } else if (pSeed < 0.92) {
     drawCGK(0, 0, 200) // 0.8125 * .125 * 0.1 *0.825 =~ 8
-  } else if (pSeed < 0.95){
+  } else if (pSeed < 0.98){
     smilyFace(0,0, 250) // 0.8125 * .125 * 0.05 *0.825 =~ 4
   }
 }
@@ -394,8 +393,8 @@ function stripLayout() {
     if (prb(0.1))
       drawCGK(mainX, 0, 245) // .1875 * .9 * .65 *.1 =~ 11
   } else if (mainSeed < 0.82) {
-    randomWatermark(mainX, 0, 100)
-    if (prb(0.1))
+    randomWatermark(mainX, 0)
+    if (prb(0.1) || BG_PATTERN === 0)
       drawCGK(mainX, 0, 245) // .1875 * .9 * .17 *.1 =~ 3
   } else if (mainSeed < 0.97) {
     drawCGK(mainX, 0, 245) // .1875 * .9 * .15 =~ 25
