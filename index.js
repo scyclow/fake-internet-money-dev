@@ -29,7 +29,13 @@
     MISPRINT_ROSETTE_PARAMS_EXCEEDED,
     MISPRINT_LATHE_MALFUNCTION,
     MISPRINT_HETERO_ROSETTES,
+    MISPRINT_OFF_CENTER,
+    MISPRINT_LOW_INK,
+    MISPRINT_PRINTING_OBSTRUCTED,
+    MISPRINT_REVERSED,
+    FORCE_SHOW_ROSETTE,
     COOL_SERIAL_NUM,
+    COUNTERFEIT,
     LAYOUT
 
 const W = 700
@@ -99,8 +105,8 @@ function setProps() {
 
   // LAYOUT
   LAYOUT = prb(0.8125) ? 'MAIN' : 'STRIP'
-  MAIN_CENTER_PIECE = getMainCenterPiece()
   const isMain = LAYOUT === 'MAIN'
+  MAIN_CENTER_PIECE = getMainCenterPiece()
   SHOW_BORDER = isMain && prb(0.75)
   SHOW_CORNERS = isMain && ((SHOW_BORDER && prb(0.95)) || prb(0.8))
 
@@ -193,7 +199,7 @@ function setProps() {
 
   const reverseRosetteColors = prb(0.5) || IS_BULLION
   const lightC = isSliver ? BRIGHT_LIGHT_C : LIGHT_GRADIENT_C
-  const darkC = HIGHLIGHT && !IS_DECO && !IS_VINTAGE ? BRIGHT_DARK_C : DARK_C
+  const darkC = HIGHLIGHT && !IS_DECO && !IS_VINTAGE && !IS_BULLION ? BRIGHT_DARK_C : DARK_C
   ROSETTE_FILL_C = IS_VINTAGE || reverseRosetteColors ? lightC : darkC
   ROSETTE_STROKE_C = IS_VINTAGE || reverseRosetteColors ? darkC : lightC
 
@@ -223,7 +229,7 @@ function setProps() {
   EMBLEM_NUMBER = SHOW_EMBLEM1 && prb(0.5)
   NO_NATURAL_DENOMINATION = !SHOW_CORNERS && (BG_PATTERN !== 8) && !EMBLEM_NUMBER
 
-  // SERIAL NUMBER
+  // MISPRINTS/RARITIES
   serialSeed = rnd()
   COOL_SERIAL_NUM =
     serialSeed < 0.005 ? 0 :
@@ -233,15 +239,18 @@ function setProps() {
     serialSeed < 0.025 ? 4 :
     serialSeed < 0.03 ? 5 :
     serialSeed < 0.035 ? 6 : ''
-
   STAR_NOTE = prb(0.02)
 
+  MISPRINT_LATHE_MALFUNCTION = prb(0.015)
+  MISPRINT_HETERO_ROSETTES = prb(0.01)
+  MISPRINT_OFF_CENTER = prb(0.01)
+  MISPRINT_REVERSED = prb(0.01)
+  MISPRINT_LOW_INK = prb(0.005)
+  MISPRINT_PRINTING_OBSTRUCTED = prb(0.005)
+  COUNTERFEIT = !COOL_SERIAL_NUM && !STAR_NOTE && prb(0.05)
 
-  // MISPRINTS
 
-  // i want like 20 or 30 of these things
-  MISPRINT_LATHE_MALFUNCTION=prb(0.025)
-  MISPRINT_HETERO_ROSETTES=prb(0.010)
+  FORCE_SHOW_ROSETTE = MISPRINT_LATHE_MALFUNCTION || MISPRINT_HETERO_ROSETTES || MISPRINT_ROSETTE_PARAMS_EXCEEDED
 
 }
 
@@ -273,10 +282,18 @@ function draw() {
   stroke(DARK_C)
   drawTexture()
 
+  MISPRINT_OFF_CENTER && offCenter()
+  MISPRINT_REVERSED && reversed()
+
   if (LAYOUT === 'MAIN')
     mainLayout()
   else
     stripLayout()
+
+  MISPRINT_PRINTING_OBSTRUCTED && obstruction()
+  MISPRINT_LOW_INK && lowInk()
+
+  console.log('$'+DENOMINATION)
 }
 
 function keyPressed() {
@@ -288,12 +305,20 @@ function keyPressed() {
 
 
 //MISPRINTS
+function reversed() {
+  translate(-1)
+}
 
-function rotate() {
-  rotate(rnd(0.2, 0.5)*posOrNeg())
+function offCenter() {
+  translate(
+    rnd(W/4, H/4)*posOrNeg(),
+    rnd(W/4, H/4)*posOrNeg()
+    )
+  rotate(rnd(HALF_PI, -HALF_PI))
 }
 
 function obstruction() {
+  push()
   fill(LIGHT_C)
   strokeWeight(0)
   beginShape()
@@ -301,4 +326,15 @@ function obstruction() {
   vertex(rnd(-W/2, W/2), H/2)
   vertex(rnd(-W/2, W/2), -H/2)
   endShape()
+  pop()
+}
+
+function lowInk() {
+  for (let x=0; x <= W; x++)
+  for (let y=0; y <= H; y++) {
+    // stroke(0,0,0, rnd(0,40))
+    strokeWeight(0)
+    fill(0,0,100, rnd(0,70))
+    rect(x-W/2, y-H/2, 2)
+  }
 }

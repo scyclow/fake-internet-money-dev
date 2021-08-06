@@ -1,5 +1,5 @@
 function mainLayout() {
-  const cornerComponentLocations = SHOW_CORNERS ? cornerLocations() : []
+  const cornerComponentLocations = SHOW_CORNERS || FORCE_SHOW_ROSETTE ? cornerLocations() : []
 
   let wmCorners = []
   let invertSig = false
@@ -381,7 +381,7 @@ function stripLayout() {
   const mainSeed = rnd()
   const mainX = W/-6*stripSide
 
-  if (mainSeed < 0.65) {
+  if (mainSeed < 0.65 || FORCE_SHOW_ROSETTE) {
     const p = getHighlightPColors()
 
     rosetteWithBackground(W/-6*stripSide,0, 180, 0, p)
@@ -392,7 +392,7 @@ function stripLayout() {
     }
     if (prb(0.1))
       drawCGK(mainX, 0, 245) // .1875 * .9 * .65 *.1 =~ 11
-  } else if (mainSeed < 0.9) {
+  } else if (mainSeed < 0.90) {
     randomWatermark(mainX, 0)
     if (prb(0.1) || BG_PATTERN === 0)
       drawCGK(mainX, 0, 245) // .1875 * .9 * .17 *.1 =~ 3

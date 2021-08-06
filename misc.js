@@ -1,5 +1,6 @@
 
 function signature(x, y, charSize, invert) {
+  if (COUNTERFEIT) return
   push()
   noFill()
   strokeWeight(1.5)
@@ -98,6 +99,7 @@ function genSerialNumber() {
 }
 
 function serialNumber(x, y) {
+  if (COUNTERFEIT) return
   push()
   const sNumber = genSerialNumber()
   fill(LIGHT_C)

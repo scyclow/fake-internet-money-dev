@@ -254,7 +254,13 @@ sell messengers and buy octogarden
 
 ## MUST DO
 
-- misprint rarities
+Pull out major features into hash
+- denomination
+- color scheme
+- layout
+
+
+
 
 
 
