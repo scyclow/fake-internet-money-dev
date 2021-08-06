@@ -1,3 +1,23 @@
+Three intentions:
+  Aesthetics
+    - I've always been a huge fan of the aesthetics of paper currency, espescially the sort of webby, geometcic rosette patterns that's common on US bills. One of my favorite parts of the development of this project was researching all the different variations of money around the world
+
+  Thematics
+    - This rosette pattern was originally created by a geometric lathe, which works similar to a spirograph. This started in the 1800s, making the designs on paper currency an early form of generative art.
+    - The reasons behind this design dovetail nicely with NFTs and crypto: the design was an early way to prove authenticity and show provenance.
+    - Also, money is a super collectable item with a ton of variability
+
+  Conceptual
+    - Really what I'm trying to do is to bring into focus the financialization of art, particularly NFT-based art. And similar to some of the themes I explored with religion with CGK, really honing in on what gives these tokens value. Because I think it's a philosophical quesiton that everyone grapples with to some extent when they first get into NFTs -- and it's an important thing to grapple with -- but i feel like in the current market environment
+
+    - So really I'm exploring all this by presenting visual components (like the rosette) that commonly appear on money and lend it credability, and making it look a lot like money... But it's not money. It's sort of a deconstruction of money as the colors, layout and components shift around. And I encourage the viewer to ask: why is it not money? why am I willing to
+
+
+
+
+
+
+
 Fake Internet Money explores the relationship between art and financial assets. The optimistic interpretation of the project contrasts the mechanics of paper currency with cryptocurrency by painting fiat as absurd and anachronistic. This is explored through the use of guilloche patterns, which were originally used as mechanisms to prove the authenticity of the bill. With NFTs the authenticity and and provenance of the token are easy to verify. this optimistic outlook paints money as art, and focuses on how technology advances both money and art. the pessamistic interpretation casts art as money, and highlights the financialization of art. it suggests that the art's value is really a financial one, rather than an artistic one. in the optimistic case, the misprints highlight ths absurdity of encountering this type of error in the digital space. In the pessamistic case it acts as a deconstruction of the value of the piece, and comments on how fickle that value really is.
 
 
@@ -81,15 +101,15 @@ roman numeral present: 5%
 - corners are asymetric
 
 ## Serial numbers 10%
-- star note
-- standard
-- radar note
+- ^star note
+- ^standard
+- ^radar note
 - binary note
 - solid (every number the same) (maybe every 100 can be a solid)
-- ladder (every digit higher than same)
+- ^ladder (every digit higher than same)
 - repeated (first half same as second half)
-- low serial number
-- high serial number
+- ^low serial number
+- ^high serial number
 - missing serial number
 
 http://www.coolserialnumbers.com/FancySerialNumbers.aspx
@@ -235,29 +255,27 @@ sell messengers and buy octogarden
 ## MUST DO
 
 - misprint rarities
-- OBJECTS DON'T LOOK GOOD WITH BYTE BACKGROUND
-- fix the fucking numerals bug
 
 
 
+
+- serial rarities
 - i don't really like what i did with the double WM colors. should just be normal stroke, transparent. although, it looks good for ribbed rosettes
 
-- be really careful about showing object, numeral in strip layout. easy to get repeats
+
 
 
 ## SHOULD DO
 - for buillion, objects shoudl be scratched out with bright color
-- serial rarities
-- portrait/object sizing all fucked up
 
 ## MAYBE DO
 - holographic
 - need to look at the dot texture. is there a way to make this look a little more organic?
 - if solid border or no border, corner can just be number
-- maybe get rid of the full bgs. they're sorta cool, but they don't really work.
+
 - have a bits/bytes style. maybe crypto shoud be a lot more pixelated. that would actually be pretty cool.
   - how hard would it be to modify the *rosette engine* to draw squares instead of vertex?
-- add more possabilities to bullion
+
 - incorporate denomination rosette
 - add only-dark rosette
 - can i get rid of drawCircle in favor of drawShape?

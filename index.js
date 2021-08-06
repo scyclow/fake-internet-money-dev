@@ -26,7 +26,7 @@
     EMBLEM_NUMBER,
     NO_NATURAL_DENOMINATION,
     MISPRINT_INK_RUN,
-
+    COOL_SERIAL_NUM,
     LAYOUT
 
 const W = 700
@@ -230,6 +230,18 @@ function setProps() {
   SHOW_EMBLEM2 = SHOW_EMBLEM1 && prb(0.25)
   EMBLEM_NUMBER = SHOW_EMBLEM1 && prb(0.5)
   NO_NATURAL_DENOMINATION = !SHOW_CORNERS && (BG_PATTERN !== 8) && !EMBLEM_NUMBER
+
+  // SERIAL NUMBER
+  serialSeed = rnd()
+  COOL_SERIAL_NUM =
+    serialSeed < 0.005 ? 0 :
+    serialSeed < 0.01 ? 1 :
+    serialSeed < 0.015 ? 2 :
+    serialSeed < 0.02 ? 3 :
+    serialSeed < 0.025 ? 4 :
+    serialSeed < 0.03 ? 5 :
+    serialSeed < 0.035 ? 6 : ''
+
   STAR_NOTE = prb(0.02)
 }
 

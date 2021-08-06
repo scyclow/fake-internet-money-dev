@@ -49,9 +49,51 @@ function signature(x, y, charSize, invert) {
   pop()
 }
 
+let uniqNum = (n) => {
+  let r = rnd()+''
+  return r[2] !== n ? r[2] : uniqNum(n)
+}
+let numStr = (n=2) => rnd().toFixed(3).slice(2,2+n)
+
 function genSerialNumber() {
   let num = ""
-  times(4, _ => num += rnd().toFixed(2).slice(2,4))
+  const digits = n => times(n, _ => num += numStr())
+  // REPEATER
+  if (COOL_SERIAL_NUM === 0) {
+    digits(2)
+    num = num + num
+  }
+  // RADAR
+  else if (COOL_SERIAL_NUM === 1) {
+    digits(2)
+    num = num + num.split('').reverse().join('')
+  }
+  // INCREASING
+  else if (COOL_SERIAL_NUM === 2) {
+    digits(4)
+    num = num.split('').sort().join('')
+  }
+  // DECREASING
+  else if (COOL_SERIAL_NUM === 3) {
+    digits(4)
+    num = num.split('').sort().reverse().join('')
+  }
+  // LOW
+  else if (COOL_SERIAL_NUM === 4) {
+    num = "00000" + numStr(3)
+  }
+  // HIGH
+  else if (COOL_SERIAL_NUM === 5) {
+    num = "99999" + numStr(3)
+  }
+  // BINARY
+  else if (COOL_SERIAL_NUM === 6) {
+    const n1 = uniqNum('0')
+    times(8, _ => num += sample(['0', n1]))
+  }
+  else
+    digits(4)
+
   return num
 }
 
