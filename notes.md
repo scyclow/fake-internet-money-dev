@@ -231,7 +231,7 @@ Here's a fucking idea:
 
 DISCLAIMER: Fake Internet Money is not legal tender, and may not be redeemable or exchangeable with other parties or markets following its initial offering. The Artist is NOT a licensed or registered money transmitter in any district, state, or country.
 
-Furthermore, Fake Internet Money is not a financial security. The Artist makes no guarantees of adding any further value to the project and owners of The Money have no reasonable expectation of profit. Any marketing statements made by The Artist SHOULD NOT BE TAKEN AS INVESTMENT ADVICE. The secondary market value of The Money may be highly volatile, and The Artist makes no guarantees as to its stability relative to Ethereum or the US Dollar.
+Fake Internet Money is not a financial security. The Artist makes no guarantees of adding any further value to the project and owners of The Money have no reasonable expectation of profit. Any marketing statements made by The Artist should not be taken as investment advice. The secondary market value of The Money may be highly volatile, and The Artist makes no guarantees as to its stability relative to Ethereum or the US Dollar.
 
 The Money code is licensed under a Creative Commons Attribution-NonCommercial 4.0 License, and is provided without warranty of any kind. In no event shall The Artist be held liable for any damages arising from the code or resulting tokens.
 
@@ -256,13 +256,7 @@ i saw it ina dream website: you can move around a larger canvas
 
 ## MUST DO
 
-- tweak color population
-  - 250 crypto
-  - 50 silver
-  - 25 gold
 
-- maybe a lot more misprints. like 1/10
-- maybe more emblems (1/3 or 1/4 or 1/5 of standards have them?)
 
 
 "fungible" ones
