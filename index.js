@@ -21,9 +21,12 @@
     SHOW_BORDER,
     SHOW_CORNERS,
     STAR_NOTE,
-    SHOW_EMBLEM1,
-    SHOW_EMBLEM2,
-    EMBLEM_NUMBER,
+    EMBLEM1,
+    EMBLEM_NUMBER1,
+    EMBLEM_HOLO1,
+    EMBLEM2,
+    EMBLEM_NUMBER2,
+    EMBLEM_HOLO2,
     NO_NATURAL_DENOMINATION,
     MISPRINT_INK_RUN,
     MISPRINT_ROSETTE_PARAMS_EXCEEDED,
@@ -34,6 +37,7 @@
     MISPRINT_PRINTING_OBSTRUCTED,
     MISPRINT_REVERSED,
     MISPRINT_ROSETTE_FLURRY,
+    MISPRINT_BORDER_CONFIG,
     FORCE_SHOW_ROSETTE,
     COOL_SERIAL_NUM,
     COUNTERFEIT,
@@ -85,7 +89,7 @@ function setup() {
   noLoop()
   colorMode(HSB, 360, 100, 100, 100)
   setProps()
-  document.body.style.backgroundColor = "#000000"
+  document.body.style.backgroundColor = DARK_C.toString()
 }
 
 
@@ -145,7 +149,7 @@ function setProps() {
     HUE = int(rnd(0,360))
     DARK_C = color(HUE, 26, 25)
 
-    if (colorSeed < 0.965) {
+    if (colorSeed < 0.96875) {
       LIGHT_C = color(203, 5, 48)
       BRIGHT_LIGHT_C = color(167, 5, 95)
       DARK_C = color(40, 26, 20)
@@ -228,11 +232,15 @@ function setProps() {
   }
   else BG_TYPE = 'EMPTY'
 
-  SHOW_EMBLEM1 = [0,1,3,5].includes(MAIN_CENTER_PIECE) && BG_TYPE !== 'WM2' && hshrnd(7) < 0.25
-  SHOW_EMBLEM2 = SHOW_EMBLEM1 && hshrnd(7) < 0.0625
+  EMBLEM1 = [0,1,3].includes(MAIN_CENTER_PIECE) && BG_TYPE !== 'WM2' && hshrnd(7) < 0.25
+  EMBLEM_NUMBER1 = EMBLEM1 && prb(0.4)
+  EMBLEM_HOLO1 = EMBLEM1 && !EMBLEM_NUMBER1 && prb(0.2)
 
-  EMBLEM_NUMBER = SHOW_EMBLEM1 && prb(0.5)
-  NO_NATURAL_DENOMINATION = !SHOW_CORNERS && (BG_PATTERN !== 8) && !EMBLEM_NUMBER
+  EMBLEM2 = EMBLEM1 && hshrnd(7) < 0.0625
+  EMBLEM_NUMBER2 = EMBLEM2 && prb(0.4)
+  EMBLEM_HOLO2 = EMBLEM2 && !EMBLEM_NUMBER2 && prb(0.2)
+
+  NO_NATURAL_DENOMINATION = !SHOW_CORNERS && (BG_PATTERN !== 8) && !EMBLEM_NUMBER1 && !EMBLEM_NUMBER2
 
   // MISPRINTS/RARITIES
   serialSeed = rnd()
@@ -252,6 +260,7 @@ function setProps() {
   MISPRINT_HETERO_ROSETTES = prb(0.015)
   MISPRINT_PRINTING_OBSTRUCTED = prb(0.01)
   MISPRINT_ROSETTE_FLURRY = prb(0.005)
+  MISPRINT_HEAVY_INK = prb(0.005)
   MISPRINT_LOW_INK = prb(0.005)
   COUNTERFEIT = !COOL_SERIAL_NUM && !STAR_NOTE && prb(0.1)
 
@@ -290,6 +299,7 @@ function draw() {
 
   MISPRINT_OFF_CENTER && offCenter()
   MISPRINT_REVERSED && reversed()
+  MISPRINT_HEAVY_INK && strokeWeight(8)
 
   if (LAYOUT === 'MAIN' || MISPRINT_ROSETTE_FLURRY)
     mainLayout()
@@ -338,11 +348,10 @@ function obstruction() {
 }
 
 function lowInk() {
+  strokeWeight(0)
   for (let x=0; x <= W; x++)
   for (let y=0; y <= H; y++) {
-    // stroke(0,0,0, rnd(0,40))
-    strokeWeight(0)
-    fill(0,0,100, rnd(0,70))
+    fill(0,0,100, rnd(0,60))
     rect(x-W/2, y-H/2, 2)
   }
 }

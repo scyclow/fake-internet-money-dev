@@ -125,3 +125,23 @@ function handleMalfunction([x, y], g=window) {
     ]
   } else return [x,y]
 }
+
+const holoWidth = 20
+function drawHolo(x) {
+  push()
+  strokeWeight(2)
+  const dashed = prb(0.3)
+  const w = holoWidth/2
+  for (let y = 0; y < H; y++) {
+    stroke(
+      lerpColor(
+        color(hue(ACCENT_C), saturation(ACCENT_C), lightness(ACCENT_C), 50),
+        color(hue(BRIGHT_DARK_C), saturation(BRIGHT_DARK_C), lightness(BRIGHT_DARK_C), 50),
+        y/H
+      )
+    )
+
+    dashed && int(y/50) % 3 === 0 ? noop() : line(x-w, y+T,x+w, y+T)
+  }
+  pop()
+}

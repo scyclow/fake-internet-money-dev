@@ -56,7 +56,6 @@ function drawChar(char, x, y, s, stroke_, fill_) {
   pop()
 }
 
-// TODO fix XX and II
 const offsets = {
   'V': -14,
   'C': -14,

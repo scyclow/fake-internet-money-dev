@@ -37,8 +37,16 @@ function mainLayout() {
 
 
   const ancillarySide = posOrNeg()
-  if (SHOW_EMBLEM1) EMBLEM_NUMBER ? sideNumber(ancillarySide) : emblem(ancillarySide)
-  if (SHOW_EMBLEM2) prb(0.5) ? emblem(ancillarySide*-1) : sideNumber(ancillarySide*-1)
+  if (EMBLEM1) {
+    EMBLEM_NUMBER1 ? sideNumber(ancillarySide) :
+    EMBLEM_HOLO1 ? drawHolo(ancillarySide*205) :
+    emblem(ancillarySide)
+  }
+  if (EMBLEM2) {
+    EMBLEM_NUMBER2 ? sideNumber(ancillarySide*-1) :
+    EMBLEM_HOLO2 ? drawHolo(ancillarySide*-205) :
+    emblem(ancillarySide*-1)
+  }
 
   if (MISPRINT_ROSETTE_FLURRY) rosetteFlurry()
 
@@ -53,7 +61,9 @@ function mainLayout() {
 
 function getMainCenterPiece(seed) {
   if (LAYOUT === 'MAIN') {
-    if (seed < 0.6875)
+    if (seed < 0.02)
+      return 0 // no center piece
+    else if (seed < 0.6875)
       return 1 // single
     else if (seed < 0.8125)
       return 2 // bouquet
@@ -62,10 +72,6 @@ function getMainCenterPiece(seed) {
     else
       return 4 // rosette sandwich
 
-    // if (seed < 0.01)
-    //   return 0 // no center piece
-    // else if (seed < 1)
-    //   return 5 // total chaos
   }
 }
 
@@ -254,7 +260,7 @@ const getHighlightPColors = () => !IS_VINTAGE ? ({
 }) : {}
 
 function singleCenterPiece() {
-  const allowHole = !IS_VINTAGE && prb(0.5) // TODO lower maybe?
+  const allowHole = !IS_VINTAGE && prb(0.5)
   const extraPieces = prb(0.25) ? sample([1, 2]) : 0
   const p = getHighlightPColors()
 

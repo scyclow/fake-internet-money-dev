@@ -4,7 +4,7 @@
 
 function randomBorder() {
   const borderSeed = rnd()
-  if (borderSeed < 0.01) return denominationBorder()
+  if (borderSeed < 0.02) return denominationBorder()
 
   const vintageBorderProb = IS_VINTAGE ? 0.5 : 0.25
   drawBorderGraphic(() => {
@@ -144,7 +144,6 @@ function vintageBorderParams(o) {
 }
 
 function vintageBorder(padding, params) {
-  // TODO MISPRINT: change this number
   const points = 66
 
   const radius = params.radius // 15-30
