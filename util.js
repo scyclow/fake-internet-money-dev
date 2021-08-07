@@ -45,8 +45,7 @@ const drawShape = (points, getXY, graphic=window) => {
   graphic.beginShape()
   graphic.curveVertex(...getXY(-1))
   times(points+2, p => {
-    MISPRINT_LATHE_MALFUNCTION && graphic.rotate(0.1)
-    graphic.curveVertex(...getXY(p))
+    graphic.curveVertex(...handleMalfunction(getXY(p), graphic))
   })
   graphic.endShape()
 }

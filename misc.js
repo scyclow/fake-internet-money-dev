@@ -114,3 +114,14 @@ function serialNumber(x, y) {
   pop()
 }
 
+
+function handleMalfunction([x, y], g=window) {
+  if (MISPRINT_LATHE_MALFUNCTION) {
+    g.rotate(0.1)
+    const ignore = prb(0.5)
+    return [
+      x + (ignore ? rnd(-10, 10) : 0),
+      y + (ignore ? rnd(-10, 10) : 0),
+    ]
+  } else return [x,y]
+}

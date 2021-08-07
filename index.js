@@ -33,6 +33,7 @@
     MISPRINT_LOW_INK,
     MISPRINT_PRINTING_OBSTRUCTED,
     MISPRINT_REVERSED,
+    MISPRINT_ROSETTE_FLURRY,
     FORCE_SHOW_ROSETTE,
     COOL_SERIAL_NUM,
     COUNTERFEIT,
@@ -84,6 +85,7 @@ function setup() {
   noLoop()
   colorMode(HSB, 360, 100, 100, 100)
   setProps()
+  document.body.style.backgroundColor = "#000000"
 }
 
 
@@ -106,8 +108,8 @@ function setProps() {
   const colorSeed = hshrnd(1)
 
   COLOR_SCHEME =
-    colorSeed < 0.75 ? 'FIAT'
-    : colorSeed < 0.9375 ? 'CRYPTO'
+    colorSeed < 0.65 ? 'FIAT'
+    : colorSeed < 0.9 ? 'CRYPTO'
     : 'BULLION'
   IS_BULLION = COLOR_SCHEME === 'BULLION'
   IS_CRYPTO = COLOR_SCHEME === 'CRYPTO'
@@ -143,7 +145,7 @@ function setProps() {
     HUE = int(rnd(0,360))
     DARK_C = color(HUE, 26, 25)
 
-    if (colorSeed < 0.984375) {
+    if (colorSeed < 0.965) {
       LIGHT_C = color(203, 5, 48)
       BRIGHT_LIGHT_C = color(167, 5, 95)
       DARK_C = color(40, 26, 20)
@@ -173,8 +175,8 @@ function setProps() {
 
   const isMain = LAYOUT === 'MAIN'
   MAIN_CENTER_PIECE = getMainCenterPiece(hshrnd(3))
-  SHOW_BORDER = isMain && hshrnd(4)
-  SHOW_CORNERS = isMain && ((SHOW_BORDER && prb(0.95)) || prb(0.8))
+  SHOW_BORDER = isMain && hshrnd(4) < 0.75
+  SHOW_CORNERS = isMain && prb(SHOW_BORDER ? 0.9 : 0.6)
 
   // ROSETTE
   const rosetteStyleSeed = hshrnd(5)
@@ -214,7 +216,7 @@ function setProps() {
   // BACKGROUND
 
   const bgSeed = hshrnd(6)
-  if (!isMain || SHOW_BORDER || bgSeed < 0.125) { // (0.8125 * 0.75) + (0.03125) =~ 640
+  if (!isMain || SHOW_BORDER || bgSeed < 0.1875) { // (0.8125 * 0.75) + (0.03125) =~ 640
     BG_TYPE = 'STANDARD'
     BG_PATTERN = getBG()
   }
@@ -226,8 +228,8 @@ function setProps() {
   }
   else BG_TYPE = 'EMPTY'
 
-  SHOW_EMBLEM1 = [0,1,3,5].includes(MAIN_CENTER_PIECE) && BG_TYPE !== 'WM2' && hshrnd(7) < 0.125 //
-  SHOW_EMBLEM2 = hshrnd(7) < 0.03125
+  SHOW_EMBLEM1 = [0,1,3,5].includes(MAIN_CENTER_PIECE) && BG_TYPE !== 'WM2' && hshrnd(7) < 0.25
+  SHOW_EMBLEM2 = SHOW_EMBLEM1 && hshrnd(7) < 0.0625
 
   EMBLEM_NUMBER = SHOW_EMBLEM1 && prb(0.5)
   NO_NATURAL_DENOMINATION = !SHOW_CORNERS && (BG_PATTERN !== 8) && !EMBLEM_NUMBER
@@ -244,13 +246,14 @@ function setProps() {
     serialSeed < 0.035 ? 6 : ''
   STAR_NOTE = hshrnd(8) < 0.02
 
-  MISPRINT_LATHE_MALFUNCTION = prb(0.015)
-  MISPRINT_HETERO_ROSETTES = prb(0.01)
-  MISPRINT_OFF_CENTER = prb(0.01)
-  MISPRINT_REVERSED = prb(0.01)
+  MISPRINT_LATHE_MALFUNCTION = prb(0.02)
+  MISPRINT_OFF_CENTER = prb(0.015)
+  MISPRINT_REVERSED = prb(0.015)
+  MISPRINT_HETERO_ROSETTES = prb(0.015)
+  MISPRINT_PRINTING_OBSTRUCTED = prb(0.01)
+  MISPRINT_ROSETTE_FLURRY = prb(0.005)
   MISPRINT_LOW_INK = prb(0.005)
-  MISPRINT_PRINTING_OBSTRUCTED = prb(0.005)
-  COUNTERFEIT = !COOL_SERIAL_NUM && !STAR_NOTE && prb(0.05)
+  COUNTERFEIT = !COOL_SERIAL_NUM && !STAR_NOTE && prb(0.1)
 
 
   FORCE_SHOW_ROSETTE = MISPRINT_LATHE_MALFUNCTION || MISPRINT_HETERO_ROSETTES || MISPRINT_ROSETTE_PARAMS_EXCEEDED
@@ -288,7 +291,7 @@ function draw() {
   MISPRINT_OFF_CENTER && offCenter()
   MISPRINT_REVERSED && reversed()
 
-  if (LAYOUT === 'MAIN')
+  if (LAYOUT === 'MAIN' || MISPRINT_ROSETTE_FLURRY)
     mainLayout()
   else if (LAYOUT === 'STRIP')
     stripLayout()

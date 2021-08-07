@@ -6,7 +6,8 @@ function rosetteWithBackground(x, y, r, r2=0, params={}) {
     : genRosetteParams(params)
 
 
-  if (p.innerC) dollarRosetteBg(x,y, r, r2, p)
+  if (params.skipBg) {}
+  else if (p.innerC) dollarRosetteBg(x,y, r, r2, p)
   else {
     const bgFn =
       ROSETTE_STYLE === 'NUMISMATIC' ? dollarRosette :
@@ -123,7 +124,7 @@ function dollarEchoRosette(x_=0, y_=0, maxRad=200, minRad=100, params={}, bg=fal
     ))
 
     drawCircle(params.points, p => {
-      return border(rad, p)
+      return handleMalfunction(border(rad, p))
     })
   }
   pop()
@@ -143,8 +144,8 @@ function dollarLineRosette(x_=0, y_=0, maxRad=200, minRad=100, params={}) {
   const border = createRosetteBorder(x_, y_, c0Points, params.c1, params.c2, params.r1, params.r2)
 
   for (let l=0; l < c0Points; l += 0.2) {
-    const [ox, oy] = border(maxRad, l)
-    const [ix, iy] = border(minRad, l)
+    const [ox, oy] = handleMalfunction(border(maxRad, l))
+    const [ix, iy] = handleMalfunction(border(minRad, l))
     line(ix, iy, ox, oy)
   }
   pop()
@@ -243,7 +244,7 @@ const genVintageRosetteParams = (o) => ({
 
 const genRosetteParams = (o) => ({
   c1: int(rnd(1, MISPRINT_ROSETTE_PARAMS_EXCEEDED ? 25 : 16)) * posOrNeg(),
-  c2: int(rnd(1, MISPRINT_ROSETTE_PARAMS_EXCEEDED ? 20 : 13)) * posOrNeg(),
+  c2: int(rnd(1, MISPRINT_ROSETTE_PARAMS_EXCEEDED ? 40 : 13)) * posOrNeg(),
   r1: MISPRINT_ROSETTE_PARAMS_EXCEEDED ? rnd(4, 10) : rnd(10, 20),
   r2: MISPRINT_ROSETTE_PARAMS_EXCEEDED ? rnd(4, 10) : rnd(10, 20),
   points: 70,

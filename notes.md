@@ -227,16 +227,17 @@ Here's a fucking idea:
   * three different currency flavors: fiat, crypto, bullion. each bill is a basket of flavor currencies
 
 
-  """
+"""
 
-  DISCLAIMER: Fake Internet Money is not legal tender, and may not be redeemable or exchangable with other parties or markets following its initial offering. The Artist is NOT a licensed or registered money transmitter in any district, state, or country.
+DISCLAIMER: Fake Internet Money is not legal tender, and may not be redeemable or exchangeable with other parties or markets following its initial offering. The Artist is NOT a licensed or registered money transmitter in any district, state, or country.
 
-  Furthermore, Fake Internet Money is not a financial security. The Artist makes no guarantees of adding any further value to the project and owners of The Money have no reasonable expectation of profit. Any marketing statements made by The Artist SHOULD NOT BE TAKEN AS INVESTMENT ADVICE. The secondary market value of The Money may be highly volatile, and The Artist makes no guarantees as to its stability relative to Ethereum or the US Dollar.
+Furthermore, Fake Internet Money is not a financial security. The Artist makes no guarantees of adding any further value to the project and owners of The Money have no reasonable expectation of profit. Any marketing statements made by The Artist SHOULD NOT BE TAKEN AS INVESTMENT ADVICE. The secondary market value of The Money may be highly volatile, and The Artist makes no guarantees as to its stability relative to Ethereum or the US Dollar.
 
-  The Money code is licensed under a Creative Commons Attribution-NonCommercial 4.0 License, and is provided without warrenty of any kind. In no event shall The Artist be held liable for any damages arising from the code or resulting tokens.
+The Money code is licensed under a Creative Commons Attribution-NonCommercial 4.0 License, and is provided without warranty of any kind. In no event shall The Artist be held liable for any damages arising from the code or resulting tokens.
 
-  The typeface is derived from Shippori Mincho B1, which is licensed under a SIL Open Font License.
-  """
+The typeface is derived from Shippori Mincho B1, which is licensed under a SIL Open Font License.
+
+"""
 
   Website is jsut a legal disclaimer with a random rosette in the background
 
@@ -255,12 +256,26 @@ i saw it ina dream website: you can move around a larger canvas
 
 ## MUST DO
 
-Pull out major features into hash
-- denomination
-- color scheme
-- layout
+- tweak color population
+  - 250 crypto
+  - 50 silver
+  - 25 gold
+
+- maybe a lot more misprints. like 1/10
+- maybe more emblems (1/3 or 1/4 or 1/5 of standards have them?)
 
 
+"fungible" ones
+.50 ($1)
+* .675 (fiat)
+* .875 (not vibrant)
+* .84 (no rarities)
+* .9 (boring bg)
+* .9375 (non deco)
+* .95 (standard layout)
+* .875 (non bouquet centerpiece)
+
+= 175
 
 
 

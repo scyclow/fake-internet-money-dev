@@ -40,14 +40,16 @@ function mainLayout() {
   if (SHOW_EMBLEM1) EMBLEM_NUMBER ? sideNumber(ancillarySide) : emblem(ancillarySide)
   if (SHOW_EMBLEM2) prb(0.5) ? emblem(ancillarySide*-1) : sideNumber(ancillarySide*-1)
 
+  if (MISPRINT_ROSETTE_FLURRY) rosetteFlurry()
+
   displayBillData(
     wmCorners.length || cornerComponentLocations.length === 4
       ? wmCorners
       : cornerComponentLocations,
     invertSig
   )
-
 }
+
 
 function getMainCenterPiece(seed) {
   if (LAYOUT === 'MAIN') {
@@ -456,3 +458,13 @@ function cornerThing(lOrR=1, tOrB=1) {
 
 
 
+function rosetteFlurry() {
+  times(25, i => {
+    let b = rnd(25, 200)
+    const x = rnd(L, R)
+    const y = rnd(T, B)
+    rosetteWithBackground(x, y, b, prb(0.5) ? 0 : rnd(b/5, b), {skipBg: prb(0.9)})
+    prb(0.5) && drawSnazzyDenomination(x, y,b/120)
+  })
+
+}
