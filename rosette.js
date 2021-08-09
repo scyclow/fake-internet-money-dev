@@ -33,6 +33,7 @@ const getRosetteStyleFn = () =>
   ROSETTE_STYLE === 'ECHO'? dollarEchoRosette :
   ROSETTE_STYLE === 'DIGITAL' ? dollarCheckeredRosette :
   ROSETTE_STYLE === 'LINE' ? dollarLineRosette :
+  ROSETTE_STYLE === 'DENOMINATION' ? denominationRosette :
   IS_VINTAGE ? vintageRosette :
   noop
 
@@ -224,6 +225,23 @@ function vintageRosette(x_=0, y_=0, radius0=90, _=0, params={}) {
     // )
     // return [x0, y0]
   })
+  pop()
+}
+
+
+const denominationRosette = (x_=0, y_=0, maxRad=200, minRad=0, params={}) => {
+  push()
+  params.strokeC && stroke(params.strokeC)
+  params.strokeW && strokeWeight(params.strokeW)
+
+  const c0Points = params.points
+
+  const border = createRosetteBorder(x_, y_, c0Points, params.c1, params.c2, params.r1, params.r2)
+
+  for (let l=0; l < c0Points; l += 0.5) {
+    const [x, y] = border(maxRad, l)
+    drawStrAdj(DENOMINATION, x, y, 0.1, ROSETTE_STROKE_C)
+  }
   pop()
 }
 

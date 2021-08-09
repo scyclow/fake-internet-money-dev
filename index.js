@@ -14,6 +14,7 @@
     IS_VINTAGE,
     IS_DECO,
     IS_BULLION,
+    IS_MAIN,
     HIGHLIGHT,
     SHOW_NUMERALS,
     BG_TYPE,
@@ -38,9 +39,11 @@
     MISPRINT_REVERSED,
     MISPRINT_ROSETTE_FLURRY,
     MISPRINT_BORDER_CONFIG,
+    MISPRINT_MISSING_CENTER,
     FORCE_SHOW_ROSETTE,
     COOL_SERIAL_NUM,
     COUNTERFEIT,
+    IS_SILVER,
     LAYOUT
 
 const W = 700
@@ -89,7 +92,6 @@ function setup() {
   noLoop()
   colorMode(HSB, 360, 100, 100, 100)
   setProps()
-  document.body.style.backgroundColor = DARK_C.toString()
 }
 
 
@@ -118,7 +120,7 @@ function setProps() {
   IS_BULLION = COLOR_SCHEME === 'BULLION'
   IS_CRYPTO = COLOR_SCHEME === 'CRYPTO'
 
-  let isSliver
+
   if (COLOR_SCHEME === 'FIAT') {
     HUE = int(rnd(0,360))
     DARK_C = color(HUE, 26, 25)
@@ -155,7 +157,7 @@ function setProps() {
       DARK_C = color(40, 26, 20)
       LIGHTENED_DARK_C = color(203, 10, 35)
       BRIGHT_DARK_C = LIGHTENED_DARK_C
-      isSliver = true
+      IS_SILVER = true
 
     } else {
       LIGHT_C = color(40, 60, 67)
@@ -177,10 +179,12 @@ function setProps() {
     hshrnd(2) < 0.95 ? 'STRIP' :
     'GRID'
 
-  const isMain = LAYOUT === 'MAIN'
+  IS_MAIN = LAYOUT === 'MAIN'
+
+  MISPRINT_MISSING_CENTER = prb(0.01) && IS_MAIN && !NO_NATURAL_DENOMINATION
   MAIN_CENTER_PIECE = getMainCenterPiece(hshrnd(3))
-  SHOW_BORDER = isMain && hshrnd(4) < 0.75
-  SHOW_CORNERS = isMain && prb(SHOW_BORDER ? 0.9 : 0.6)
+  SHOW_BORDER = IS_MAIN && hshrnd(4) < 0.75
+  SHOW_CORNERS = IS_MAIN && prb(SHOW_BORDER ? 0.9 : 0.6)
 
   // ROSETTE
   const rosetteStyleSeed = hshrnd(5)
@@ -188,26 +192,36 @@ function setProps() {
     ROSETTE_STYLE = 'DECO'
     IS_DECO = true
   }
-  else if (rosetteStyleSeed < 0.625)
+  else if (rosetteStyleSeed < 0.6)
     ROSETTE_STYLE = 'NUMISMATIC'
-  else if (rosetteStyleSeed < 0.8125) {
+  else if (rosetteStyleSeed < 0.8) {
     ROSETTE_STYLE = 'VINTAGE'
     IS_VINTAGE = true
   }
-  else if (rosetteStyleSeed < 0.875)
+  else if (rosetteStyleSeed < 0.86)
     ROSETTE_STYLE = 'ECHO'
-  else if (rosetteStyleSeed < 0.9375)
+  else if (rosetteStyleSeed < 0.96)
     ROSETTE_STYLE = 'DIGITAL'
-  else
+  else if (rosetteStyleSeed < 0.9825)
     ROSETTE_STYLE = 'LINE'
+  else
+    ROSETTE_STYLE = 'DENOMINATION'
 
-  MISPRINT_ROSETTE_PARAMS_EXCEEDED = prb(0.0625)
+  MISPRINT_ROSETTE_PARAMS_EXCEEDED = prb(0.03125)
+
+  EMBLEM1 = [0,1,3].includes(MAIN_CENTER_PIECE) && BG_TYPE !== 'WM2' && hshrnd(7) < 0.25
+  EMBLEM_NUMBER1 = EMBLEM1 && prb(0.4)
+  EMBLEM_HOLO1 = EMBLEM1 && !EMBLEM_NUMBER1 && prb(0.2)
+
+  EMBLEM2 = EMBLEM1 && hshrnd(7) < 0.0625
+  EMBLEM_NUMBER2 = EMBLEM2 && prb(0.4)
+  EMBLEM_HOLO2 = EMBLEM2 && !EMBLEM_NUMBER2 && prb(0.2)
 
 
 
 
   const reverseRosetteColors = prb(0.5) || IS_BULLION
-  const lightC = isSliver ? BRIGHT_LIGHT_C : LIGHT_GRADIENT_C
+  const lightC = IS_SILVER ? BRIGHT_LIGHT_C : LIGHT_GRADIENT_C
   const darkC = HIGHLIGHT && !IS_DECO && !IS_VINTAGE && !IS_BULLION ? BRIGHT_DARK_C : DARK_C
   ROSETTE_FILL_C = IS_VINTAGE || reverseRosetteColors ? lightC : darkC
   ROSETTE_STROKE_C = IS_VINTAGE || reverseRosetteColors ? darkC : lightC
@@ -220,7 +234,7 @@ function setProps() {
   // BACKGROUND
 
   const bgSeed = hshrnd(6)
-  if (!isMain || SHOW_BORDER || bgSeed < 0.1875) { // (0.8125 * 0.75) + (0.03125) =~ 640
+  if (!IS_MAIN || SHOW_BORDER || bgSeed < 0.1875) { // (0.8125 * 0.75) + (0.03125) =~ 640
     BG_TYPE = 'STANDARD'
     BG_PATTERN = getBG()
   }
@@ -232,13 +246,7 @@ function setProps() {
   }
   else BG_TYPE = 'EMPTY'
 
-  EMBLEM1 = [0,1,3].includes(MAIN_CENTER_PIECE) && BG_TYPE !== 'WM2' && hshrnd(7) < 0.25
-  EMBLEM_NUMBER1 = EMBLEM1 && prb(0.4)
-  EMBLEM_HOLO1 = EMBLEM1 && !EMBLEM_NUMBER1 && prb(0.2)
 
-  EMBLEM2 = EMBLEM1 && hshrnd(7) < 0.0625
-  EMBLEM_NUMBER2 = EMBLEM2 && prb(0.4)
-  EMBLEM_HOLO2 = EMBLEM2 && !EMBLEM_NUMBER2 && prb(0.2)
 
   NO_NATURAL_DENOMINATION = !SHOW_CORNERS && (BG_PATTERN !== 8) && !EMBLEM_NUMBER1 && !EMBLEM_NUMBER2
 
@@ -255,6 +263,7 @@ function setProps() {
   STAR_NOTE = hshrnd(8) < 0.02
 
   MISPRINT_LATHE_MALFUNCTION = prb(0.02)
+  MISPRINT_MISSING_CENTER = MISPRINT_MISSING_CENTER && !NO_NATURAL_DENOMINATION
   MISPRINT_OFF_CENTER = prb(0.015)
   MISPRINT_REVERSED = prb(0.015)
   MISPRINT_HETERO_ROSETTES = prb(0.015)
@@ -262,6 +271,7 @@ function setProps() {
   MISPRINT_ROSETTE_FLURRY = prb(0.005)
   MISPRINT_HEAVY_INK = prb(0.005)
   MISPRINT_LOW_INK = prb(0.005)
+  IS_MISPRINT = MISPRINT_INK_RUN || MISPRINT_ROSETTE_PARAMS_EXCEEDED || MISPRINT_LATHE_MALFUNCTION || MISPRINT_MISSING_CENTER || MISPRINT_OFF_CENTER || MISPRINT_REVERSED || MISPRINT_HETERO_ROSETTES || MISPRINT_PRINTING_OBSTRUCTED || MISPRINT_ROSETTE_FLURRY || MISPRINT_HEAVY_INK || MISPRINT_LOW_INK
   COUNTERFEIT = !COOL_SERIAL_NUM && !STAR_NOTE && prb(0.1)
 
 
@@ -301,7 +311,7 @@ function draw() {
   MISPRINT_REVERSED && reversed()
   MISPRINT_HEAVY_INK && strokeWeight(8)
 
-  if (LAYOUT === 'MAIN' || MISPRINT_ROSETTE_FLURRY)
+  if (IS_MAIN || MISPRINT_ROSETTE_FLURRY)
     mainLayout()
   else if (LAYOUT === 'STRIP')
     stripLayout()
@@ -311,7 +321,20 @@ function draw() {
   MISPRINT_PRINTING_OBSTRUCTED && obstruction()
   MISPRINT_LOW_INK && lowInk()
 
-  console.log('$'+(DENOMINATION||0))
+  const estimatedMktValue = (DENOMINATION||0)
+    * (COUNTERFEIT?-1:1)
+    * (IS_MISPRINT?0:1)
+    * (IS_CRYPTO?(prb(0.5)?rnd(0,150):rnd(0,1)):1)
+    * (IS_SILVER?50:1)
+    * (IS_BULLION&&!IS_SILVER?100:1)
+    * (STAR_NOTE?3:1)
+    * (COOL_SERIAL_NUM?5:1)
+    * (IS_VINTAGE||IS_DECO?1.5:1)
+
+  try {
+    console.log('Estimated Market Value: '+estimatedMktValue)
+    document.body.style.backgroundColor = DARK_C.toString()
+  } catch (e) {}
 }
 
 function keyPressed() {

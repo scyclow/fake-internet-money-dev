@@ -993,28 +993,7 @@ function borderTest(padding=10, cRad=3) {
 }
 
 
-const denominationRosette = denomination => (x_=0, y_=0, maxRad=200, minRad=0, params={}) => {
-  push()
-  params.strokeC && stroke(params.strokeC)
-  params.strokeW && strokeWeight(params.strokeW)
 
-  strokeWeight(1)
-  const r1 = 1/(params.r1)
-  const r2 = 1/(params.r2)
-
-  const c0Points = params.points
-  const c1Points = c0Points/params.c1
-  const c2Points = c0Points/params.c2
-
-  const border = createRosetteBorder(x_, y_, c0Points, c1Points, c2Points, r1, r2)
-
-  textSize(10)
-  for (let l=0; l < c0Points; l += 0.5) {
-    const [x, y] = border(maxRad, l)
-    text(denomination, x, y)
-  }
-  pop()
-}
 
 function bg1() {
   push()

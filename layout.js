@@ -60,8 +60,8 @@ function mainLayout() {
 
 
 function getMainCenterPiece(seed) {
-  if (LAYOUT === 'MAIN') {
-    if (seed < 0.02)
+  if (IS_MAIN) {
+    if (MISPRINT_MISSING_CENTER)
       return 0 // no center piece
     else if (seed < 0.6875)
       return 1 // single
@@ -71,7 +71,6 @@ function getMainCenterPiece(seed) {
       return 3 // portrait
     else
       return 4 // rosette sandwich
-
   }
 }
 
