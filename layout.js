@@ -97,8 +97,10 @@ function cornerLocations() {
 
 
 function displayCorners(locations=[]) {
-  const padding = 57
-  const radius = 55
+  push()
+  strokeWeight(0.6)
+  const padding = 52
+  const radius = 50
 
   const allHoles = prb(0.125)
   const selectHoles = locations.length === 4 && prb(0.5) ? [sample([1,3]), sample([2,4])] : []
@@ -112,8 +114,9 @@ function displayCorners(locations=[]) {
     const holeR = allHoles || selectHoles.includes(location) ? radius*0.75 : 0
 
     rosetteWithBackground(x, y, radius, 0, {...params, holeR})
-    drawDenominationWithBorder(x, y, 0.35, ROSETTE_FILL_C, ROSETTE_STROKE_C)
+    drawDenominationWithBorder(x, y, 0.3, ROSETTE_FILL_C, ROSETTE_STROKE_C)
   })
+  pop()
 }
 
 

@@ -298,7 +298,8 @@ function drawTexture() {
   pop()
 
   if (COLOR_SCHEME === 'FIAT') pointTexture()
-  if (COLOR_SCHEME !== 'CRYPTO') squigTexture()
+  if (IS_CRYPTO) stippleTexture()
+  if (!IS_CRYPTO) squigTexture()
 }
 
 function draw() {

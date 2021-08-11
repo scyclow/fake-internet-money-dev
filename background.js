@@ -83,6 +83,16 @@ function pointTexture() {
   pop()
 }
 
+function stippleTexture() {
+  push()
+  for (let x = -W/2; x < W/2; x += 5)
+  for (let y = -H/2; y < H/2; y += 5) {
+    strokeWeight(1)
+    stroke(color(HUE, 99, 90, 50))
+    point(x+2, y+2)
+  }
+  pop()
+}
 
 function denominationTexture() {
   push()
