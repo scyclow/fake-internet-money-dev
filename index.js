@@ -136,7 +136,7 @@ function setProps() {
     VIBRANT_GRADIENT = prb(0.02)
 
 
-  } else if (COLOR_SCHEME === 'CRYPTO') {
+  } else if (IS_CRYPTO) {
     HUE = int(rnd(0,360))
     const isBlue = HUE < 275 && HUE > 210
     LIGHT_C = color(hfix(HUE-133), 96, isBlue ? 0 : 15)
@@ -298,7 +298,7 @@ function drawTexture() {
   pop()
 
   if (COLOR_SCHEME === 'FIAT') pointTexture()
-  if (IS_CRYPTO) stippleTexture()
+  if (IS_CRYPTO && BG_TYPE !== 'STANDARD') stippleTexture()
   if (!IS_CRYPTO) squigTexture()
 }
 

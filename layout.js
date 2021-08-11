@@ -383,7 +383,7 @@ function stripLayout() {
   const mainSeed = rnd()
   const mainX = W/-6*stripSide
 
-  if (mainSeed < 0.65) {
+  if (mainSeed < 0.65 || FORCE_SHOW_ROSETTE) {
     const p = getHighlightPColors()
 
     rosetteWithBackground(W/-6*stripSide,0, 180, 0, p)

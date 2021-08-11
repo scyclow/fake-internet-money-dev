@@ -115,13 +115,13 @@ function serialNumber(x, y) {
 }
 
 
+const __onlyRotate = prb(0.5)
 function handleMalfunction([x, y], g=window) {
   if (MISPRINT_LATHE_MALFUNCTION) {
     g.rotate(0.1)
-    const ignore = prb(0.5)
     return [
-      x + (ignore ? rnd(-10, 10) : 0),
-      y + (ignore ? rnd(-10, 10) : 0),
+      x + (__onlyRotate ? 0 : rnd(-10, 10)),
+      y + (__onlyRotate ? 0 : rnd(-10, 10)),
     ]
   } else return [x,y]
 }
