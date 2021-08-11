@@ -90,14 +90,12 @@ const getXYBorder = (p, points, padding) => {
 
 function drawBorderGraphic(borderFn) {
   push()
-  scale(1/GRAPHIC_RESOLUTION)
-  __borderGraphic.scale(GRAPHIC_RESOLUTION)
 
   __borderGraphic.translate(W/2, H/2)
   __borderGraphic.noFill()
   __borderGraphic.stroke(DARK_C)
   borderFn()
-  image(__borderGraphic,-W * GRAPHIC_RESOLUTION / 2,-H * GRAPHIC_RESOLUTION / 2)
+  image(__borderGraphic,-W / 2,-H / 2)
   pop()
 }
 
@@ -149,7 +147,7 @@ function vintageBorder(padding, params) {
   const radius = params.radius // 15-30
   const degAdj = params.degAdj //1,2,3,4,-1,-2,-3,-4
   const offsetAmt = 1/params.offsetAmt //3 - 25
-
+  __borderGraphic.strokeWeight(0.6)
   for (let off=0; off<2; off+=offsetAmt) {
     drawShape(points+1, p => {
       const [ox, oy] = getXYBorder(p +off, points, padding)

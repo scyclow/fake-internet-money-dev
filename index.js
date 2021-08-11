@@ -29,7 +29,7 @@
     EMBLEM_NUMBER2,
     EMBLEM_HOLO2,
     NO_NATURAL_DENOMINATION,
-    MISPRINT_INK_RUN,
+    VIBRANT_GRADIENT,
     MISPRINT_ROSETTE_PARAMS_EXCEEDED,
     MISPRINT_LATHE_MALFUNCTION,
     MISPRINT_HETERO_ROSETTES,
@@ -86,8 +86,9 @@ function setup() {
     SCALE = window.innerWidth/W
   }
 
-  __borderGraphic = createGraphics(W*GRAPHIC_RESOLUTION,H*GRAPHIC_RESOLUTION)
-
+  __borderGraphic = createGraphics(W,H)
+  const currentPixelDensity = __borderGraphic.pixelDensity() || 2
+  __borderGraphic.pixelDensity(currentPixelDensity*GRAPHIC_RESOLUTION)
 
   noLoop()
   colorMode(HSB, 360, 100, 100, 100)
@@ -132,7 +133,7 @@ function setProps() {
     BRIGHT_LIGHT_C = color(max(HUE-10, 0), 80, 54)
     BRIGHT_DARK_C = BRIGHT_LIGHT_C
 
-    MISPRINT_INK_RUN = prb(0.02)
+    VIBRANT_GRADIENT = prb(0.02)
 
 
   } else if (COLOR_SCHEME === 'CRYPTO') {
@@ -271,7 +272,7 @@ function setProps() {
   MISPRINT_ROSETTE_FLURRY = prb(0.005)
   MISPRINT_HEAVY_INK = prb(0.005)
   MISPRINT_LOW_INK = prb(0.005)
-  IS_MISPRINT = MISPRINT_INK_RUN || MISPRINT_ROSETTE_PARAMS_EXCEEDED || MISPRINT_LATHE_MALFUNCTION || MISPRINT_MISSING_CENTER || MISPRINT_OFF_CENTER || MISPRINT_REVERSED || MISPRINT_HETERO_ROSETTES || MISPRINT_PRINTING_OBSTRUCTED || MISPRINT_ROSETTE_FLURRY || MISPRINT_HEAVY_INK || MISPRINT_LOW_INK
+  IS_MISPRINT = MISPRINT_ROSETTE_PARAMS_EXCEEDED || MISPRINT_LATHE_MALFUNCTION || MISPRINT_MISSING_CENTER || MISPRINT_OFF_CENTER || MISPRINT_REVERSED || MISPRINT_HETERO_ROSETTES || MISPRINT_PRINTING_OBSTRUCTED || MISPRINT_ROSETTE_FLURRY || MISPRINT_HEAVY_INK || MISPRINT_LOW_INK
   COUNTERFEIT = !COOL_SERIAL_NUM && !STAR_NOTE && prb(0.1)
 
 
@@ -289,8 +290,8 @@ function drawTexture() {
 
     stroke(lerpColor(
       LIGHT_C,
-      MISPRINT_INK_RUN || IS_BULLION || HIGHLIGHT ? BRIGHT_LIGHT_C : DARK_C,
-      MISPRINT_INK_RUN || IS_BULLION || (IS_CRYPTO&&HIGHLIGHT) ? i/W : i/(W*5)
+      VIBRANT_GRADIENT || IS_BULLION || HIGHLIGHT ? BRIGHT_LIGHT_C : DARK_C,
+      VIBRANT_GRADIENT || IS_BULLION || (IS_CRYPTO&&HIGHLIGHT) ? i/W : i/(W*5)
     ))
     line(x+diag, -H/2, x, H/2)
   }
@@ -333,7 +334,6 @@ function draw() {
 
   try {
     console.log('Estimated Market Value: '+estimatedMktValue)
-    document.body.style.backgroundColor = DARK_C.toString()
   } catch (e) {}
 }
 
