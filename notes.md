@@ -229,13 +229,15 @@ Here's a fucking idea:
 
 """
 
-DISCLAIMER: Fake Internet Money is not legal tender, and may not be redeemable or exchangeable with other parties or markets following its initial offering. The Artist is NOT a licensed or registered money transmitter in any district, state, or country.
+DISCLAIMER: Fake Internet Money is not legal tender, and may not be redeemable or exchangeable with other parties or markets following its initial offering. The Artist is not a licensed or registered money transmitter in any district, state, or country.
 
-Fake Internet Money is not a financial security. The Artist makes no guarantees of adding any further value to the project and owners of The Money have no reasonable expectation of profit. Any marketing statements made by The Artist should not be taken as investment advice. The secondary market value of The Money may be highly volatile, and The Artist makes no guarantees as to its stability relative to Ethereum or the US Dollar.
+The Money is not a financial security. The Artist makes no guarantees of adding any further value to the project and owners of The Money have no reasonable expectation of profit. Any marketing statements made by The Artist should not be taken as investment advice. The secondary market value of The Money may be highly volatile, and The Artist makes no guarantees as to its stability relative to Ethereum or the US Dollar. All value derived from Fake Internet Money is entirely subjective.
 
-The Money code is licensed under a Creative Commons Attribution-NonCommercial 4.0 License, and is provided without warranty of any kind. In no event shall The Artist be held liable for any damages arising from the code or resulting tokens.
+All code is licensed under a Creative Commons Attribution-NonCommercial 4.0 License, and is provided without warranty of any kind. In no event shall The Artist be held liable for any damages arising from the code or resulting tokens.
 
-The typeface is derived from Shippori Mincho B1, which is licensed under a SIL Open Font License.
+The typeface is  Shippori Mincho B1, which is licensed under a SIL Open Font License.
+
+X% of all Fake Internet Money proceeds will be donated to Give Directly.
 
 """
 
@@ -256,9 +258,10 @@ i saw it ina dream website: you can move around a larger canvas
 
 ## MUST DO
 
+- re-add border bumps to rosette bg
 
 
-? make grid less common ?
+
 
 
 
@@ -283,7 +286,7 @@ i saw it ina dream website: you can move around a larger canvas
 - for buillion, objects shoudl be scratched out with bright color
 
 ## MAYBE DO
-- holographic
+
 - need to look at the dot texture. is there a way to make this look a little more organic?
 - if solid border or no border, corner can just be number
 

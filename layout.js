@@ -1,19 +1,17 @@
 function mainLayout() {
-  const cornerComponentLocations = SHOW_CORNERS || FORCE_SHOW_ROSETTE ? cornerLocations() : []
-
   let wmCorners = []
   let invertSig = false
 
   if (BG_TYPE === 'STANDARD') {
     drawBgPattern()
   } else if (BG_TYPE === 'WM2') { // =~ 76
-    wmCorners = getDoubleWMCorners(cornerComponentLocations)
+    wmCorners = getDoubleWMCorners(CORNER_COMPONENT_LOCATIONS)
     rosetteCornerBg(wmCorners)
   } else if (BG_TYPE === 'WM1') { // =~ 63
-    const wmCorner = getSingleWMCorner(cornerComponentLocations)
+    const wmCorner = getSingleWMCorner(CORNER_COMPONENT_LOCATIONS)
     wmCorners = [wmCorner]
     const x = 175 * cornerXDirection(wmCorner)
-    const y = 80 * cornerYDirection(wmCorner, cornerComponentLocations.length === 4)
+    const y = 80 * cornerYDirection(wmCorner, CORNER_COMPONENT_LOCATIONS.length === 4)
     const strokeC = HIGHLIGHT ? LIGHT_ACCENT_C : LIGHTENED_DARK_C
     prb(0.8)
       ? randomWatermark(x, y, strokeC)
@@ -25,7 +23,7 @@ function mainLayout() {
 
 
   SHOW_BORDER && randomBorder()
-  displayCorners(cornerComponentLocations)
+  displayCorners(CORNER_COMPONENT_LOCATIONS)
 
   switch (MAIN_CENTER_PIECE) {
     case 0: break
@@ -51,9 +49,9 @@ function mainLayout() {
   if (MISPRINT_ROSETTE_FLURRY) rosetteFlurry()
 
   displayBillData(
-    wmCorners.length || cornerComponentLocations.length === 4
+    wmCorners.length || CORNER_COMPONENT_LOCATIONS.length === 4
       ? wmCorners
-      : cornerComponentLocations,
+      : CORNER_COMPONENT_LOCATIONS,
     invertSig
   )
 }
@@ -98,7 +96,7 @@ function cornerLocations() {
 
 function displayCorners(locations=[]) {
   push()
-  strokeWeight(0.6)
+  strokeWeight(0.6*STROKE_MOD)
   const padding = 52
   const radius = 50
 

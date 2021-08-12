@@ -1,4 +1,4 @@
-let __randomSeed = parseInt(tokenData.hash.slice(50, 66), 16)
+let __randomSeed = parseInt(tokenData.hash.slice(50, 58), 16)
 
 function rnd(mn, mx) {
   __randomSeed ^= __randomSeed << 13

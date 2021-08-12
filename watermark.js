@@ -75,7 +75,6 @@ function watermark2(x=0, y=0, radius=100) {
       c2r*0.8 + abs(sin(angle*360)),
       x0, y0
     )
-    return [x0, y0]
   })
 }
 

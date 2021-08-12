@@ -112,7 +112,7 @@ function border1(padding, points) {
 
 
 function dottedBorder(padding=10) {
-  __borderGraphic.strokeWeight(1)
+  __borderGraphic.strokeWeight(1*STROKE_MOD)
   const cRad = 3
   const adjW = W - 2*padding
   const adjH = H - 2*padding
@@ -147,7 +147,7 @@ function vintageBorder(padding, params) {
   const radius = params.radius // 15-30
   const degAdj = params.degAdj //1,2,3,4,-1,-2,-3,-4
   const offsetAmt = 1/params.offsetAmt //3 - 25
-  __borderGraphic.strokeWeight(0.6)
+  __borderGraphic.strokeWeight(0.6*STROKE_MOD)
   for (let off=0; off<2; off+=offsetAmt) {
     drawShape(points+1, p => {
       const [ox, oy] = getXYBorder(p +off, points, padding)
@@ -212,8 +212,10 @@ function border7(padding=20, compression=4, d=1) {
   }
 
   if (IS_DECO) {
+    const innerBoarder = i => drawShape(points, p => getCurvedXYBorder(p, points, padding+i, d), __borderGraphic)
+    innerBoarder(19)
     __borderGraphic.erase()
-    drawShape(points, p => getCurvedXYBorder(p, points, padding+20, d), __borderGraphic)
+    innerBoarder(20)
     __borderGraphic.noErase()
   }
 
@@ -234,7 +236,7 @@ function darkRosetteBorder(padding=-10, sides=true) {
   } else __borderGraphic.background(ROSETTE_FILL_C)
 
   __borderGraphic.stroke(ROSETTE_STROKE_C)
-  __borderGraphic.strokeWeight(1.1 - compression/12)
+  __borderGraphic.strokeWeight(1.1*STROKE_MOD - compression/12)
   const direction = posOrNeg()
 
   const extraPadding = ['ECHO', 'DIGITAL'].includes(ROSETTE_STYLE) ? 6 : 0
@@ -296,7 +298,7 @@ function curveCornerBorders(weight) {
   for (let i = 0; i < lines; i++) {
     if (i % 2 !== 0 || i === lines-1) __borderGraphic.erase()
     __borderGraphic.fill(DARK_C)
-    __borderGraphic.strokeWeight(weight -(i* weightAdj))
+    __borderGraphic.strokeWeight(weight*STROKE_MOD -(i* weightAdj))
     __borderGraphic.line(left, top, right, top)
     __borderGraphic.line(right, top, right, bottom)
     __borderGraphic.line(right, bottom, left, bottom)

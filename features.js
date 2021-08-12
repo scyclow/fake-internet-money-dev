@@ -21,7 +21,6 @@
     BG_PATTERN,
     SHOW_BORDER,
     SHOW_CORNERS,
-    CORNER_COMPONENT_LOCATIONS,
     STAR_NOTE,
     EMBLEM1,
     EMBLEM_NUMBER1,
@@ -30,7 +29,7 @@
     EMBLEM_NUMBER2,
     EMBLEM_HOLO2,
     NO_NATURAL_DENOMINATION,
-    VIBRANT_GRADIENT,
+    MISPRINT_INK_RUN,
     MISPRINT_ROSETTE_PARAMS_EXCEEDED,
     MISPRINT_LATHE_MALFUNCTION,
     MISPRINT_HETERO_ROSETTES,
@@ -46,8 +45,6 @@
     COUNTERFEIT,
     IS_SILVER,
     LAYOUT
-
-let STROKE_MOD = 1
 
 const W = 700
 const H = 400
@@ -67,36 +64,30 @@ const CORNERS = {
 }
 
 
+let __randomSeed = parseInt(tokenData.hash.slice(50, 66), 16)
 
-let __canvas,
-    __borderGraphic,
-    __denominationDisplayed = false,
-    __numeralDisplayed = false
-
-function setup() {
-  const windowRatio = window.innerWidth/window.innerHeight
-
-  if (W_H_RATIO < windowRatio) {
-    __canvas = createCanvas(window.innerHeight * W_H_RATIO, window.innerHeight)
-    SCALE = window.innerHeight/H
-
-  } else if (W_H_RATIO > windowRatio) {
-    __canvas = createCanvas(window.innerWidth, window.innerWidth /W_H_RATIO)
-    SCALE = window.innerWidth/W
-
-  } else {
-    __canvas = createCanvas(window.innerWidth, window.innerHeight)
-    SCALE = window.innerWidth/W
-  }
-
-  __borderGraphic = createGraphics(W,H)
-  const currentPixelDensity = __borderGraphic.pixelDensity() || 2
-  __borderGraphic.pixelDensity(currentPixelDensity*GRAPHIC_RESOLUTION)
-
-  noLoop()
-  colorMode(HSB, 360, 100, 100, 100)
-  setProps()
+function rnd(mn, mx) {
+  __randomSeed ^= __randomSeed << 13
+  __randomSeed ^= __randomSeed >> 17
+  __randomSeed ^= __randomSeed << 5
+  const out = (((__randomSeed < 0) ? ~__randomSeed + 1 : __randomSeed) % 1000) / 1000
+  if (mx != null) return mn + out * (mx - mn)
+  else if (mn != null) return out * mn
+  else return out
 }
+
+function hshrnd(h) {
+  const str = tokenData.hash.slice(2 + h*2, 4 + h*2)
+  return parseInt(str, 16) / 255
+}
+
+const prb = x => rnd() < x
+
+const posOrNeg = () => prb(0.5) ? 1 : -1
+
+const sample = (a) => a[Math.floor(rnd(a.length))]
+const hfix = h => (h + 360) % 360
+const noop = () => {}
 
 
 
@@ -136,14 +127,14 @@ function setProps() {
     BRIGHT_LIGHT_C = color(max(HUE-10, 0), 80, 54)
     BRIGHT_DARK_C = BRIGHT_LIGHT_C
 
-    VIBRANT_GRADIENT = prb(0.02)
+    MISPRINT_INK_RUN = prb(0.02)
 
 
-  } else if (IS_CRYPTO) {
+  } else if (COLOR_SCHEME === 'CRYPTO') {
     HUE = int(rnd(0,360))
     const isBlue = HUE < 275 && HUE > 210
     LIGHT_C = color(hfix(HUE-133), 96, isBlue ? 0 : 15)
-    DARK_C = color(HUE, isBlue ? 80 : 100, isBlue ? 95 : 90)
+    DARK_C = color(HUE, isBlue ? 80 : 99, isBlue ? 95 : 90)
     LIGHTENED_DARK_C = color(HUE, 69, 75)
     ACCENT_C = color(hfix(HUE-254), 100, 100)
     LIGHT_ACCENT_C = ACCENT_C
@@ -275,113 +266,51 @@ function setProps() {
   MISPRINT_ROSETTE_FLURRY = prb(0.005)
   MISPRINT_HEAVY_INK = prb(0.005)
   MISPRINT_LOW_INK = prb(0.005)
-  IS_MISPRINT = MISPRINT_ROSETTE_PARAMS_EXCEEDED || MISPRINT_LATHE_MALFUNCTION || MISPRINT_MISSING_CENTER || MISPRINT_OFF_CENTER || MISPRINT_REVERSED || MISPRINT_HETERO_ROSETTES || MISPRINT_PRINTING_OBSTRUCTED || MISPRINT_ROSETTE_FLURRY || MISPRINT_HEAVY_INK || MISPRINT_LOW_INK
+  IS_MISPRINT = MISPRINT_INK_RUN || MISPRINT_ROSETTE_PARAMS_EXCEEDED || MISPRINT_LATHE_MALFUNCTION || MISPRINT_MISSING_CENTER || MISPRINT_OFF_CENTER || MISPRINT_REVERSED || MISPRINT_HETERO_ROSETTES || MISPRINT_PRINTING_OBSTRUCTED || MISPRINT_ROSETTE_FLURRY || MISPRINT_HEAVY_INK || MISPRINT_LOW_INK
   COUNTERFEIT = !COOL_SERIAL_NUM && !STAR_NOTE && prb(0.1)
-  if (MISPRINT_HEAVY_INK) STROKE_MOD = 8
 
 
   FORCE_SHOW_ROSETTE = MISPRINT_LATHE_MALFUNCTION || MISPRINT_HETERO_ROSETTES || MISPRINT_ROSETTE_PARAMS_EXCEEDED
 
-  CORNER_COMPONENT_LOCATIONS = SHOW_CORNERS || FORCE_SHOW_ROSETTE ? cornerLocations() : []
-
-}
-
-function drawTexture() {
-  push()
-  const direction = posOrNeg()
-  const diag = rnd(0, 100)
-  if (!IS_BULLION) strokeWeight(2)
-  for (let i = -diag; i <= W+diag; i++) {
-    const x = direction === 1 ? i-W/2 : W/2-i
-
-    stroke(lerpColor(
-      LIGHT_C,
-      VIBRANT_GRADIENT || IS_BULLION || HIGHLIGHT ? BRIGHT_LIGHT_C : DARK_C,
-      VIBRANT_GRADIENT || IS_BULLION || (IS_CRYPTO&&HIGHLIGHT) ? i/W : i/(W*5)
-    ))
-    line(x+diag, -H/2, x, H/2)
-  }
-  pop()
-
-  if (COLOR_SCHEME === 'FIAT') pointTexture()
-  if (IS_CRYPTO && BG_TYPE !== 'STANDARD') stippleTexture()
-  if (!IS_CRYPTO) squigTexture()
-}
-
-function draw() {
-  translate(width/2, height/2)
-  scale(SCALE)
-  noFill()
-  stroke(DARK_C)
-  drawTexture()
-
-  MISPRINT_OFF_CENTER && offCenter()
-  MISPRINT_REVERSED && reversed()
-  strokeWeight(STROKE_MOD)
-
-  if (IS_MAIN || MISPRINT_ROSETTE_FLURRY)
-    mainLayout()
-  else if (LAYOUT === 'STRIP')
-    stripLayout()
-  else
-    gridLayout()
-
-  MISPRINT_PRINTING_OBSTRUCTED && obstruction()
-  MISPRINT_LOW_INK && lowInk()
-
   const estimatedMktValue = (DENOMINATION||0)
     * (COUNTERFEIT?-1:1)
     * (IS_MISPRINT?0:1)
-    * (IS_CRYPTO?(prb(0.5)?rnd(0,150):rnd(0,0.1)):1)
+    * (IS_CRYPTO?(prb(0.5)?rnd(0,150):rnd(0,1)):1)
     * (IS_SILVER?50:1)
     * (IS_BULLION&&!IS_SILVER?100:1)
     * (STAR_NOTE?3:1)
     * (COOL_SERIAL_NUM?5:1)
     * (IS_VINTAGE||IS_DECO?1.5:1)
-
-  try {
-    console.log('Estimated Market Value: '+estimatedMktValue)
-  } catch (e) {}
 }
 
-function keyPressed() {
-  if (keyCode === 83) {
-    saveCanvas(__canvas, 'FIM-' + Date.now(), 'jpg');
+
+
+
+function getMainCenterPiece(seed) {
+  if (IS_MAIN) {
+    if (MISPRINT_MISSING_CENTER)
+      return 0 // no center piece
+    else if (seed < 0.6875)
+      return 1 // single
+    else if (seed < 0.8125)
+      return 2 // bouquet
+    else if (seed < 0.9375)
+      return 3 // portrait
+    else
+      return 4 // rosette sandwich
   }
 }
 
+function getBG() {
+  const r = rnd()
 
-
-//MISPRINTS
-function reversed() {
-  translate(-1)
-}
-
-function offCenter() {
-  translate(
-    rnd(W/4, H/4)*posOrNeg(),
-    rnd(W/4, H/4)*posOrNeg()
-    )
-  rotate(rnd(HALF_PI, -HALF_PI))
-}
-
-function obstruction() {
-  push()
-  fill(LIGHT_C)
-  strokeWeight(0)
-  beginShape()
-  vertex(rnd(-W/2, W/2), -H/2)
-  vertex(rnd(-W/2, W/2), H/2)
-  vertex(rnd(-W/2, W/2), -H/2)
-  endShape()
-  pop()
-}
-
-function lowInk() {
-  strokeWeight(0)
-  for (let x=0; x <= W; x++)
-  for (let y=0; y <= H; y++) {
-    fill(0,0,100, rnd(0,60))
-    rect(x-W/2, y-H/2, 2)
-  }
+  if (prb(IS_CRYPTO ? 0.125 : 0.01)) return 0
+  else if (r < 0.125) return 1
+  else if (r < 0.25) return 2
+  else if (r < 0.375) return 3
+  else if (r < 0.5) return 4
+  else if (r < 0.625) return 5
+  else if (r < 0.75) return 6
+  else if (r < 0.875) return 7
+  else return 8
 }

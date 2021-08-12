@@ -1,0 +1,254 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Fake Internet Money</title>
+
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="HandheldFriendly" content="true">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <meta id="header-theme" name="theme-color" content="#000000">
+
+    <script src="./min.p5.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Benne&family=Roboto+Mono:wght@300&display=swap" rel="stylesheet">
+
+
+
+    <style type="text/css">
+      body {
+        margin: 0;
+        padding: 0;
+      }
+
+      canvas {
+        padding: 0;
+        margin: auto;
+        display: block;
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+      }
+    </style>
+
+    <script>
+      function genTokenData(projectNum) {
+
+        const hashesLookedAt = JSON.parse(localStorage.getItem('hashesLookedAt')) || 0
+        const tokenId = String(projectNum * 1000000 + Math.floor(Math.random() * 1000))
+        let hash = '0x'
+        if (window.location.search.includes('?hash=')) {
+          hash = window.location.search.slice(6)
+        } else {
+          for (let i = 0; i < 64; i++) {
+            hash += Math.floor(Math.random() * 16).toString(16)
+          }
+          window.location.hash = '#' + hash
+
+          const last10hashes = JSON.parse(localStorage.getItem('last10Hashes')) || []
+          last10hashes.unshift(hash)
+
+          localStorage.setItem('last10Hashes', JSON.stringify(last10hashes.slice(0, 10)))
+          localStorage.setItem('hashesLookedAt', JSON.stringify(hashesLookedAt+1))
+        }
+        return {
+          hash,
+          // hash: '0xfeff8806ffe0ff004900b6104392c062d40f238839029c82ed000ffff3cb2003',
+          tokenId
+        }
+      }
+
+      const tokenData = genTokenData(110)
+      console.log(tokenData.hash)
+    </script>
+  </head>
+  <body></body>
+<!--
+  <script src="./util.js"></script>
+  <script src="./layout.js"></script>
+  <script src="./rosette.js"></script>
+  <script src="./border.js"></script>
+  <script src="./misc.js"></script>
+  <script src="./background.js"></script>
+  <script src="./watermark.js"></script>
+  <script src="./curve.js"></script>
+  <script src="./type.js"></script>
+  <script src="./denomination.js"></script>
+   -->
+
+
+
+<script>
+const getXYRotation = (deg, radius) => [
+  sin(deg) * radius,
+  cos(deg) * radius,
+]
+
+const $ = [["M",41,-34], [48,-28,45,-32], [50,-20,50,-24], [50,-20], [47,-9,50,-14], [39,-1,44,-4], [29,1,34,1], [29,1], [29,3], [29,10], [28,12,29,11], [27,12,28,12], [27,12], [26,12,27,12], [26,10,26,11], [26,10], [26,3], [24,1,26,1], [24,1], [11,-5,16,0], [6,-17,6,-9], [6,-17], [7,-21,6,-20], [11,-23,8,-23], [11,-23], [14,-22,13,-23], [16,-18,16,-20], [16,-18], [15,-15,16,-16], [14,-13,15,-15], [14,-13], [14,-12,14,-13], [13,-10,13,-11], [13,-10], [16,-5,13,-7], [23,-3,19,-4], [23,-3], [24,-3], [25,-3,25,-3], [26,-5,26,-4], [26,-5], [26,-30], [24,-33,26,-32], [24,-33], [15,-37,18,-35], [15,-37], [9,-43,12,-40], [7,-52,7,-47], [7,-52], [9,-60,7,-56], [14,-67,10,-64], [24,-71,18,-70], [24,-71], [26,-73,26,-71], [26,-73], [26,-78], [26,-80,26,-79], [27,-80,27,-80], [27,-80], [28,-80,28,-80], [29,-78,29,-79], [29,-78], [29,-73], [31,-71,29,-71], [31,-71], [43,-66,38,-70], [48,-55,48,-62], [48,-55], [47,-51,48,-52], [43,-49,45,-49], [43,-49], [40,-50,41,-49], [38,-54,38,-52], [38,-54], [39,-57,38,-56], [39,-57], [40,-60,40,-59], [40,-60], [37,-65,40,-63], [31,-68,35,-67], [31,-68], [31,-68], [29,-66,29,-68], [29,-66], [29,-42], [31,-39,29,-40], [31,-39], [41,-34,38,-36], [41,-34], [41,-34], ["M",21,-44], [23,-43], [24,-43,24,-43], [24,-43], [26,-44,26,-43], [26,-44], [26,-65], [25,-67,26,-66], [23,-67,24,-67], [23,-67], [16,-62,19,-66], [13,-54,13,-59], [13,-54], [15,-48,13,-51], [21,-44,17,-46], [21,-44], ["M",31,-29], [30,-30,31,-30], [30,-30], [29,-28,29,-30], [29,-28], [29,-5], [29,-3,29,-4], [31,-3,30,-2], [31,-3], [40,-8,36,-4], [43,-17,43,-11], [43,-17], [36,-27,43,-23], [36,-27], [31,-29,35,-28], [31,-29]]
+
+function draw$() {
+  const s = 1.35
+  push()
+  translate(-25*s, 40*s)
+  scale(s)
+  stroke(LIGHT_C)
+  fill(LIGHT_C)
+
+  let contourOpen = false
+
+  beginShape()
+  $.forEach((p, i) => {
+    if (p[0] === 'M') {
+      if (contourOpen) endContour()
+      if (i !== 0) {
+        beginContour()
+        contourOpen = true
+      }
+      vertex(p[1], p[2])
+    } else if (p.length > 2) {
+      quadraticVertex(p[2], p[3], p[0], p[1])
+    } else {
+      vertex(p[0], p[1])
+    }
+  })
+  if (contourOpen) endContour()
+  endShape()
+  pop()
+}
+
+function bg() {
+  push()
+  strokeWeight(2)
+  for (let y = 0; y <= height; y++) {
+    stroke(lerpColor(
+      LIGHT_C,
+      LIGHT_C2,
+      y/height
+    ))
+    line(-width/2, y-height/2, width/2, y-height/2)
+  }
+  pop()
+}
+
+function aura() {
+  const lines = 30
+  for (let i = 0; i < lines; i++) {
+    const angle = i * TWO_PI / lines
+    const [ox, oy] = getXYRotation(angle, 181)
+    const [ix, iy] = getXYRotation(angle, 119)
+    line(ix, iy, ox, oy)
+  }
+}
+
+function eye() {
+  push()
+  noFill()
+  strokeWeight(6)
+  beginShape()
+  vertex(100-width/2, 0)
+  quadraticVertex(0, 450, width/2 - 100, 0)
+  endShape()
+
+
+  beginShape()
+  vertex(100-width/2, 0)
+  quadraticVertex(0, -450, width/2 - 100, 0)
+  endShape()
+  pop()
+}
+
+function pupil() {
+  push()
+  stroke(DARK_C)
+  fill(DARK_C)
+  circle(0,0, 190)
+  pop()
+}
+
+function squigs() {
+  push()
+  noFill()
+
+  strokeWeight(random(0.1, 0.5))
+  const squigs = 850
+
+  for (let i=0; i<squigs; i++) {
+    stroke(SQUIG_C )
+    strokeWeight(0.25)
+    const x = random(-width/2, width/2)
+    const y = random(-height/2, height/2)
+
+    const x1 = x + random(-25, 25)
+    const x2 = x1 + random(-25, 25)
+    const x3 = x2 + random(-25, 25)
+    const y1 = y + random(-25, 25)
+    const y2 = y1 + random(-25, 25)
+    const y3 = y2 + random(-25, 25)
+
+    beginShape()
+    curveVertex(
+      x + random(-20, 20),
+      y + random(-20, 20),
+    )
+    curveVertex(x, y)
+    curveVertex(
+      x1,
+      y1,
+    )
+    curveVertex(
+      x2,
+      y2,
+    )
+    curveVertex(
+      x3,
+      y3,
+    )
+    endShape()
+  }
+  pop()
+}
+
+
+function setup() {
+  createCanvas(915, 650)
+
+  noLoop()
+  colorMode(HSB, 360, 100, 100, 100)
+
+  DARK_C = color(150, 26, 25)
+  SQUIG_C = color(150, 26, 25, 20)
+  LIGHT_C = color(78, 6, 91)
+  LIGHT_C2 = color(78, 6, 81)
+}
+
+function draw() {
+  translate(width/2, height/2)
+
+  bg()
+  pupil()
+  draw$()
+  aura()
+  eye()
+  squigs()
+}
+
+
+
+</script>
+
+<!--
+  <script src="./minified/0.min.js"></script>
+  <script src="./minified/1.min.js"></script>
+  <script src="./minified/2.min.js"></script>
+-->
+
+  <!--
+    <script src="https://cdn.jsdelivr.net/npm/opentype.js@latest/dist/opentype.min.js"></script>
+    <script src="./type2.js"></script>
+  -->
+
+</html>
