@@ -258,7 +258,24 @@ i saw it ina dream website: you can move around a larger canvas
 
 ## MUST DO
 
-- re-add border bumps to rosette bg
+* **WORK ON FEATURE SCRIPT**
+
+- might be too late to get this in for the curation review board, but should split watermark objects up into quarters. need to have more bills with multiple bg watermarks
+
+
+
+- should have hidden smily faces here and there.
+- maybe have smily upside down once in a while
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -338,10 +355,10 @@ GROUPING
 
 index 3447
 layout 5899
-rosette 2890
 
 (12236) -- (10752)
 
+rosette 2890
 background 3131
 misc 1403
 watermark 2411
