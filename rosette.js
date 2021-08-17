@@ -138,8 +138,6 @@ function dollarLineRosette(x_=0, y_=0, maxRad=200, minRad=100, params={}) {
   params.strokeC && stroke(params.strokeC)
   params.strokeW && strokeWeight(params.strokeW)
 
-
-  // TODO have fewer points for smaller maxRad
   const c0Points = params.points/2
 
   const border = createRosetteBorder(x_, y_, c0Points, params.c1, params.c2, params.r1, params.r2)

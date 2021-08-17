@@ -260,6 +260,8 @@ i saw it ina dream website: you can move around a larger canvas
 
 * **WORK ON FEATURE SCRIPT**
 
+- maybe tweak some of the color misprints down a bit
+
 - might be too late to get this in for the curation review board, but should split watermark objects up into quarters. need to have more bills with multiple bg watermarks
 
 
