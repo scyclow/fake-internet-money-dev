@@ -239,10 +239,11 @@ function darkRosetteBorder(padding=-10, sides=true) {
   __borderGraphic.strokeWeight(1.1*STROKE_MOD - compression/12)
   const direction = posOrNeg()
 
+  const d = IS_DECO ? 5 : 0
   const extraPadding = ['ECHO', 'DIGITAL'].includes(ROSETTE_STYLE) ? 6 : 0
-  border7(padding+2, compression, direction)
-  border7(padding+19+extraPadding, compression, direction)
-  border7(padding+36+extraPadding*2, compression, direction)
+  border7(padding+2+d, compression, direction)
+  border7(padding+19+extraPadding+d, compression, direction)
+  border7(padding+36+extraPadding*2+d, compression, direction)
 
   const p = padding+(sides ? 35 : 55)
 

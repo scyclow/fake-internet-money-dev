@@ -40,7 +40,6 @@
     MISPRINT_PRINTING_OBSTRUCTED,
     MISPRINT_REVERSED,
     MISPRINT_ROSETTE_FLURRY,
-    MISPRINT_BORDER_CONFIG,
     MISPRINT_MISSING_CENTER,
     MISPRINT_PIGMINTATION_MALFUNCTION1,
     MISPRINT_PIGMINTATION_MALFUNCTION2,
@@ -151,7 +150,7 @@ function setProps() {
     DARK_C = color(HUE, isBlue ? 80 : 100, isBlue ? 95 : 90)
     LIGHTENED_DARK_C = color(HUE, 69, 75)
     ACCENT_C = color(hfix(HUE-254), 100, 100)
-    LIGHT_ACCENT_C = ACCENT_C
+    LIGHT_ACCENT_C = color(hfix(HUE-254), 55, 64, 60)
     BRIGHT_LIGHT_C = ACCENT_C
     BRIGHT_DARK_C = BRIGHT_LIGHT_C
     LIGHT_GRADIENT_C = LIGHT_C
@@ -354,6 +353,16 @@ function drawTexture() {
 }
 
 function draw() {
+  const estimatedMktValue = (DENOMINATION||0)
+    * (COUNTERFEIT?-1:1)
+    * (IS_MISPRINT?0:1)
+    * (IS_CRYPTO?(prb(0.5)?rnd(0,150):rnd(0,0.1)):1)
+    * (IS_SILVER?50:1)
+    * (IS_BULLION&&!IS_SILVER?100:1)
+    * (STAR_NOTE?3:1)
+    * (COOL_SERIAL_NUM?5:1)
+    * (IS_VINTAGE||IS_DECO?1.5:1)
+
   translate(width/2, height/2)
   scale(SCALE)
   noFill()
@@ -375,15 +384,6 @@ function draw() {
   MISPRINT_PRINTING_OBSTRUCTED && obstruction()
   MISPRINT_LOW_INK && lowInk()
 
-  const estimatedMktValue = (DENOMINATION||0)
-    * (COUNTERFEIT?-1:1)
-    * (IS_MISPRINT?0:1)
-    * (IS_CRYPTO?(prb(0.5)?rnd(0,150):rnd(0,0.1)):1)
-    * (IS_SILVER?50:1)
-    * (IS_BULLION&&!IS_SILVER?100:1)
-    * (STAR_NOTE?3:1)
-    * (COOL_SERIAL_NUM?5:1)
-    * (IS_VINTAGE||IS_DECO?1.5:1)
 
   try {
     console.log('Estimated Market Value: '+estimatedMktValue)

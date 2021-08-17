@@ -251,8 +251,8 @@ const genParams = o => IS_VINTAGE
 const genVintageRosetteParams = (o) => ({
   c1: int(rnd(1, 13)) * posOrNeg(),
   c2: int(rnd(170, 192)) * posOrNeg(),
-  r1: 9,
-  r2: 5,
+  r1: MISPRINT_ROSETTE_PARAMS_EXCEEDED ? rnd(1,4) : 9,
+  r2: MISPRINT_ROSETTE_PARAMS_EXCEEDED ? rnd(6, 12): 5,
   strokeC: ROSETTE_STROKE_C,
   points: 360,
   ...o
