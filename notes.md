@@ -1,3 +1,14 @@
+So, a few months ago I'd just completed CGK, and one of the main themes I explored there was how people find value in immaterial things. And my original intention with the project was to sort of draw a parallel between money and spirituality. in that regard. and while i think it was ultimately successful in picking out this theme on the spirituality front, it sort of overshadowed what i originally set out to do on the money front. So after that project was done I really wanted to explore how people find value in immaterial things through money. And to really hit the point home, i'd call it fake internet money
+
+so right of the bat, i think it had a very strong concept going for it, but the other reason i chose to do a money project is that I just really really love the aesthetics of paper currency. I really enjoy staring at the the inttricate geometric patterns on currency, so i wanted to explore that.
+
+
+
+
+
+
+
+
 Three intentions:
   Aesthetics
     - I've always been a huge fan of the aesthetics of paper currency, espescially the sort of webby, geometcic rosette patterns that's common on US bills. One of my favorite parts of the development of this project was researching all the different variations of money around the world
@@ -260,14 +271,8 @@ i saw it ina dream website: you can move around a larger canvas
 
 * **WORK ON FEATURE SCRIPT**
 
-- maybe tweak some of the color misprints down a bit
-
-- might be too late to get this in for the curation review board, but should split watermark objects up into quarters. need to have more bills with multiple bg watermarks
-
-
-
-- should have hidden smily faces here and there.
-- maybe have smily upside down once in a while
+- maybe increase b&w prob
+- add all param variables to global namespace so names get minified
 
 
 
