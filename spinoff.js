@@ -1,4 +1,140 @@
 
+let __canvas, MISPRINT_LATHE_MALFUNCTION
+let ellapsed = 0
+  let peaks = []
+function setup() {
+  __canvas = createCanvas(window.innerWidth, window.innerHeight)
+  // noLoop()
+  colorMode(HSB, 360, 100, 100, 100)
+  const peakFactor = 3
+  for (let p = 0; p < 20; p++) {
+  // for (let p = 0; p < int(random(100, 200)); p++) {
+    peaks.push({
+      x: random(-width/2, width/2),
+      y: random(-height/2, height/2),
+      r: times(100, i => random(1, 1 + peakFactor))
+
+    })
+  }
+}
+
+const seed = Math.random()
+function draw() {
+  randomSeed(int(seed*1000))
+  translate(width/2, height/2)
+  background(0)
+  DARK_C = color('black')
+  W = width
+  H = height
+
+push()
+  strokeWeight(0)
+
+
+  // drawCircle(50, p => getXYRotation(p *TWO_PI/50, p%2===0?300:250, 0,0))
+  drawTopology(peaks)
+pop()
+  // animating_spirograph(0,0)
+  rotate(ellapsed/1000)
+  watermark2_()
+  ellapsed+=1
+}
+
+
+
+
+
+
+
+
+
+
+
+function drawTopology(coords) {
+  const maxWidth = 150
+  const lineWidth = random(1, 10)
+  const density = lineWidth+random(1, 5)
+
+  for (let l = 0; l < maxWidth; l+=density) {
+
+    fill(
+      color(
+        ellapsed,
+        0,
+        100,
+        // 100*l/maxWidth
+      )
+    )
+    const points = 10
+    coords.forEach(({x, y, r}) =>
+      drawCircle(
+        points,
+        p => getXYRotation(
+          p *TWO_PI/points,
+          (maxWidth - l)*r[(p+points)%points],
+          x,
+          y
+        )
+      )
+    )
+
+
+    fill(
+      color(
+        0,
+        0,
+        0,
+        // 100*(maxWidth-l/2)/maxWidth
+      )
+    )
+
+    coords.forEach(({x, y, r}) =>
+      drawCircle(
+        points,
+        p => getXYRotation(
+          p *TWO_PI/points,
+          (maxWidth - l-lineWidth)*r[(p+points)%points],
+          x,
+          y
+        )
+      )
+    )
+  }
+}
+
+function times(i, fn) {
+  const a = []
+  for (let _i = 0; _i < i; _i++) {
+    a.push(fn(_i))
+  }
+  return a
+}
+
+const vertexType = 'curved'
+const isCurved = vertexType === 'curved'
+function drawCircle (points, getXY) {
+  beginShape()
+  isCurved && curveVertex(...getXY(-1))
+  for (let p = 0; p <= points + 1; p++) {
+    isCurved
+      ? curveVertex(...getXY(p))
+    : vertex(...getXY(p))
+  }
+  endShape()
+}
+
+
+// const getXYRotation = (deg, radius, cx=0, cy=0) => [
+//   sin(deg) * radius + cx,
+//   cos(deg) * radius + cy,
+// ]
+
+
+
+
+
+
+
 
 
 function animating_spirograph(x0, y0, c1Radius=100) {
@@ -33,22 +169,25 @@ function animating_spirograph(x0, y0, c1Radius=100) {
 
 // TODO spin this off into own project?
 function watermark2_ () {
+  const m1 = int(random(3, 150)) || 88
+  const m2 = int(random(3, 150)) || 59
   push()
+  noFill()
   stroke(color(0, 75, 100))
   strokeWeight(4)
-  watermark2(88, 10)
+  watermark2(m1, 10)
 
   stroke(color(90, 70, 90))
   strokeWeight(1)
-  watermark2(88, 10)
+  watermark2(m1, 10)
 
   stroke(color(250, 72, 31))
   strokeWeight(3)
-  watermark2(59, 10)
+  watermark2(m2, 10)
 
   stroke(color(200, 55, 100))
   strokeWeight(1)
-  watermark2(59, 10)
+  watermark2(m2, 10)
   pop()
 }
 function watermark2(m, wiggle=1) {
@@ -63,11 +202,11 @@ function watermark2(m, wiggle=1) {
 
     const [x0, y0] = getXYRotation(
       angle,
-      75 + abs(sin(angle*90) * 30)
+      125 + abs(sin(angle*90) * 30) + sin(ellapsed/30)*10
     )
     return getXYRotation(
       (p/speed1) * TWO_PI,
-      60 + abs(sin(angle*360) * wiggle),
+      60 + abs(sin(angle*360) * wiggle) + sin((ellapsed-5)/30)*10,
       x0, y0
     )
     return [x0, y0]
@@ -775,12 +914,12 @@ function interestingPattern4() {
 
 
 
-const squareRad = (dist, x) => {
+const squareRad = (dist, x) => (
   x < dist/4 ? x :
   x < dist/2 ? dist/4 - (x - (dist/4)) :
   x < dist*0.75 ? x - dist/2 :
   dist - x
-}
+)
 
 
 
