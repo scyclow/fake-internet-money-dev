@@ -463,8 +463,8 @@ function getFeatures(tokenData, features=[], featuresReduced=[]) {
 
 
   if (!DENOMINATION) features.push(`Misprint: Denomination Missing`)
-  if (MISPRINT_PIGMINTATION_MALFUNCTION1 || MISPRINT_PIGMINTATION_MALFUNCTION2) features.push(`Misprint: Pigmintation Misconfiguration`)
-  if (MISPRINT_PIGMINTATION_MISSING) features.push(`Misprint: Pigmintation Missing`)
+  if (MISPRINT_PIGMINTATION_MALFUNCTION1 || MISPRINT_PIGMINTATION_MALFUNCTION2) features.push(`Misprint: Pigmentation Misconfiguration`)
+  if (MISPRINT_PIGMINTATION_MISSING) features.push(`Misprint: Pigmentation Missing`)
   if (MISPRINT_ROSETTE_PARAMS_EXCEEDED) features.push(`Misprint: Rosette Parameters Exceeded`)
   if (MISPRINT_LATHE_MALFUNCTION) features.push(`Misprint: Lathe Malfunction`)
   if (MISPRINT_MISSING_CENTER) features.push(`Misprint: Center Missing`)
