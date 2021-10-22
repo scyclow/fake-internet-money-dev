@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Casualty Loss Note</title>
+    <title>Negative Value Certificates</title>
 
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -42,7 +42,7 @@
         if (window.location.search.includes('?serial=')) {
           tokenId = window.location.search.slice(8)
         } else {
-          tokenId = '00000000'
+          tokenId = '000'
         }
         let hash = '0x'
         for (let i = 0; i < 64; i++) {
@@ -51,6 +51,7 @@
 
         return {
           hash,
+          // hash: '0xaa141cbe3237699216e50585947c14fdaf78d61657251c9995a98218502af04d',
           tokenId
         }
       }
@@ -81,7 +82,7 @@
   <script src="./background.js"></script>
   <script src="./border.js"></script>
   <script src="./misc.js"></script>
-  <script src="./flc.js"></script>
+  <script src="./nvc.js"></script>
 
 
 

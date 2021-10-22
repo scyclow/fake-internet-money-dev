@@ -1,5 +1,5 @@
 
-let __canvas, __borderGraphic, MISPRINT_LATHE_MALFUNCTION, MISPRINT_ROSETTE_PARAMS_EXCEEDED
+let __canvas, __borderGraphic, MISPRINT_LATHE_MALFUNCTION, MISPRINT_ROSETTE_PARAMS_EXCEEDED, SHOW_WATERMARK
 let ellapsed = 0
 let IS_DECO, IS_VINTAGE
 
@@ -12,6 +12,7 @@ COLOR_SCHEME='CRYPTO'
 HIGHLIGHT=false
 COUNTERFEIT=false
 BG_TYPE='EMPTY'
+MISPRINT_HETERO_ROSETTES=false
 
 
 const SERIAL_NUMBER = tokenData.tokenId || '001'
@@ -21,7 +22,7 @@ function preload() {
 }
 
 
-const ASPECT_RATIO = 1.5
+const ASPECT_RATIO = 1.333
 const H = 600
 const W = H*ASPECT_RATIO
 const W_H_RATIO = W/H
@@ -97,13 +98,17 @@ function setup() {
 
   HIGHLIGHT = !IS_VINTAGE && prb(0.125)
 
+  SHOW_WATERMARK = prb(0.125)
+  TEXTURE_PATTERN=int(rnd(0, 5))
+
   MISPRINT_ROSETTE_PARAMS_EXCEEDED = prb(0.5)
   MISPRINT_LATHE_MALFUNCTION = false//prb(0.2)
   MISPRINT_SKEWED = false//prb(0.2)
   MULTIPLE_DRAWS = false//prb(0.2) ? int(rnd(2, 8)) : 0
 
-  MISPRINT_PIGMINTATION_MALFUNCTION = prb(0.025)
-  MISPRINT_PIGMINTATION_MISSING = prb(0.05)
+  MISPRINT_PIGMINTATION_MALFUNCTION = prb(0.03125)
+  MISPRINT_PIGMINTATION_MISSING = prb(0.0625)
+  MISPRINT_MISSING_FONT = prb(0.0625)
 
 
 
@@ -121,6 +126,11 @@ function setup() {
     DARK_C = inverse ? color('#000') : color('#fff')
     LIGHTENED_DARK_C = DARK_C
     ACCENT_C = DARK_C
+    if (prb(0.5)) {
+      const inverse_ = prb(0.5)
+      ROSETTE_FILL_C = inverse_ ? LIGHT_C : DARK_C
+      ROSETTE_STROKE_C = inverse_ ? DARK_C : LIGHT_C
+    }
   }
 
   if (prb(0.5) && MISPRINT_PIGMINTATION_MISSING || MISPRINT_PIGMINTATION_MALFUNCTION) {
@@ -130,6 +140,7 @@ function setup() {
     LIGHT_GRADIENT_C = LIGHT_C
     LIGHT_ACCENT_C = LIGHTENED_DARK_C
     STIPLE_C = DARK_C
+
   }
 
   SHADOW_C = prb(0.2) ? ACCENT_C : DARK_C
@@ -140,7 +151,12 @@ function draw() {
   scale(SCALE)
   translate(W/2, H/2)
   background(0)
-  drawTexture()
+
+  if (SHOW_WATERMARK) drawWatermark()
+  else drawTexture()
+
+  if (!MISPRINT_MISSING_FONT) textFont(fontData);
+
 
   MISPRINT_SKEWED && skewed()
 
@@ -165,60 +181,96 @@ const getHighlightPColors = () => !IS_VINTAGE ? ({
 }) : {}
 
 function drawContent() {
+
+
   _randomBorder()
 
-  const infoY = 185
+  const infoY = 175
   const titleY = -152
 
   signature(
-    120,
+    110,
     infoY,
     28,
   )
 
-  const serialX = -300
-  textFont(fontData);
-  stroke(DARK_C)
-  fill(LIGHT_C)
-  rect(serialX-3, infoY-3, 76, 31)
-  fill(ACCENT_C)
-  textSize(18)
-  text(`${SERIAL_NUMBER}/256`, serialX+3, infoY+18)
+  drawSerial(infoY)
 
   emblem(250, infoY)
 
-  textSize(70)
+  textSize(63)
   textAlign(CENTER)
   strokeWeight(3)
   fill(DARK_C)
 
   stroke(SHADOW_C)
-  text('FRACTIONAL LOSS', 1, titleY)
+  text('NEGATIVE VALUE', 1, titleY)
   stroke(LIGHT_C)
-  text('FRACTIONAL LOSS', 0, titleY+1)
+  text('NEGATIVE VALUE', 0, titleY+1)
 
   stroke(SHADOW_C)
-  text('CERTIFICATE', 2, titleY+85)
+  text('CERTIFICATE', 1, titleY+80)
   stroke(LIGHT_C)
-  text('CERTIFICATE', 0, titleY+2+85)
+  text('CERTIFICATE', 0, titleY+1+80)
 
 
   stroke(SHADOW_C)
   textSize(15)
   strokeWeight(1)
-  const yOffset = 0
-  const xOffset = 0
-  const lineHeight = 30
+  const yOffset = -23
+  const xOffset = -248
+  const lineHeight = 26
+
+
+// TODO technically my compromised wallet is the minter
+//      don't use "represents" twice
+//      rephrase "which is payable by the minter upon issuance" maybe?
+  // const lines = [
+  //   'This certificate represents a one two hundred fifty-sixth fraction of the 25.6178 ETH',
+  //   'loss sustained by Ethereum address: 0x7c23c1b7e544e3e805ba675c811e287fc9d71949',
+  //   'following the public exposure of its private key on October 15, 2021 at 02:44:49 AM (UTC).',
+  //   'The -0.1000695313 ETH par value of this certificate represents a proportionate share of',
+  //   'the loss, which is payable by the minter upon issuance. This certificate is non-revokable',
+  //   'and non-redeemable.'
+  // ]
+
+
+
+
+  // const lines = [
+  //   'The -0.1000695313 ETH par value of this certificate represents a',
+  //   // 'This certificate\'s par value of -0.1000695313 ETH represents a one',
+  //   'one two hundred fifty-sixth share of the 25.6178 ETH loss sustained',
+  //   'by Ethereum address: 0x7c23c1b7e544e3e805ba675c811e287fc9d71949 ',
+  //   'following the public exposure of its private key on October 15, 2021 at ',
+  //   '02:44:49 (UTC). This certificate is non-revokable, non-redeemable, and',
+  //   'may not be exchangable for monetary or non-monetary compensation.'
+  // ]
+
 
   const lines = [
-    'This certificate represents a one two hundred fifty-sixth fraction of the 25.6178 ETH',
-    'loss sustained by Ethereum address: 0x7c23c1b7e544e3e805ba675c811e287fc9d71949',
-    'following the public exposure of its private key on October 15, 2021 at 02:44:49 AM (UTC).',
-    'The -0.1000695313 ETH par value of this certificate represents a proportionate share of',
-    'the loss, which is payable upon issuance.'
+    'This certificate has a par value of -0.10006953 ETH, which is backed by',
+    'a  one two hundred fifty-sixth  share of the 25.6178 ETH loss sustained',
+    'by Ethereum address:   0x7c23c1b7e544e3e805ba675c811e287fc9d71949',
+    'following the public exposure of its private key on  October 15, 2021  at',
+    '02:44:49 (UTC).  The negative  par value  indicates that owners  of  this',
+    'certificate have a reasonable expectation of loss from holding it.',
+
   ]
 
-  lines.forEach((line, i) => text(line, xOffset, i*lineHeight+yOffset))
+
+
+  textAlign(LEFT)
+
+  fill(LIGHT_C)
+  stroke(LIGHT_C)
+  lines.forEach((line, i) => text(line, xOffset+1, i*lineHeight+yOffset))
+
+  fill(DARK_C)
+  stroke(DARK_C)
+  lines.forEach((line, i) => text(line, xOffset, i*lineHeight+yOffset+1))
+
+
 
 
 
@@ -329,4 +381,111 @@ function _randomBorder() {
 function skewed() {
   const shearFn = prb(0.5) ? shearY : shearX
   shearFn(PI *posOrNeg()/ rnd(4, 10))
+}
+
+function drawSerial(infoY) {
+  push()
+  strokeWeight(0.75)
+  const serialX = -300
+  stroke(DARK_C)
+  fill(LIGHT_C)
+  rect(serialX, infoY-3, 76, 31)
+  fill(ACCENT_C)
+  textSize(18)
+  text(`${SERIAL_NUMBER}/256`, serialX+7, infoY+19)
+  pop()
+}
+
+
+const _genRosetteParams = (o) => ({
+  c1: int(rnd(1, 16)) * posOrNeg(),
+  c2: int(rnd(1, 13)) * posOrNeg(),
+  r1: rnd(10, 20),
+  r2: rnd(10, 20),
+  points: 70,
+  ...o
+})
+
+function dollarRosette(x_, y_, maxRad=200, minRad=100, params={}, graphic=window) {
+  graphic.push()
+  params.strokeC && graphic.stroke(params.strokeC)
+  params.fillC && graphic.fill(params.fillC)
+  const strokeMod = params.strokeMod || 1
+
+  const c0Points = params.points
+
+  const border = createRosetteBorder(x_, y_, c0Points, params.c1, params.c2, params.r1, params.r2)
+
+  // border
+  for (let off=0; off<6; off++) {
+    graphic.strokeWeight(((params.strokeW || 0.7) + maxRad/150 - 1) * strokeMod)
+    drawShape(c0Points, p => {
+      const [ox, oy] = border(maxRad, p, off/3)
+      const [ix, iy] = border(maxRad*0.95, p, off/3)
+
+      return p % 2 === 0 ? [ix, iy] : [ox, oy]
+    }, graphic)
+  }
+
+  let topRad = maxRad
+  let bottomRad = maxRad * 0.75
+  let i = 0
+
+  while (bottomRad >= minRad && i < 20) {
+    graphic.strokeWeight(((params.strokeW || 1) + topRad/150 - 1) * strokeMod)
+    // awesome misprint
+    for (let off=0; off<6; off++) {
+      drawShape(c0Points, p => {
+        const [ox, oy] = border(topRad, p, off/3)
+        const [ix, iy] = border(bottomRad, p, off/3)
+
+        return p % 2 === 0 ? [ix, iy] : [ox, oy]
+      }, graphic)
+    }
+
+    topRad = bottomRad * 1.045
+    if (topRad < 10) {
+      bottomRad = 0
+    }
+    else if (bottomRad - bottomRad*0.75 < 10) {
+      bottomRad = topRad - 10
+    } else {
+      bottomRad = bottomRad*0.75
+
+    }
+
+    i++
+  }
+
+  graphic.pop()
+}
+
+function drawWatermark() {
+  push()
+  noFill()
+  const p = _genRosetteParams({
+    strokeC: color(hue(DARK_C), saturation(DARK_C), lightness(DARK_C), 50),
+    strokeMod: 0.25
+  })
+  dollarRosette(0,0, 700, 0, p)
+  pop()
+}
+
+function stippleTexture() {
+  push()
+  for (let x = -W/2; x < W/2; x += 5)
+  for (let y = -H/2; y < H/2; y += 5) {
+    strokeWeight(0.7)
+    stroke(STIPLE_C)
+
+    switch (TEXTURE_PATTERN) {
+      case 0: point(x+2, y+2); break;
+      case 1: line(x-1, y+2, x+2, y+2); break;
+      case 2: line(x+2, y-1, x+2, y+2); break;
+      case 3: line(x-1, y+1, x+2, y+4); break;
+      case 4: line(x+1, y+4, x+4, y+1); break;
+    }
+
+  }
+  pop()
 }
