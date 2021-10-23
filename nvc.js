@@ -223,40 +223,14 @@ function drawContent() {
   const lineHeight = 26
 
 
-// TODO technically my compromised wallet is the minter
-//      don't use "represents" twice
-//      rephrase "which is payable by the minter upon issuance" maybe?
-  // const lines = [
-  //   'This certificate represents a one two hundred fifty-sixth fraction of the 25.6178 ETH',
-  //   'loss sustained by Ethereum address: 0x7c23c1b7e544e3e805ba675c811e287fc9d71949',
-  //   'following the public exposure of its private key on October 15, 2021 at 02:44:49 AM (UTC).',
-  //   'The -0.1000695313 ETH par value of this certificate represents a proportionate share of',
-  //   'the loss, which is payable by the minter upon issuance. This certificate is non-revokable',
-  //   'and non-redeemable.'
-  // ]
-
-
-
-
-  // const lines = [
-  //   'The -0.1000695313 ETH par value of this certificate represents a',
-  //   // 'This certificate\'s par value of -0.1000695313 ETH represents a one',
-  //   'one two hundred fifty-sixth share of the 25.6178 ETH loss sustained',
-  //   'by Ethereum address: 0x7c23c1b7e544e3e805ba675c811e287fc9d71949 ',
-  //   'following the public exposure of its private key on October 15, 2021 at ',
-  //   '02:44:49 (UTC). This certificate is non-revokable, non-redeemable, and',
-  //   'may not be exchangable for monetary or non-monetary compensation.'
-  // ]
-
 
   const lines = [
-    'This certificate has a par value of -0.10006953 ETH, which is backed by',
-    'a  one two hundred fifty-sixth  share of the 25.6178 ETH loss sustained',
+    'This certificate has a par value of -0.09937734 ETH, which is backed by',
+    'a  one two hundred fifty-sixth  share of the 25.4406 ETH loss sustained',
     'by Ethereum address:   0x7c23c1b7e544e3e805ba675c811e287fc9d71949',
     'following the public exposure of its private key on  October 15, 2021  at',
     '02:44:49 (UTC).  The negative  par value  indicates that owners  of  this',
     'certificate have a reasonable expectation of loss from holding it.',
-
   ]
 
 
@@ -272,28 +246,6 @@ function drawContent() {
   lines.forEach((line, i) => text(line, xOffset, i*lineHeight+yOffset+1))
 
 
-
-
-
-
-  // text('The holder of this certificate is entitled to experience a proportionate share of the loss, equaling', xOffset, 90+yOffset)
-  // text('par value of -0.1000695313 ETH, redeemable upon payment.', xOffset, 120+yOffset)
-
-  // text('This certificate represents a 1/256 fraction of the 25.6178 ETH loss sustained by', xOffset, 0+yOffset)
-  // text('Ethereum address: 0x7c23c1b7e544e3e805ba675c811e287fc9d71949 following the', xOffset, 30+yOffset)
-  // text('public exposure of its private key on October 14, 2021 at 10:45PM (EDT). The holder', xOffset, 60+yOffset)
-  // text('of this certificate is entitled to a proportionate share of this loss, totaling ', xOffset, 90+yOffset)
-  // text('0.1000695313 ETH', xOffset, 120+yOffset)
-
-
-
-
-  // text('of the total loss value of 25.60equal to one two hundred fifty sixth the total lossof -0.1 ETH, ', 0, 120+yOffset)
-
-
-    // All holders of this note are entiteld to one two hundred fiftieth of the monetary loss of this event, estimated to be approximately.
-  // Holders are in no way entiteld to any tax write off or any other form of
-  // monetary or non-monetary compensation from holding this note.
 }
 
 function drawTexture() {
