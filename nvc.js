@@ -131,6 +131,7 @@ function setup() {
       ROSETTE_FILL_C = inverse_ ? LIGHT_C : DARK_C
       ROSETTE_STROKE_C = inverse_ ? DARK_C : LIGHT_C
     }
+
   }
 
   if (prb(0.5) && MISPRINT_PIGMINTATION_MISSING || MISPRINT_PIGMINTATION_MALFUNCTION) {

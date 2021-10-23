@@ -22,16 +22,38 @@ function preload() {
 }
 
 
-const ASPECT_RATIO = 1
-const H = 600
+const ASPECT_RATIO = 1.333
+const H = 750
 const W = H*ASPECT_RATIO
 const W_H_RATIO = W/H
 const GRAPHIC_RESOLUTION = 4
 
+function preload() {
+  fontData = loadFont('ShipporiMinchoB1-Regular.ttf');
+}
 
 
 function setup() {
-  __canvas = createCanvas(300, 300)
+  console.log(tokenData.hash)
+
+  const windowRatio = window.innerWidth/window.innerHeight
+
+  if (W_H_RATIO < windowRatio) {
+    __canvas = createCanvas(window.innerHeight * W_H_RATIO, window.innerHeight)
+    SCALE = window.innerHeight/H
+
+  } else if (W_H_RATIO > windowRatio) {
+    __canvas = createCanvas(window.innerWidth, window.innerWidth /W_H_RATIO)
+    SCALE = window.innerWidth/W
+
+  } else {
+    __canvas = createCanvas(window.innerWidth, window.innerHeight)
+    SCALE = window.innerWidth/W
+  }
+
+  __borderGraphic = createGraphics(W,H)
+  const currentPixelDensity = __borderGraphic.pixelDensity() || 2
+  __borderGraphic.pixelDensity(currentPixelDensity*GRAPHIC_RESOLUTION)
   noLoop()
   colorMode(HSB, 360, 100, 100, 100)
 
@@ -43,18 +65,101 @@ function draw() {
 
   translate(width/2, height/2)
   noFill()
-  const c1 = int(rnd(3, 11)) * posOrNeg()
-  const p = genRosetteParams({
-    strokeC: ACCENT_C,
-    strokeW: 1.5,
-    rDiff: 4,
-    ignoreShrink: true,
-    c1,
-    c2: (c1 + 5) * posOrNeg()
+
+  background(0)
+
+  textFont(fontData)
+
+  textSize(93)
+  textAlign(CENTER)
+  strokeWeight(3)
+
+  SHADOW_C = color('#fff')
+  DARK_C = color('#fff')
+  LIGHT_C = color('#000')
+
+  titleY = -150
+  fill(DARK_C)
+
+  ;[
+    'NEGATIVE',
+    'VALUE',
+    'CERTIFICATE',
+    'RENDERING',
+  ].forEach((s, i) => {
+    stroke(SHADOW_C)
+    text(s, 1, titleY+(i * 120))
+    stroke(LIGHT_C)
+    text(s, 0, titleY+1+(i * 120))
   })
 
 
-  dollarEchoRosette(0,0, 150, 0, p)
+  drawBorderGraphic(() => {
+
+    const weight = 70
+    const top = -H/2
+    const bottom = H/2
+    const left = -W/2
+    const right = W/2
+    const rad = weight/1.5
+
+    const weightAdj = rnd(1,5)
+    const lines = int(rnd(4, 11))
+
+
+    __borderGraphic.stroke(DARK_C)
+    for (let i = 0; i < lines; i++) {
+      if (i % 2 !== 0 || i === lines-1) __borderGraphic.erase()
+      __borderGraphic.fill(DARK_C)
+      __borderGraphic.strokeWeight(weight*STROKE_MOD -(i* weightAdj))
+      __borderGraphic.line(left, top, right, top)
+      __borderGraphic.line(right, top, right, bottom)
+      __borderGraphic.line(right, bottom, left, bottom)
+      __borderGraphic.line(left, bottom, left, top)
+
+      __borderGraphic.circle(left+rad, top+rad, rad)
+      __borderGraphic.circle(left+rad, bottom-rad, rad)
+      __borderGraphic.circle(right-rad, top+rad, rad)
+      __borderGraphic.circle(right-rad, bottom-rad, rad)
+      if (i % 2 !== 0 || i === lines-1) __borderGraphic.noErase()
+    }
+
+
+
+  })
+
+  // push()
+  // for (let x = -W/2; x < W/2; x += 10)
+  // for (let y = -H/2; y < H/2; y += 10) {
+  //   strokeWeight(0.7)
+  //   stroke('#e6003d')
+
+  //   switch (4) {
+  //     case 0: point(x+2, y+2); break;
+  //     case 1: line(x-1, y+2, x+2, y+2); break;
+  //     case 2: line(x+2, y-1, x+2, y+2); break;
+  //     case 3: line(x-1, y+1, x+2, y+4); break;
+  //     case 4: line(x+1, y+4, x+4, y+1); break;
+  //   }
+
+  // }
+  // pop()
+
+
+
+
+  // const c1 = int(rnd(3, 11)) * posOrNeg()
+  // const p = genRosetteParams({
+  //   strokeC: ACCENT_C,
+  //   strokeW: 1.5,
+  //   rDiff: 4,
+  //   ignoreShrink: true,
+  //   c1,
+  //   c2: (c1 + 5) * posOrNeg()
+  // })
+
+
+  // dollarEchoRosette(0,0, 150, 0, p)
 }
 
 
