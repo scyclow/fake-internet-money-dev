@@ -24,7 +24,7 @@ function preload() {
 
 const ASPECT_RATIO = 1.333
 const H = 600
-const W = H*ASPECT_RATIO
+const W = 800
 const W_H_RATIO = W/H
 const GRAPHIC_RESOLUTION = 4
 

@@ -22,8 +22,8 @@ function preload() {
 }
 
 
-const ASPECT_RATIO = 1.333
-const H = 750
+const ASPECT_RATIO = 3.5
+const H = 400
 const W = H*ASPECT_RATIO
 const W_H_RATIO = W/H
 const GRAPHIC_RESOLUTION = 4
@@ -34,32 +34,49 @@ function preload() {
 
 
 function setup() {
-  console.log(tokenData.hash)
-
-  const windowRatio = window.innerWidth/window.innerHeight
-
-  if (W_H_RATIO < windowRatio) {
-    __canvas = createCanvas(window.innerHeight * W_H_RATIO, window.innerHeight)
-    SCALE = window.innerHeight/H
-
-  } else if (W_H_RATIO > windowRatio) {
-    __canvas = createCanvas(window.innerWidth, window.innerWidth /W_H_RATIO)
-    SCALE = window.innerWidth/W
-
-  } else {
-    __canvas = createCanvas(window.innerWidth, window.innerHeight)
-    SCALE = window.innerWidth/W
-  }
-
-  __borderGraphic = createGraphics(W,H)
-  const currentPixelDensity = __borderGraphic.pixelDensity() || 2
-  __borderGraphic.pixelDensity(currentPixelDensity*GRAPHIC_RESOLUTION)
+  __canvas = createCanvas(1400, 400)
   noLoop()
   colorMode(HSB, 360, 100, 100, 100)
 
   MISPRINT_ROSETTE_PARAMS_EXCEEDED = prb(0.5)
   ACCENT_C = color('#7cf803')
 }
+
+// const ASPECT_RATIO = 1.333
+// const H = 750
+// const W = H*ASPECT_RATIO
+// const W_H_RATIO = W/H
+// const GRAPHIC_RESOLUTION = 4
+
+
+
+// function setup() {
+//   console.log(tokenData.hash)
+
+//   const windowRatio = window.innerWidth/window.innerHeight
+
+//   if (W_H_RATIO < windowRatio) {
+//     __canvas = createCanvas(window.innerHeight * W_H_RATIO, window.innerHeight)
+//     SCALE = window.innerHeight/H
+
+//   } else if (W_H_RATIO > windowRatio) {
+//     __canvas = createCanvas(window.innerWidth, window.innerWidth /W_H_RATIO)
+//     SCALE = window.innerWidth/W
+
+//   } else {
+//     __canvas = createCanvas(window.innerWidth, window.innerHeight)
+//     SCALE = window.innerWidth/W
+//   }
+
+//   __borderGraphic = createGraphics(W,H)
+//   const currentPixelDensity = __borderGraphic.pixelDensity() || 2
+//   __borderGraphic.pixelDensity(currentPixelDensity*GRAPHIC_RESOLUTION)
+//   noLoop()
+//   colorMode(HSB, 360, 100, 100, 100)
+
+//   MISPRINT_ROSETTE_PARAMS_EXCEEDED = prb(0.5)
+//   ACCENT_C = color('#7cf803')
+// }
 
 function draw() {
 
@@ -70,22 +87,26 @@ function draw() {
 
   textFont(fontData)
 
-  textSize(93)
+  textSize(130)
   textAlign(CENTER)
   strokeWeight(3)
 
-  SHADOW_C = color('#fff')
-  DARK_C = color('#fff')
+  // SHADOW_C = color('#fff')
+  // DARK_C = color('#fff')
+  // LIGHT_C = color('#000')
+
+  SHADOW_C = color('#7cf803')
+  DARK_C = color('#7cf803')
   LIGHT_C = color('#000')
 
-  titleY = -150
+  titleY = 40
   fill(DARK_C)
 
   ;[
-    'NEGATIVE',
-    'VALUE',
-    'CERTIFICATE',
-    'RENDERING',
+    'NEGATIVE VALUE',
+    // 'VALUE',
+    // 'CERTIFICATES',
+    // 'RENDERING',
   ].forEach((s, i) => {
     stroke(SHADOW_C)
     text(s, 1, titleY+(i * 120))
@@ -94,39 +115,39 @@ function draw() {
   })
 
 
-  drawBorderGraphic(() => {
+  // drawBorderGraphic(() => {
 
-    const weight = 70
-    const top = -H/2
-    const bottom = H/2
-    const left = -W/2
-    const right = W/2
-    const rad = weight/1.5
+  //   const weight = 70
+  //   const top = -H/2
+  //   const bottom = H/2
+  //   const left = -W/2
+  //   const right = W/2
+  //   const rad = weight/1.5
 
-    const weightAdj = rnd(1,5)
-    const lines = int(rnd(4, 11))
-
-
-    __borderGraphic.stroke(DARK_C)
-    for (let i = 0; i < lines; i++) {
-      if (i % 2 !== 0 || i === lines-1) __borderGraphic.erase()
-      __borderGraphic.fill(DARK_C)
-      __borderGraphic.strokeWeight(weight*STROKE_MOD -(i* weightAdj))
-      __borderGraphic.line(left, top, right, top)
-      __borderGraphic.line(right, top, right, bottom)
-      __borderGraphic.line(right, bottom, left, bottom)
-      __borderGraphic.line(left, bottom, left, top)
-
-      __borderGraphic.circle(left+rad, top+rad, rad)
-      __borderGraphic.circle(left+rad, bottom-rad, rad)
-      __borderGraphic.circle(right-rad, top+rad, rad)
-      __borderGraphic.circle(right-rad, bottom-rad, rad)
-      if (i % 2 !== 0 || i === lines-1) __borderGraphic.noErase()
-    }
+  //   const weightAdj = rnd(1,5)
+  //   const lines = int(rnd(4, 11))
 
 
+  //   __borderGraphic.stroke(DARK_C)
+  //   for (let i = 0; i < lines; i++) {
+  //     if (i % 2 !== 0 || i === lines-1) __borderGraphic.erase()
+  //     __borderGraphic.fill(DARK_C)
+  //     __borderGraphic.strokeWeight(weight*STROKE_MOD -(i* weightAdj))
+  //     __borderGraphic.line(left, top, right, top)
+  //     __borderGraphic.line(right, top, right, bottom)
+  //     __borderGraphic.line(right, bottom, left, bottom)
+  //     __borderGraphic.line(left, bottom, left, top)
 
-  })
+  //     __borderGraphic.circle(left+rad, top+rad, rad)
+  //     __borderGraphic.circle(left+rad, bottom-rad, rad)
+  //     __borderGraphic.circle(right-rad, top+rad, rad)
+  //     __borderGraphic.circle(right-rad, bottom-rad, rad)
+  //     if (i % 2 !== 0 || i === lines-1) __borderGraphic.noErase()
+  //   }
+
+
+
+  // })
 
   // push()
   // for (let x = -W/2; x < W/2; x += 10)
@@ -159,7 +180,7 @@ function draw() {
   // })
 
 
-  // dollarEchoRosette(0,0, 150, 0, p)
+  // dollarEchoRosette(0,0, 130, 0, p)
 }
 
 
