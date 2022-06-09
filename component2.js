@@ -31,53 +31,54 @@ const GRAPHIC_RESOLUTION = 4
 
 function setup() {
   __canvas = createCanvas(W, H)
-  // noLoop()
+  noLoop()
   colorMode(HSB, 360, 100, 100, 100)
 
 
-  // HUE = int(rnd(0,360))
-  // const isBlue = HUE < 275 && HUE > 210
-  // DARK_C = color(HUE, 26, 25)
-  // LIGHT_C = color(hfix(HUE-72), 6, 91)
-  // LIGHT_GRADIENT_C = color(hfix(max(HUE-72, 0)), 6, 91)
-  // LIGHTENED_DARK_C = color(HUE, 16, 25)
-  // ACCENT_C = color(hfix(HUE-145), 80, 64)
-  // LIGHT_ACCENT_C = color(hfix(HUE-145), 55, 64, 30)
-  // BRIGHT_LIGHT_C = color(max(HUE-10, 0), 80, 54)
-  // BRIGHT_DARK_C = BRIGHT_LIGHT_C
-  // VIBRANT_GRADIENT = prb(0.02)
-
-  // const reverseRosetteColors = prb(0.5)
-  // const lightC = LIGHT_GRADIENT_C
-  // const darkC = DARK_C
-  // ROSETTE_FILL_C = lightC
-  // ROSETTE_STROKE_C = darkC
-
   HUE = int(rnd(0,360))
   const isBlue = HUE < 275 && HUE > 210
-  LIGHT_C = color(hfix(HUE-133), 96, isBlue ? 0 : 15)
-  DARK_C = color(HUE, isBlue ? 80 : 100, isBlue ? 95 : 90)
-  LIGHTENED_DARK_C = color(HUE, 69, 75)
-  ACCENT_C = color(hfix(HUE-254), 100, 100)
-  LIGHT_ACCENT_C = color(hfix(HUE-254), 55, 64, 60)
-  BRIGHT_LIGHT_C = ACCENT_C
+  DARK_C = color(HUE, 26, 25)
+  LIGHT_C = color(hfix(HUE-72), 6, 91)
+  LIGHT_GRADIENT_C = color(hfix(max(HUE-72, 0)), 6, 91)
+  LIGHTENED_DARK_C = color(HUE, 16, 25)
+  ACCENT_C = color(hfix(HUE-145), 80, 64)
+  ACCENT2_C = color(hfix(HUE+145), 80, 64)
+  LIGHT_ACCENT_C = color(hfix(HUE-145), 55, 64, 30)
+  BRIGHT_LIGHT_C = color(max(HUE-10, 0), 80, 54)
   BRIGHT_DARK_C = BRIGHT_LIGHT_C
-  LIGHT_GRADIENT_C = LIGHT_C
-  VIBRANT_GRADIENT = prb(0.05)
-
-  MISPRINT_PIGMINTATION_MALFUNCTION = prb(0.1)
-  if (MISPRINT_PIGMINTATION_MALFUNCTION) {
-    LIGHT_C = color(hfix(HUE-183), 96, 95)
-    DARK_C = color(HUE, isBlue ? 80 : 100, 95)
-    LIGHTENED_DARK_C = color(HUE, 69, 95)
-    // ACCENT_C = DARK_C
-  }
+  VIBRANT_GRADIENT = prb(0.02)
 
   const reverseRosetteColors = prb(0.5)
-  const lightC = LIGHT_C
+  const lightC = LIGHT_GRADIENT_C
   const darkC = DARK_C
-  ROSETTE_FILL_C = reverseRosetteColors ? darkC : lightC
-  ROSETTE_STROKE_C = reverseRosetteColors ? lightC : darkC
+  ROSETTE_FILL_C = lightC
+  ROSETTE_STROKE_C = darkC
+
+  // HUE = int(rnd(0,360))
+  // const isBlue = HUE < 275 && HUE > 210
+  // LIGHT_C = color(hfix(HUE-133), 96, isBlue ? 0 : 15)
+  // DARK_C = color(HUE, isBlue ? 80 : 100, isBlue ? 95 : 90)
+  // LIGHTENED_DARK_C = color(HUE, 69, 75)
+  // ACCENT_C = color(hfix(HUE-254), 100, 100)
+  // LIGHT_ACCENT_C = color(hfix(HUE-254), 55, 64, 60)
+  // BRIGHT_LIGHT_C = ACCENT_C
+  // BRIGHT_DARK_C = BRIGHT_LIGHT_C
+  // LIGHT_GRADIENT_C = LIGHT_C
+  // VIBRANT_GRADIENT = prb(0.05)
+
+  // MISPRINT_PIGMINTATION_MALFUNCTION = prb(0.1)
+  // if (MISPRINT_PIGMINTATION_MALFUNCTION) {
+  //   LIGHT_C = color(hfix(HUE-183), 96, 95)
+  //   DARK_C = color(HUE, isBlue ? 80 : 100, 95)
+  //   LIGHTENED_DARK_C = color(HUE, 69, 95)
+  //   // ACCENT_C = DARK_C
+  // }
+
+  // const reverseRosetteColors = prb(0.5)
+  // const lightC = LIGHT_C
+  // const darkC = DARK_C
+  // ROSETTE_FILL_C = reverseRosetteColors ? darkC : lightC
+  // ROSETTE_STROKE_C = reverseRosetteColors ? lightC : darkC
 
 
 
@@ -147,30 +148,76 @@ function draw() {
   translate(width/2, height/2)
   noFill()
 
-  background(ROSETTE_FILL_C)
+  // background(ROSETTE_FILL_C)
+  push()
+  const direction = posOrNeg()
+  const diag = rnd(0, 100)
+  if (!IS_BULLION) strokeWeight(2)
+  for (let i = -diag; i <= W+diag; i++) {
+    const x = direction === 1 ? i-W/2 : W/2-i
+
+    stroke(lerpColor(
+      color('red'),
+      color('blue'),
+      VIBRANT_GRADIENT || IS_BULLION || (IS_CRYPTO&&HIGHLIGHT) ? i/W : i/(W*5)
+    ))
+    line(x+diag, -H/2, x, H/2)
+  }
+  pop()
+
 
   image(__bgGraphic,-W / 2,-H / 2)
 
+
+
+  const rosetteGraphic1 = createGraphics(W,H)
+  rosetteGraphic1.pixelDensity(rosetteGraphic1.pixelDensity() || 2*GRAPHIC_RESOLUTION)
+
+  rosetteGraphic1.noFill()
+  rosetteGraphic1.translate(width/2, height/2)
+  const rosetteGraphic2 = createGraphics(W,H)
+  rosetteGraphic2.pixelDensity(rosetteGraphic2.pixelDensity() || 2*GRAPHIC_RESOLUTION)
+  rosetteGraphic2.noFill()
+  rosetteGraphic2.translate(width/2, height/2)
 
 
   const p0 = genRosetteParams({
     strokeC: ROSETTE_STROKE_C,
     strokeW: 1,
     rDiff: 4,
+    strokeMod: 0.5
   })
 
   // fuckedDollarRosette(-W/2,-H/2, 460, 80, p0)
   // fuckedDollarRosette(W/2,-H/2, 460, 80, p0)
   // fuckedDollarRosette(-W/2+200,H/2, 460, 80, p0)
   // fuckedDollarRosette(W/2,H/2, 460, 80, p0)
-  fuckedDollarRosette(0,0, 560, 20, p0)
+  _dollarRosette(0,0, 430, 0, p0)
+
+  _dollarRosette(0,0, 430, 0, {...p0, strokeC: ACCENT2_C, strokeW: 1}, rosetteGraphic1)
+  _dollarRosette(0,0, 430, 0, {...p0, strokeC: ACCENT_C, strokeW: 1}, rosetteGraphic2)
+
+rosetteGraphic1.erase()
+rosetteGraphic1.fill(0)
+times(5, i => {
+
+  fuckedEchoRosette(rnd(-W/2, W/2), rnd(-H/2, H/2), 300, 100, genRosetteParams({ points: 200 }), false, rosetteGraphic1)
+})
+rosetteGraphic1.noErase()
+
+rosetteGraphic2.erase()
+rosetteGraphic2.fill(0)
+times(5, i => {
+
+  fuckedEchoRosette(rnd(-W/2, W/2), rnd(-H/2, H/2), 300, 100, genRosetteParams({ points: 200 }), false, rosetteGraphic2)
+})
+rosetteGraphic2.noErase()
 
 
 
 
-
-
-
+  // image(rosetteGraphic1,-W / 2,-H / 2)
+  // image(rosetteGraphic2,-W / 2,-H / 2)
 
   textFont(fontData)
 
@@ -238,6 +285,61 @@ const createFuckedRosetteBorder = (x_, y_, c0Points, ignore) => {
     // )
   }
 }
+
+function _dollarRosette(x_, y_, maxRad=200, minRad=100, params={}, graphic=window) {
+  graphic.push()
+  params.strokeC && graphic.stroke(params.strokeC)
+  params.fillC && graphic.fill(params.fillC)
+  const strokeMod = params.strokeMod || 1
+
+  const c0Points = params.points
+
+  const border = createRosetteBorder(x_, y_, c0Points, params.c1, params.c2, params.r1, params.r2)
+
+  // border
+  // for (let off=0; off<6; off++) {
+  //   graphic.strokeWeight(((params.strokeW || 0.7) + maxRad/150 - 1) * strokeMod * STROKE_MOD)
+  //   drawShape(c0Points, p => {
+  //     const [ox, oy] = border(maxRad, p, off/3)
+  //     const [ix, iy] = border(maxRad*0.95, p, off/3)
+
+  //     return p % 2 === 0 ? [ix, iy] : [ox, oy]
+  //   }, graphic)
+  // }
+
+  let topRad = maxRad
+  let bottomRad = maxRad * 0.75
+  let i = 0
+
+  while (bottomRad >= minRad && i < 20) {
+    graphic.strokeWeight(((params.strokeW || 1) + topRad/150 - 1) * strokeMod)
+    // awesome misprint
+
+    const density = 20
+    for (let off=0; off<density; off++) {
+      drawShape(c0Points, p => {
+        const rad = p % 2 === 0 ? bottomRad : topRad
+        return border(rad, p, 2*off/density)
+      }, graphic)
+    }
+
+    topRad = bottomRad * 1.045
+    if (topRad < 10) {
+      bottomRad = 0
+    }
+    else if (bottomRad - bottomRad*0.75 < 10) {
+      bottomRad = topRad - 10
+    } else {
+      bottomRad = bottomRad*0.75
+
+    }
+
+    i++
+  }
+
+  graphic.pop()
+}
+
 
 
 function fuckedDollarRosette(x_, y_, maxRad=200, minRad=100, params={}, graphic=window) {
